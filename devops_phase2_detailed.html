@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 2 — AWS Fundamentals + SAA-C03 | Niyhi's DevOps Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0e1015;--ink2:#2d3142;--ink3:#5a617d;--ink4:#8e96b0;
+  --paper:#f7f6f2;--paper2:#edecea;--paper3:#e4e2dd;--cream:#faf9f5;
+  --accent:#1a56db;--accent-light:#dce8ff;
+  --green:#0d6e4a;--green-bg:#d6f0e6;
+  --amber:#7a4700;--amber-bg:#fdefd4;
+  --red:#b91c1c;--red-bg:#fee2e2;
+  --purple:#5b21b6;--purple-bg:#ede9fe;
+  --teal:#0e6b70;--teal-bg:#ccfbf1;
+  --orange:#9a3412;--orange-bg:#ffedd5;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Fraunces',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.site-header{background:var(--ink);color:var(--paper);padding:3.5rem 0 3rem}
+.hinner{max-width:900px;margin:0 auto;padding:0 2rem}
+.phase-badge{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#3ecf8e;margin-bottom:1rem;display:block}
+.site-header h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:600;line-height:1.15;letter-spacing:-.02em;margin-bottom:.75rem}
+.site-header h1 em{font-style:italic;color:#aab0c8}
+.header-desc{font-family:var(--mono);font-size:12px;color:#9ba3b8;max-width:580px;line-height:1.75}
+.header-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.5rem}
+.hbadge{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.12);color:#9ba3b8}
+.hbadge.g{border-color:rgba(62,207,142,.3);color:#3ecf8e}
+.hbadge.b{border-color:rgba(91,138,245,.3);color:#7b8ff5}
+.hbadge.a{border-color:rgba(240,163,71,.3);color:#f0a347}
+.toolbar{position:sticky;top:0;z-index:100;background:rgba(14,16,21,.97);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08);padding:.5rem 0}
+.tinner{max-width:900px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none}
+.tinner::-webkit-scrollbar{display:none}
+.tnav{font-family:var(--mono);font-size:10px;padding:8px 12px;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.35);cursor:pointer;background:transparent;white-space:nowrap;transition:all .15s;letter-spacing:.04em;flex-shrink:0}
+.tnav:hover{color:rgba(255,255,255,.6)}
+.tnav.on{color:#fff;border-bottom-color:#3ecf8e}
+.tsep{width:1px;height:16px;background:rgba(255,255,255,.1);margin:0 6px;flex-shrink:0}
+.print-btn{font-family:var(--mono);font-size:10px;margin-left:auto;padding:5px 12px;border:1px solid rgba(255,255,255,.15);border-radius:3px;color:rgba(255,255,255,.4);background:transparent;cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap}
+.print-btn:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.7)}
+.main{max-width:900px;margin:0 auto;padding:0 2rem 5rem}
+.section{display:none;padding:2.5rem 0}
+.section.on{display:block}
+.week-header{padding:1.75rem 0 1.25rem;border-bottom:2px solid var(--ink);margin-bottom:1.75rem}
+.week-eyebrow{font-family:var(--mono);font-size:10px;color:#3ecf8e;letter-spacing:.1em;margin-bottom:.4rem}
+.week-title{font-size:1.6rem;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.25}
+.week-sub{font-size:.95rem;color:var(--ink3);margin-top:.4rem;line-height:1.65;max-width:680px}
+.week-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:.9rem}
+.tag{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:3px;border:1.5px solid var(--paper3);color:var(--ink3);background:var(--paper2)}
+.ov-intro{font-size:1.05rem;color:var(--ink2);line-height:1.8;margin-bottom:2rem;max-width:720px}
+.cost-warn{background:var(--ink);color:var(--paper);border-radius:8px;padding:1.5rem 1.75rem;margin-bottom:2rem}
+.cw-title{font-family:var(--mono);font-size:10px;color:#f0a347;letter-spacing:.1em;margin-bottom:1rem}
+.cw-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.cw-item{display:flex;gap:8px;font-size:12px;color:#d0d4e4;margin-bottom:.5rem;line-height:1.5}
+.cw-bullet{color:#f0a347;flex-shrink:0;font-weight:700}
+.cw-rule{background:rgba(240,163,71,.1);border:1px solid rgba(240,163,71,.25);border-radius:4px;padding:.75rem 1rem;margin-top:.75rem;font-family:var(--mono);font-size:11px;color:#f0a347;line-height:1.6}
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:2rem}
+.domain-card{background:var(--cream);border:1.5px solid var(--paper3);border-radius:8px;padding:1rem 1.1rem}
+.dc-pct{font-family:var(--mono);font-size:1.6rem;font-weight:500;line-height:1;margin-bottom:.4rem}
+.dc-name{font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:.3rem}
+.dc-desc{font-size:.78rem;color:var(--ink3);line-height:1.5}
+.dc-bar{height:3px;border-radius:2px;margin-top:.75rem}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:2rem}
+.ov-card{background:var(--cream);border:1.5px solid var(--paper3);border-radius:8px;padding:1.1rem 1.25rem;cursor:pointer;transition:all .18s}
+.ov-card:hover{border-color:#3ecf8e;transform:translateY(-2px);box-shadow:0 4px 20px rgba(62,207,142,.1)}
+.ov-week{font-family:var(--mono);font-size:10px;color:#3ecf8e;letter-spacing:.08em;margin-bottom:.4rem}
+.ov-title{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:.25rem}
+.ov-sub{font-family:var(--mono);font-size:10px;color:var(--ink3);line-height:1.5}
+.ov-days{font-family:var(--mono);font-size:9px;color:var(--ink4);margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--paper3)}
+.day{background:var(--cream);border:1.5px solid var(--paper3);border-radius:8px;margin-bottom:14px;overflow:hidden}
+.day-header{padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;transition:background .12s}
+.day-header:hover{background:var(--paper2)}
+.dh-left{display:flex;align-items:center;gap:10px}
+.day-num{font-family:var(--mono);font-size:10px;color:#3ecf8e;width:44px;flex-shrink:0;letter-spacing:.06em}
+.day-title{font-size:.92rem;font-weight:600;color:var(--ink)}
+.day-topic{font-family:var(--mono);font-size:10px;color:var(--ink4);margin-top:1px}
+.dh-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.day-tag{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:2px}
+.dt-t{background:var(--purple-bg);color:var(--purple)}
+.dt-l{background:var(--green-bg);color:var(--green)}
+.dt-b{background:var(--accent-light);color:var(--accent)}
+.dt-c{background:var(--orange-bg);color:var(--orange)}
+.dt-e{background:var(--teal-bg);color:var(--teal)}
+.chev{font-size:10px;color:var(--ink4);transition:transform .18s}
+.day.open .chev{transform:rotate(180deg)}
+.day-body{display:none;border-top:1.5px solid var(--paper3)}
+.day.open .day-body{display:block}
+.db-section{padding:1.25rem 1.5rem;border-bottom:1px solid var(--paper2)}
+.db-section:last-child{border-bottom:none}
+.db-label{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.db-label::after{content:'';flex:1;height:1px;background:var(--paper3)}
+.explain{font-size:.92rem;color:var(--ink2);line-height:1.8;margin-bottom:.8rem}
+.explain:last-child{margin-bottom:0}
+.explain strong{color:var(--ink);font-weight:600}
+.analogy{background:var(--amber-bg);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:.85rem 1rem;margin:.8rem 0;font-size:.88rem;color:var(--amber);line-height:1.65}
+.analogy .albl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;display:block;margin-bottom:.2rem;font-weight:600}
+.cmd-block{background:var(--ink);border-radius:6px;overflow:hidden;margin-bottom:.65rem}
+.cmd-block:last-child{margin-bottom:0}
+.cmd-header{padding:.45rem .85rem;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between}
+.cmd-purpose{font-family:var(--mono);font-size:9px;color:#3ecf8e;letter-spacing:.04em}
+.cmd-code{padding:.65rem .85rem;font-family:var(--mono);font-size:12px;color:#e0e4f0;line-height:1.8}
+.cmd-code .comment{color:#4a5168;font-style:italic}
+.cmd-code .hl{color:#3ecf8e}
+.cmd-code .flag{color:#f0a347}
+.cmd-code .var{color:#f57eb6}
+.cmd-code .str{color:#f0c040}
+.output-block{background:#0a0c10;border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:.65rem .85rem;font-family:var(--mono);font-size:11px;color:#7ca5b8;line-height:1.75;margin:.5rem 0}
+.output-block .oc{color:#3a4255;font-style:italic}
+.steps{margin:.5rem 0}
+.step{display:flex;gap:12px;margin-bottom:.75rem;font-size:.9rem;color:var(--ink2);line-height:1.6}
+.step-n{font-family:var(--mono);font-size:10px;color:#3ecf8e;width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(62,207,142,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.checklist{margin:.5rem 0}
+.chk{display:flex;gap:10px;font-size:.9rem;color:var(--ink2);margin-bottom:.55rem;line-height:1.5}
+.chk-box{width:16px;height:16px;border:1.5px solid var(--paper3);border-radius:3px;flex-shrink:0;margin-top:2px}
+.alert{border-radius:6px;padding:.85rem 1rem;margin:.8rem 0;font-size:.88rem;line-height:1.65;display:flex;gap:.75rem}
+.al-icon{font-size:14px;flex-shrink:0;margin-top:2px}
+.al-warn{background:var(--amber-bg);border:1.5px solid rgba(122,71,0,.2);color:var(--amber)}
+.al-info{background:var(--accent-light);border:1.5px solid rgba(26,86,219,.2);color:#1e40af}
+.al-success{background:var(--green-bg);border:1.5px solid rgba(13,110,74,.2);color:var(--green)}
+.al-note{background:var(--purple-bg);border:1.5px solid rgba(91,33,182,.2);color:var(--purple)}
+.al-teal{background:var(--teal-bg);border:1.5px solid rgba(14,107,112,.2);color:var(--teal)}
+.mistake{background:var(--red-bg);border:1.5px solid rgba(185,28,28,.2);border-radius:6px;padding:.85rem 1rem;margin:.8rem 0;font-size:.87rem;color:var(--red);line-height:1.6}
+.mistake .mlbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;display:block;margin-bottom:.2rem;font-weight:600}
+.capstone{background:linear-gradient(135deg,#0e1015 0%,#131929 100%);border-radius:10px;padding:1.75rem;margin:1.5rem 0;border:1.5px solid rgba(62,207,142,.25)}
+.cap-eyebrow{font-family:var(--mono);font-size:10px;color:#3ecf8e;letter-spacing:.1em;margin-bottom:.6rem}
+.cap-title{font-size:1.15rem;font-weight:600;color:#e8eaf0;margin-bottom:.6rem}
+.cap-desc{font-size:.88rem;color:#9ba3b8;line-height:1.7;margin-bottom:1rem}
+.cap-reqs{border-top:1px solid rgba(255,255,255,.07);padding-top:.9rem}
+.cap-req{display:flex;gap:8px;font-family:var(--mono);font-size:11px;color:#aab0c8;margin-bottom:.45rem;line-height:1.5}
+.cap-req::before{content:'→';color:#3ecf8e;flex-shrink:0}
+.gate{background:var(--green-bg);border:1.5px solid rgba(13,110,74,.2);border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0}
+.gate-title{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.08em;margin-bottom:.75rem}
+.gate-item{display:flex;gap:10px;font-size:.9rem;color:var(--ink2);margin-bottom:.45rem;line-height:1.5}
+.gate-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:1.5rem 0}
+.metric{background:var(--paper2);border:1.5px solid var(--paper3);border-radius:7px;padding:1rem 1.1rem}
+.mv{font-family:var(--mono);font-size:1.4rem;font-weight:500;color:var(--ink);line-height:1}
+.ml{font-size:.8rem;color:var(--ink3);margin-top:.3rem;font-family:var(--mono)}
+.ref-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:.75rem 0}
+.ref-table th{text-align:left;font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:.08em;padding:6px 10px;border-bottom:2px solid var(--paper3)}
+.ref-table td{padding:7px 10px;border-bottom:1px solid var(--paper2);color:var(--ink2);vertical-align:top}
+.ref-table td:first-child{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.exam-q{background:var(--paper2);border:1.5px solid var(--paper3);border-radius:6px;padding:1rem 1.25rem;margin:.75rem 0}
+.eq-label{font-family:var(--mono);font-size:9px;color:var(--purple);letter-spacing:.06em;margin-bottom:.4rem}
+.eq-q{font-size:.9rem;color:var(--ink);font-weight:600;margin-bottom:.65rem;line-height:1.55}
+.eq-opt{font-size:.85rem;color:var(--ink3);margin-bottom:.3rem;padding-left:.75rem;line-height:1.5}
+.eq-ans{font-family:var(--mono);font-size:10px;color:var(--green);margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--paper3)}
+.eq-why{font-size:.82rem;color:var(--ink3);margin-top:.3rem;line-height:1.55}
+code{font-family:var(--mono);font-size:.82em;background:var(--paper2);border:1px solid var(--paper3);padding:1px 5px;border-radius:3px;color:var(--ink2)}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:1rem 0}
+.res-card{background:var(--paper2);border:1.5px solid var(--paper3);border-radius:7px;padding:1rem 1.1rem}
+.res-cat{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:.1em;margin-bottom:.7rem}
+.res-item{display:flex;gap:8px;font-size:.85rem;color:var(--ink2);margin-bottom:.5rem;line-height:1.45}
+.res-dot{width:4px;height:4px;border-radius:50%;background:#3ecf8e;flex-shrink:0;margin-top:7px}
+.divider{border:none;border-top:1.5px solid var(--paper3);margin:2rem 0}
+.back-top{position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:var(--paper);border:none;border-radius:4px;padding:8px 13px;font-family:var(--mono);font-size:11px;cursor:pointer;z-index:200;transition:all .15s;opacity:.7}
+.back-top:hover{opacity:1}
+.arch-diagram{background:var(--ink);border-radius:8px;padding:1.5rem;margin:1rem 0;font-family:var(--mono);font-size:11px;color:#aab0c8;line-height:1.9;overflow-x:auto}
+.arch-diagram .layer{color:#3ecf8e;font-weight:500}
+.arch-diagram .component{color:#f0a347}
+.arch-diagram .arrow{color:#5c6480}
+.arch-diagram .note{color:#4a5168;font-style:italic}
+@media print{
+  .toolbar,.back-top,.print-btn{display:none!important}
+  .section{display:block!important;page-break-before:always}
+  .section:first-child{page-break-before:avoid}
+  .day-body{display:block!important}
+  body{background:#fff;color:#111}
+}
+@media(max-width:640px){
+  .cw-grid{grid-template-columns:1fr}
+  .hinner,.tinner,.main{padding-left:1rem;padding-right:1rem}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+<div class="hinner">
+  <span class="phase-badge">niyhi's devops roadmap · phase 2 of 7</span>
+  <h1>AWS Cloud +<br><em>SAA-C03 Cert.</em></h1>
+  <p class="header-desc">Months 3–4 · Days 61–120. One AWS service per day. One working build per day. 75% local with MiniStack (free), 25% real AWS with strict cost controls. Earn the SAA-C03 certification by building every service you're tested on.</p>
+  <div class="header-meta">
+    <span class="hbadge">Months 3–4 · Days 61–120</span>
+    <span class="hbadge g">75% MiniStack local — free</span>
+    <span class="hbadge a">Real AWS budget: ₦30,000 total</span>
+    <span class="hbadge b">SAA-C03 exam: Day 120 · ₦240,000</span>
+  </div>
+</div>
+</header>
+
+<nav class="toolbar">
+<div class="tinner">
+  <button class="tnav on" onclick="go(0)">Overview</button>
+  <div class="tsep"></div>
+  <button class="tnav" onclick="go(1)">W7: IAM + EC2</button>
+  <button class="tnav" onclick="go(2)">W8: S3 + VPC</button>
+  <button class="tnav" onclick="go(3)">W9: RDS + ELB + ASG</button>
+  <button class="tnav" onclick="go(4)">W10: Lambda + DynamoDB + SQS</button>
+  <button class="tnav" onclick="go(5)">W11: Advanced + Capstone</button>
+  <button class="tnav" onclick="go(6)">W12-13: Exam Sprint</button>
+  <div class="tsep"></div>
+  <button class="tnav" onclick="go(7)">Resources</button>
+  <button class="print-btn" onclick="window.print()">⬇ Save / Print</button>
+</div>
+</nav>
+
+<main class="main">
+
+<!-- ═══════════════════════════ OVERVIEW ═══════════════════════════ -->
+<div class="section on" id="s0">
+<div class="week-header">
+  <div class="week-eyebrow">PHASE 2 OVERVIEW</div>
+  <div class="week-title">AWS Fundamentals + SAA-C03 Certification</div>
+  <div class="week-sub">The most important thing to understand about this phase: you don't learn AWS by watching videos. You learn it by using it. Every service in this phase is built hands-on, scripted with Python or bash, and either run locally on MiniStack or briefly on real AWS and immediately torn down.</div>
+</div>
+
+<p class="ov-intro">Phase 2 runs months 3 and 4 — 60 days. The first 5 weeks build every major AWS service from scratch. The last 3 weeks are a focused certification sprint. By Day 120, you will have passed AWS SAA-C03 and have a production-grade 3-tier application on AWS in your portfolio.</p>
+
+<div class="cost-warn">
+  <div class="cw-title">// THE IRON RULE: EVERY REAL AWS SESSION COSTS MONEY — MANAGE IT OR LOSE IT</div>
+  <div class="cw-grid">
+    <div>
+      <div class="cw-item"><span class="cw-bullet">▲</span><span>EKS cluster: ~₦160/hr per node. 3 nodes for 8 hrs = ₦3,800.</span></div>
+      <div class="cw-item"><span class="cw-bullet">▲</span><span>RDS Multi-AZ t3.micro: ~₦65/hr. Left on for a day = ₦1,560.</span></div>
+      <div class="cw-item"><span class="cw-bullet">▲</span><span>NAT Gateway: ~₦40/hr. Forget it overnight = ₦960.</span></div>
+      <div class="cw-item"><span class="cw-bullet">▲</span><span>EC2 t2.micro: Free Tier eligible — always use this in Month 3.</span></div>
+    </div>
+    <div>
+      <div class="cw-item"><span class="cw-bullet">✓</span><span>Set billing alert at ₦500 before any cloud work.</span></div>
+      <div class="cw-item"><span class="cw-bullet">✓</span><span>Set budget alert at ₦1,000 — you get an email.</span></div>
+      <div class="cw-item"><span class="cw-bullet">✓</span><span>Write nuke.sh on Day 61. Run it at the end of every session.</span></div>
+      <div class="cw-item"><span class="cw-bullet">✓</span><span>Use MiniStack for 75% of all builds — same code, zero cost.</span></div>
+    </div>
+  </div>
+  <div class="cw-rule">nuke.sh minimum: aws ec2 terminate-instances --all | aws rds delete-db-cluster --all | aws eks delete-cluster | aws elb delete-load-balancer | aws ec2 release-address --all</div>
+</div>
+
+<div class="alert al-success">
+  <span class="al-icon">→</span>
+  <span><strong>MiniStack setup (run this before Day 61):</strong> <code>docker run -d -p 4566:4566 --name ministack ministackorg/ministack</code>. Then: <code>alias awslocal='aws --endpoint-url=http://localhost:4566'</code>. For boto3: add <code>endpoint_url='http://localhost:4566'</code> to every client. Same CLI commands, same Python code, zero cost. Supports: S3, EC2, IAM, SQS, SNS, Lambda, DynamoDB, RDS, ElastiCache, API Gateway, CloudWatch, STS, Cognito, and 30+ more services.</span>
+</div>
+
+<div class="week-eyebrow" style="margin:.75rem 0 .5rem">SAA-C03 EXAM DOMAIN WEIGHTS — know where to invest your study time</div>
+<div class="domain-grid">
+  <div class="domain-card">
+    <div class="dc-pct" style="color:#1a56db">30%</div>
+    <div class="dc-name">Secure Architectures</div>
+    <div class="dc-desc">IAM, KMS, Security Groups, NACLs, WAF, GuardDuty, VPC design</div>
+    <div class="dc-bar" style="background:#1a56db;width:100%"></div>
+  </div>
+  <div class="domain-card">
+    <div class="dc-pct" style="color:#0d6e4a">26%</div>
+    <div class="dc-name">Resilient Architectures</div>
+    <div class="dc-desc">Multi-AZ, Auto Scaling, ELB, disaster recovery, decoupling (SQS/SNS)</div>
+    <div class="dc-bar" style="background:#0d6e4a;width:87%"></div>
+  </div>
+  <div class="domain-card">
+    <div class="dc-pct" style="color:#7a4700">24%</div>
+    <div class="dc-name">High-Performing Architectures</div>
+    <div class="dc-desc">Instance types, storage selection, caching (ElastiCache), CloudFront</div>
+    <div class="dc-bar" style="background:#7a4700;width:80%"></div>
+  </div>
+  <div class="domain-card">
+    <div class="dc-pct" style="color:#5b21b6">20%</div>
+    <div class="dc-name">Cost-Optimized Architectures</div>
+    <div class="dc-desc">Reserved/Spot instances, S3 tiers, right-sizing, serverless for cost</div>
+    <div class="dc-bar" style="background:#5b21b6;width:67%"></div>
+  </div>
+</div>
+
+<div class="ov-grid">
+  <div class="ov-card" onclick="go(1)">
+    <div class="ov-week">MONTH 3 · WEEK 7</div>
+    <div class="ov-title">IAM + EC2</div>
+    <div class="ov-sub">Identity, access control, compute fundamentals</div>
+    <div class="ov-days">Days 61–67 · Build: iam-audit.py + ec2-launcher.sh</div>
+  </div>
+  <div class="ov-card" onclick="go(2)">
+    <div class="ov-week">MONTH 3 · WEEK 8</div>
+    <div class="ov-title">S3 + VPC</div>
+    <div class="ov-sub">Object storage, static websites, VPC architecture</div>
+    <div class="ov-days">Days 68–74 · Build: s3-backup.py + production VPC</div>
+  </div>
+  <div class="ov-card" onclick="go(3)">
+    <div class="ov-week">MONTH 3 · WEEK 9</div>
+    <div class="ov-title">RDS + ELB + ASG</div>
+    <div class="ov-sub">Managed databases, load balancing, auto scaling</div>
+    <div class="ov-days">Days 75–81 · Build: 3-tier web architecture</div>
+  </div>
+  <div class="ov-card" onclick="go(4)">
+    <div class="ov-week">MONTH 3 · WEEK 10</div>
+    <div class="ov-title">Lambda + DynamoDB + SQS</div>
+    <div class="ov-sub">Serverless, NoSQL, async messaging patterns</div>
+    <div class="ov-days">Days 82–88 · Build: serverless image pipeline</div>
+  </div>
+  <div class="ov-card" onclick="go(5)">
+    <div class="ov-week">MONTH 4 · WEEK 11</div>
+    <div class="ov-title">Advanced Services + Capstone</div>
+    <div class="ov-sub">CloudFront, Route 53, ECS, CloudWatch, SNS</div>
+    <div class="ov-days">Days 89–100 · Build: production 3-tier on real AWS</div>
+  </div>
+  <div class="ov-card" onclick="go(6)">
+    <div class="ov-week">MONTH 4 · WEEKS 12–13</div>
+    <div class="ov-title">SAA-C03 Exam Sprint</div>
+    <div class="ov-sub">150–200 questions/day, 3 full timed exams, exam day</div>
+    <div class="ov-days">Days 101–120 · Target: 750+/1000</div>
+  </div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">20+</div><div class="ml">AWS services built</div></div>
+  <div class="metric"><div class="mv">SAA</div><div class="ml">certification earned</div></div>
+  <div class="metric"><div class="mv">₦30k</div><div class="ml">max real AWS spend</div></div>
+  <div class="metric"><div class="mv">2</div><div class="ml">Python tools shipped</div></div>
+  <div class="metric"><div class="mv">1</div><div class="ml">blog post published</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ WEEK 7: IAM + EC2 ═══════════════════════════ -->
+<div class="section" id="s1">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 3 · WEEK 7 · DAYS 61–67</div>
+  <div class="week-title">IAM + EC2 — Identity and Compute</div>
+  <div class="week-sub">IAM is the security foundation of everything in AWS. Before you touch any other service, you must understand who can do what, and why. EC2 is the compute backbone — it's how most applications run in the cloud. You will build both on MiniStack first, then briefly on real AWS to prove it.</div>
+  <div class="week-tags">
+    <span class="tag">IAM Users/Groups/Roles</span><span class="tag">IAM Policies (JSON)</span>
+    <span class="tag">Least privilege</span><span class="tag">EC2 instances</span>
+    <span class="tag">Security Groups</span><span class="tag">User Data</span><span class="tag">SSH</span>
+  </div>
+</div>
+
+<!-- IAM THEORY -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 61</span><div><div class="day-title">IAM — Who Can Do What in AWS</div><div class="day-topic">Users, Groups, Roles, Policies — the security model explained from scratch</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Before you do anything else in AWS — understand IAM</div>
+  <p class="explain">IAM (Identity and Access Management) is AWS's system for controlling who can access what. Every action in AWS — launching an EC2 instance, reading an S3 file, creating a Lambda function — requires an identity with the right permissions. If you get IAM wrong, you either lock yourself out or expose your account to attackers.</p>
+  <p class="explain"><strong>The four main IAM concepts:</strong></p>
+  <table class="ref-table">
+    <thead><tr><th>IAM concept</th><th>What it is</th><th>Real-world analogy</th></tr></thead>
+    <tbody>
+      <tr><td>User</td><td>A person or application with long-term credentials (username/password or access keys)</td><td>A person's ID card — identifies who they are</td></tr>
+      <tr><td>Group</td><td>A collection of users. Policies attached to the group apply to all members.</td><td>A department — all employees in "Finance" get the same access</td></tr>
+      <tr><td>Role</td><td>A set of permissions that can be assumed temporarily by a user, service, or account. No long-term credentials.</td><td>A visitor badge — temporary access for a specific purpose</td></tr>
+      <tr><td>Policy</td><td>A JSON document that defines exactly what actions are allowed or denied on which resources</td><td>A rulebook — says exactly what you're allowed to do</td></tr>
+    </tbody>
+  </table>
+  <div class="analogy">
+    <span class="albl">ANALOGY — IAM ROLES vs USERS</span>
+    Imagine a hospital. Users are permanent staff with ID badges they always carry. Roles are more like "on-call responsibilities" — a doctor assumes the "on-call surgeon" role during their shift, gaining temporary operating theatre access. When their shift ends, the role is dropped. AWS services (EC2, Lambda) assume Roles to access other services — they don't have permanent usernames and passwords.
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">IAM Policies — the JSON that defines permissions</div>
+  <p class="explain">Every IAM permission is defined in a JSON document called a Policy. The structure has three mandatory fields: <strong>Effect</strong> (Allow or Deny), <strong>Action</strong> (what AWS API calls), and <strong>Resource</strong> (which specific resources).</p>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Example IAM policy — read-only access to a specific S3 bucket</span></div>
+    <div class="cmd-code">{
+  <span class="str">"Version"</span>: <span class="str">"2012-10-17"</span>,   <span class="comment">// Always use this date — it's the policy language version</span>
+  <span class="str">"Statement"</span>: [
+    {
+      <span class="str">"Sid"</span>: <span class="str">"AllowReadMyBucket"</span>,    <span class="comment">// Sid = Statement ID, just a label for you</span>
+      <span class="str">"Effect"</span>: <span class="str">"Allow"</span>,            <span class="comment">// Allow or Deny</span>
+      <span class="str">"Action"</span>: [                   <span class="comment">// What API calls are permitted</span>
+        <span class="str">"s3:GetObject"</span>,            <span class="comment">// Download files from S3</span>
+        <span class="str">"s3:ListBucket"</span>            <span class="comment">// List files in the bucket</span>
+      ],
+      <span class="str">"Resource"</span>: [              <span class="comment">// Which resources this applies to</span>
+        <span class="str">"arn:aws:s3:::my-bucket"</span>,           <span class="comment">// The bucket itself (for ListBucket)</span>
+        <span class="str">"arn:aws:s3:::my-bucket/*"</span>          <span class="comment">// All objects inside it (for GetObject)</span>
+      ]
+    }
+  ]
+}</div>
+  </div>
+  <div class="alert al-warn">
+    <span class="al-icon">▲</span>
+    <span><strong>The Principle of Least Privilege:</strong> Always grant the minimum permissions needed. Never use <code>"Action": "*"</code> or <code>"Resource": "*"</code> in production unless absolutely required. This is the most common IAM security mistake — over-permissive policies that give every service access to everything. The SAA-C03 exam tests this concept heavily.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Account setup — do this before Day 61 labs</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">AWS Free Tier account setup — one-time setup</span></div>
+    <div class="cmd-code"><span class="comment"># 1. Create your free account at aws.amazon.com/free</span>
+<span class="comment">#    You need: email address, phone number, credit card (won't be charged on free tier)</span>
+<span class="comment">#    Free Tier gives you: 750 hours/month EC2 t2.micro, 5GB S3, 1M Lambda calls, more</span>
+
+<span class="comment"># 2. IMMEDIATELY secure the root account</span>
+<span class="comment">#    - Enable MFA on root: IAM → Dashboard → Add MFA</span>
+<span class="comment">#    - NEVER use root for daily work — only for billing and account settings</span>
+
+<span class="comment"># 3. Create an IAM admin user for daily use</span>
+<span class="comment">#    - IAM → Users → Add User</span>
+<span class="comment">#    - Attach policy: AdministratorAccess</span>
+<span class="comment">#    - Enable MFA on this user too</span>
+<span class="comment">#    - Download access keys for CLI use</span>
+
+<span class="comment"># 4. Set up billing alerts (CRITICAL)</span>
+<span class="comment">#    - Billing → Billing Preferences → Enable billing alerts</span>
+<span class="comment">#    - CloudWatch → Alarms → Create billing alarm at $1 (₦1,600)</span>
+
+<span class="comment"># 5. Install and configure AWS CLI</span>
+<span class="hl">sudo apt install -y awscli</span>
+<span class="hl">aws configure</span>
+<span class="comment"># Enter: Access Key ID, Secret Access Key, Region (us-east-1), output format (json)</span>
+
+<span class="comment"># Verify CLI works</span>
+<span class="hl">aws sts get-caller-identity</span>
+<span class="comment"># Should return your account ID, user ARN, and user ID</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 61 lab — build IAM infrastructure on MiniStack</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create users, groups, and policies on MiniStack (free)</span></div>
+    <div class="cmd-code"><span class="comment"># Make sure MiniStack is running</span>
+<span class="hl">docker start ministack</span>
+<span class="hl">alias awslocal='aws --endpoint-url=http://localhost:4566'</span>
+
+<span class="comment"># ── Create groups ──────────────────────────────────────────────────</span>
+<span class="hl">awslocal iam create-group --group-name developers</span>
+<span class="hl">awslocal iam create-group --group-name read-only-users</span>
+<span class="hl">awslocal iam create-group --group-name admins</span>
+
+<span class="comment"># ── Attach policies to groups ──────────────────────────────────────</span>
+<span class="hl">awslocal iam attach-group-policy \</span>
+<span class="hl">  --group-name admins \</span>
+<span class="hl">  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess</span>
+
+<span class="hl">awslocal iam attach-group-policy \</span>
+<span class="hl">  --group-name developers \</span>
+<span class="hl">  --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess</span>
+
+<span class="comment"># ── Create users and add to groups ────────────────────────────────</span>
+<span class="hl">awslocal iam create-user --user-name alice</span>
+<span class="hl">awslocal iam create-user --user-name bob</span>
+<span class="hl">awslocal iam add-user-to-group --user-name alice --group-name developers</span>
+<span class="hl">awslocal iam add-user-to-group --user-name bob --group-name read-only-users</span>
+
+<span class="comment"># Create access keys for a user (CLI credentials)</span>
+<span class="hl">awslocal iam create-access-key --user-name alice</span>
+
+<span class="comment"># List all users</span>
+<span class="hl">awslocal iam list-users</span>
+
+<span class="comment"># List what groups a user belongs to</span>
+<span class="hl">awslocal iam list-groups-for-user --user-name alice</span>
+
+<span class="comment"># ── Create a custom policy ─────────────────────────────────────────</span>
+<span class="hl">cat > s3-read-only-policy.json << 'EOF'</span>
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Action": ["s3:GetObject", "s3:ListBucket"],
+    "Resource": ["arn:aws:s3:::my-app-bucket", "arn:aws:s3:::my-app-bucket/*"]
+  }]
+}
+EOF
+
+<span class="hl">awslocal iam create-policy \</span>
+<span class="hl">  --policy-name S3ReadOnlyMyBucket \</span>
+<span class="hl">  --policy-document file://s3-read-only-policy.json</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Build: iam-audit.py — your first boto3 tool</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">iam-audit.py — scans IAM for security issues (run on MiniStack)</span></div>
+    <div class="cmd-code"><span class="hl">#!/usr/bin/env python3</span>
+<span class="hl">"""</span>
+<span class="hl">iam-audit.py — IAM security audit tool</span>
+<span class="hl">Checks for: users without MFA, stale access keys, overpermissive policies</span>
+<span class="hl">Usage: python3 iam-audit.py [--local]</span>
+<span class="hl">"""</span>
+<span class="hl">import boto3</span>
+<span class="hl">import json</span>
+<span class="hl">import argparse</span>
+<span class="hl">import logging</span>
+<span class="hl">from datetime import datetime, timezone</span>
+
+<span class="hl">logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")</span>
+<span class="hl">log = logging.getLogger(__name__)</span>
+
+<span class="hl">def get_iam_client(local: bool):</span>
+<span class="hl">    if local:</span>
+<span class="hl">        return boto3.client('iam', endpoint_url='http://localhost:4566',</span>
+<span class="hl">                           region_name='us-east-1',</span>
+<span class="hl">                           aws_access_key_id='test',</span>
+<span class="hl">                           aws_secret_access_key='test')</span>
+<span class="hl">    return boto3.client('iam')</span>
+
+<span class="hl">def check_mfa_status(iam) -> list:</span>
+<span class="hl">    """Find users without MFA enabled"""</span>
+<span class="hl">    issues = []</span>
+<span class="hl">    users = iam.list_users()['Users']</span>
+<span class="hl">    for user in users:</span>
+<span class="hl">        mfa_devices = iam.list_mfa_devices(UserName=user['UserName'])['MFADevices']</span>
+<span class="hl">        if not mfa_devices:</span>
+<span class="hl">            issues.append({</span>
+<span class="hl">                'severity': 'HIGH',</span>
+<span class="hl">                'user': user['UserName'],</span>
+<span class="hl">                'issue': 'No MFA device configured',</span>
+<span class="hl">                'recommendation': 'Enable MFA immediately'</span>
+<span class="hl">            })</span>
+<span class="hl">    return issues</span>
+
+<span class="hl">def check_stale_keys(iam, max_days: int = 90) -> list:</span>
+<span class="hl">    """Find access keys older than max_days"""</span>
+<span class="hl">    issues = []</span>
+<span class="hl">    users = iam.list_users()['Users']</span>
+<span class="hl">    for user in users:</span>
+<span class="hl">        keys = iam.list_access_keys(UserName=user['UserName'])['AccessKeyMetadata']</span>
+<span class="hl">        for key in keys:</span>
+<span class="hl">            age_days = (datetime.now(timezone.utc) - key['CreateDate']).days</span>
+<span class="hl">            if age_days > max_days:</span>
+<span class="hl">                issues.append({</span>
+<span class="hl">                    'severity': 'MEDIUM',</span>
+<span class="hl">                    'user': user['UserName'],</span>
+<span class="hl">                    'issue': f'Access key {key["AccessKeyId"]} is {age_days} days old',</span>
+<span class="hl">                    'recommendation': f'Rotate keys older than {max_days} days'</span>
+<span class="hl">                })</span>
+<span class="hl">    return issues</span>
+
+<span class="hl">def check_admin_policies(iam) -> list:</span>
+<span class="hl">    """Find users with overpermissive (admin) policies attached"""</span>
+<span class="hl">    issues = []</span>
+<span class="hl">    users = iam.list_users()['Users']</span>
+<span class="hl">    for user in users:</span>
+<span class="hl">        policies = iam.list_attached_user_policies(UserName=user['UserName'])['AttachedPolicies']</span>
+<span class="hl">        for policy in policies:</span>
+<span class="hl">            if 'AdministratorAccess' in policy['PolicyName']:</span>
+<span class="hl">                issues.append({</span>
+<span class="hl">                    'severity': 'HIGH',</span>
+<span class="hl">                    'user': user['UserName'],</span>
+<span class="hl">                    'issue': f'Direct AdministratorAccess policy attached',</span>
+<span class="hl">                    'recommendation': 'Add user to admin group instead, or use a more specific policy'</span>
+<span class="hl">                })</span>
+<span class="hl">    return issues</span>
+
+<span class="hl">def main():</span>
+<span class="hl">    parser = argparse.ArgumentParser(description='IAM Security Audit')</span>
+<span class="hl">    parser.add_argument('--local', action='store_true', help='Use MiniStack (localhost:4566)')</span>
+<span class="hl">    parser.add_argument('--output', choices=['json', 'text'], default='text')</span>
+<span class="hl">    args = parser.parse_args()</span>
+
+<span class="hl">    iam = get_iam_client(args.local)</span>
+
+<span class="hl">    log.info("Running IAM security audit...")</span>
+<span class="hl">    all_issues = []</span>
+<span class="hl">    all_issues.extend(check_mfa_status(iam))</span>
+<span class="hl">    all_issues.extend(check_stale_keys(iam))</span>
+<span class="hl">    all_issues.extend(check_admin_policies(iam))</span>
+
+<span class="hl">    report = {</span>
+<span class="hl">        'scan_time': datetime.now(timezone.utc).isoformat(),</span>
+<span class="hl">        'total_issues': len(all_issues),</span>
+<span class="hl">        'high_severity': sum(1 for i in all_issues if i['severity'] == 'HIGH'),</span>
+<span class="hl">        'issues': all_issues</span>
+<span class="hl">    }</span>
+
+<span class="hl">    if args.output == 'json':</span>
+<span class="hl">        print(json.dumps(report, indent=2))</span>
+<span class="hl">    else:</span>
+<span class="hl">        print(f"\n{'='*50}")</span>
+<span class="hl">        print(f"IAM AUDIT REPORT — {report['scan_time']}")</span>
+<span class="hl">        print(f"Total issues: {report['total_issues']} ({report['high_severity']} HIGH)")</span>
+<span class="hl">        print(f"{'='*50}")</span>
+<span class="hl">        for issue in all_issues:</span>
+<span class="hl">            print(f"\n[{issue['severity']}] User: {issue['user']}")</span>
+<span class="hl">            print(f"  Issue: {issue['issue']}")</span>
+<span class="hl">            print(f"  Fix:   {issue['recommendation']}")</span>
+
+<span class="hl">if __name__ == '__main__':</span>
+<span class="hl">    main()</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Test it against MiniStack (zero cost)</span></div>
+    <div class="cmd-code"><span class="hl">python3 iam-audit.py --local --output text</span>
+<span class="hl">python3 iam-audit.py --local --output json | python3 -m json.tool</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Create AWS Free Tier account, enable root MFA, create admin IAM user, configure CLI</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Create the MiniStack IAM lab (groups, users, custom policy) and verify with awslocal iam list-users</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Complete iam-audit.py with all three check functions, test against MiniStack</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write pytest test for at least one function (e.g., test check_mfa_status with a mock)</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: day 61 - IAM users groups policies + iam-audit.py</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 62: EC2 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 62</span><div><div class="day-title">EC2 — Compute in the Cloud, Explained Simply</div><div class="day-topic">Instances, AMIs, Security Groups, Key Pairs, User Data, Free Tier</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is EC2?</div>
+  <p class="explain">EC2 (Elastic Compute Cloud) is AWS's virtual machine service. When you launch an EC2 instance, you're renting a computer in an AWS data centre. You choose the operating system, the amount of CPU and RAM, and the storage. You pay by the hour (or second) only while the instance is running.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    EC2 is like a hotel room for computers. You rent it when you need it, configure it how you want, and check out (stop the instance) when you're done. The AMI (Amazon Machine Image) is the room template — a pre-configured setup you select when checking in (like selecting "king bed, sea view" vs "single bed, city view").
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>EC2 concept</th><th>What it is</th><th>Key facts for SAA-C03</th></tr></thead>
+    <tbody>
+      <tr><td>Instance</td><td>The actual running virtual machine</td><td>t2.micro = 1 vCPU, 1GB RAM = Free Tier eligible</td></tr>
+      <tr><td>AMI (Amazon Machine Image)</td><td>A template containing OS + pre-installed software for launching new instances</td><td>You can create custom AMIs from your configured instances</td></tr>
+      <tr><td>Security Group</td><td>A virtual firewall that controls inbound and outbound traffic for the instance</td><td>Stateful — if you allow inbound traffic on port 80, the response is automatically allowed</td></tr>
+      <tr><td>Key Pair</td><td>RSA key pair for SSH access — AWS keeps the public key, you keep the private key</td><td>You can only download the private key ONCE. Never lose it.</td></tr>
+      <tr><td>User Data</td><td>A script that runs automatically when the instance first starts</td><td>Used to install software, configure settings — runs as root</td></tr>
+      <tr><td>Elastic IP</td><td>A static public IP address you can attach to an instance</td><td>Without Elastic IP, public IP changes every restart</td></tr>
+      <tr><td>EBS (Elastic Block Store)</td><td>The virtual hard drive attached to your EC2 instance</td><td>Data persists even if the instance is stopped (but not terminated by default)</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Security Groups vs NACLs — know the difference for the exam</div>
+  <table class="ref-table">
+    <thead><tr><th>Feature</th><th>Security Group</th><th>NACL (Network ACL)</th></tr></thead>
+    <tbody>
+      <tr><td>Level</td><td>Instance level (attached to instances)</td><td>Subnet level (attached to subnets)</td></tr>
+      <tr><td>Statefulness</td><td>Stateful — allow inbound = response automatically allowed</td><td>Stateless — must explicitly allow both inbound AND outbound</td></tr>
+      <tr><td>Rules</td><td>Allow rules only (no explicit deny)</td><td>Allow AND deny rules</td></tr>
+      <tr><td>Rule evaluation</td><td>All rules evaluated — most permissive wins</td><td>Rules evaluated in order by rule number — first match wins</td></tr>
+      <tr><td>Default behavior</td><td>Deny all inbound, allow all outbound</td><td>Allow all inbound and outbound (default VPC NACL)</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">SAA-C03 EXAM QUESTION PATTERN</div>
+    <div class="eq-q">You have an EC2 instance in a private subnet. The NACL allows traffic on port 443 outbound but you cannot connect to HTTPS websites from the instance. The Security Group allows all outbound traffic. What is the most likely cause?</div>
+    <div class="eq-opt">A) The Security Group is blocking the connection</div>
+    <div class="eq-opt">B) The NACL does not have an inbound rule allowing the response traffic (ephemeral ports 1024-65535)</div>
+    <div class="eq-opt">C) The instance needs an Elastic IP</div>
+    <div class="eq-opt">D) Port 443 is not allowed in the Security Group</div>
+    <div class="eq-ans">ANSWER: B</div>
+    <div class="eq-why">NACLs are stateless — you must explicitly allow BOTH the outbound request (port 443) AND the inbound response (ephemeral ports 1024–65535). Security Groups are stateful and automatically allow responses, which is why B is the answer — the NACL is blocking the return traffic.</div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — ec2-launcher.sh on MiniStack, then real AWS</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">ec2-launcher.sh — launch and configure EC2 instances via CLI</span></div>
+    <div class="cmd-code"><span class="hl">#!/usr/bin/env bash</span>
+<span class="hl">set -euo pipefail</span>
+
+<span class="comment"># Configuration</span>
+<span class="var">AMI_ID</span>=<span class="hl">"ami-0c55b159cbfafe1f0"</span>    <span class="comment"># Amazon Linux 2 (us-east-1)</span>
+<span class="var">INSTANCE_TYPE</span>=<span class="hl">"t2.micro"</span>           <span class="comment"># Free Tier eligible</span>
+<span class="var">KEY_NAME</span>=<span class="hl">"my-devops-key"</span>
+<span class="var">SG_NAME</span>=<span class="hl">"web-server-sg"</span>
+<span class="var">ENV</span>=<span class="hl">"${1:-dev}"</span>                    <span class="comment"># Accept environment as argument, default: dev</span>
+<span class="var">AWS_CMD</span>=<span class="hl">"aws"</span>                       <span class="comment"># Change to awslocal for MiniStack</span>
+
+<span class="comment"># ── Create key pair ────────────────────────────────────────────────</span>
+<span class="hl">if ! $AWS_CMD ec2 describe-key-pairs --key-names "$KEY_NAME" &>/dev/null 2>&1; then</span>
+    <span class="hl">$AWS_CMD ec2 create-key-pair \</span>
+        <span class="hl">--key-name "$KEY_NAME" \</span>
+        <span class="hl">--query 'KeyMaterial' \</span>
+        <span class="hl">--output text > "$KEY_NAME.pem"</span>
+    <span class="hl">chmod 400 "$KEY_NAME.pem"</span>    <span class="comment"># SSH requires 400 permissions on key file</span>
+    <span class="hl">echo "Key pair created: $KEY_NAME.pem"</span>
+<span class="hl">fi</span>
+
+<span class="comment"># ── Create security group ──────────────────────────────────────────</span>
+<span class="var">SG_ID</span>=<span class="hl">$($AWS_CMD ec2 create-security-group \</span>
+    <span class="hl">--group-name "$SG_NAME" \</span>
+    <span class="hl">--description "Web server security group for $ENV" \</span>
+    <span class="hl">--query 'GroupId' --output text 2>/dev/null || \</span>
+    <span class="hl">$AWS_CMD ec2 describe-security-groups \</span>
+    <span class="hl">--filters "Name=group-name,Values=$SG_NAME" \</span>
+    <span class="hl">--query 'SecurityGroups[0].GroupId' --output text)</span>
+
+<span class="comment"># Allow SSH (22) and HTTP (80) and HTTPS (443) inbound</span>
+<span class="hl">for port in 22 80 443; do</span>
+    <span class="hl">$AWS_CMD ec2 authorize-security-group-ingress \</span>
+        <span class="hl">--group-id "$SG_ID" \</span>
+        <span class="hl">--protocol tcp --port "$port" --cidr 0.0.0.0/0 2>/dev/null || true</span>
+        <span class="comment"># "|| true" suppresses error if rule already exists (idempotent)</span>
+<span class="hl">done</span>
+
+<span class="comment"># ── User Data: runs on first boot as root ──────────────────────────</span>
+<span class="hl">USER_DATA=$(cat << 'USERDATA'</span>
+#!/bin/bash
+yum update -y
+yum install -y nginx
+systemctl start nginx
+systemctl enable nginx
+echo "<h1>Hello from EC2! Instance: $(hostname)</h1>" > /usr/share/nginx/html/index.html
+USERDATA
+)</span>
+
+<span class="comment"># ── Launch the instance ────────────────────────────────────────────</span>
+<span class="var">INSTANCE_ID</span>=<span class="hl">$($AWS_CMD ec2 run-instances \</span>
+    <span class="hl">--image-id "$AMI_ID" \</span>
+    <span class="hl">--instance-type "$INSTANCE_TYPE" \</span>
+    <span class="hl">--key-name "$KEY_NAME" \</span>
+    <span class="hl">--security-group-ids "$SG_ID" \</span>
+    <span class="hl">--user-data "$USER_DATA" \</span>
+    <span class="hl">--tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=web-$ENV},{Key=Environment,Value=$ENV},{Key=Owner,Value=niyhi}]" \</span>
+    <span class="hl">--query 'Instances[0].InstanceId' --output text)</span>
+
+<span class="hl">echo "Launched instance: $INSTANCE_ID"</span>
+
+<span class="comment"># Wait for instance to reach running state</span>
+<span class="hl">echo "Waiting for instance to be running..."</span>
+<span class="hl">$AWS_CMD ec2 wait instance-running --instance-ids "$INSTANCE_ID"</span>
+
+<span class="comment"># Get the public IP</span>
+<span class="var">PUBLIC_IP</span>=<span class="hl">$($AWS_CMD ec2 describe-instances \</span>
+    <span class="hl">--instance-ids "$INSTANCE_ID" \</span>
+    <span class="hl">--query 'Reservations[0].Instances[0].PublicIpAddress' --output text)</span>
+
+<span class="hl">echo "Public IP: $PUBLIC_IP"</span>
+<span class="hl">echo "SSH: ssh -i $KEY_NAME.pem ec2-user@$PUBLIC_IP"</span>
+<span class="hl">echo "Web: http://$PUBLIC_IP"</span>
+<span class="hl">echo ""</span>
+<span class="hl">echo "IMPORTANT: Run nuke.sh when done to avoid charges!"</span></div>
+  </div>
+  <div class="alert al-warn">
+    <span class="al-icon">▲</span>
+    <span><strong>Real AWS session:</strong> Run this script once with real AWS to see a real EC2 instance. SSH into it. Open the web server in your browser. Take a screenshot. Then immediately terminate the instance: <code>aws ec2 terminate-instances --instance-ids [ID]</code>. t2.micro is Free Tier eligible but only for the first 750 hours/month — monitor this.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Test ec2-launcher.sh on MiniStack first: set AWS_CMD="awslocal", run the script</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Run on real AWS (Free Tier): launch t2.micro, SSH in, see Nginx running, screenshot, terminate immediately</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write day-62.md: What is the difference between stopping and terminating an EC2 instance? (Hint: what happens to EBS data in each case?)</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: day 62 - EC2 launcher script with security groups and user data</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 63: EC2 DEEP DIVE -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 63</span><div><div class="day-title">EC2 Deep Dive — Instance Types, Pricing Models, EBS</div><div class="day-topic">Instance families, On-demand vs Reserved vs Spot, EBS types, AMI creation</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory (exam-critical)</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">EC2 instance families — what each is used for</div>
+  <table class="ref-table">
+    <thead><tr><th>Family</th><th>Optimized for</th><th>Example instances</th><th>Use cases</th></tr></thead>
+    <tbody>
+      <tr><td>General Purpose (T, M)</td><td>Balanced CPU/RAM/network</td><td>t2.micro, t3.medium, m5.large</td><td>Web servers, small databases, dev environments</td></tr>
+      <tr><td>Compute Optimized (C)</td><td>High CPU performance</td><td>c5.large, c6g.xlarge</td><td>Batch processing, gaming servers, scientific modeling</td></tr>
+      <tr><td>Memory Optimized (R, X)</td><td>Large amounts of RAM</td><td>r5.xlarge, x1e.32xlarge</td><td>In-memory databases (Redis), SAP HANA, real-time big data</td></tr>
+      <tr><td>Storage Optimized (I, D)</td><td>High disk I/O</td><td>i3.large, d3.xlarge</td><td>NoSQL databases, data warehousing, Hadoop clusters</td></tr>
+      <tr><td>Accelerated Computing (P, G, Inf)</td><td>GPU / hardware accelerators</td><td>p3.2xlarge, g4dn.xlarge</td><td>ML training, video rendering, HPC</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Pricing models — critical for cost optimization domain (20% of exam)</div>
+  <table class="ref-table">
+    <thead><tr><th>Model</th><th>When to use</th><th>Savings vs On-Demand</th></tr></thead>
+    <tbody>
+      <tr><td>On-Demand</td><td>Unpredictable workloads, dev/test, short-term</td><td>Baseline (no discount)</td></tr>
+      <tr><td>Reserved Instances (1 or 3 year)</td><td>Predictable, steady-state production workloads</td><td>Up to 72% savings</td></tr>
+      <tr><td>Savings Plans</td><td>Flexible reserved — covers EC2, Fargate, Lambda</td><td>Up to 66% savings</td></tr>
+      <tr><td>Spot Instances</td><td>Fault-tolerant, flexible workloads (batch, CI/CD workers)</td><td>Up to 90% savings — but can be interrupted with 2-min notice</td></tr>
+      <tr><td>Dedicated Hosts</td><td>Compliance requirements, licensing per-socket</td><td>Most expensive — you pay for the whole physical server</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION PATTERN — COST OPTIMIZATION</div>
+    <div class="eq-q">A company runs a batch image processing job every night from midnight to 4 AM. The job can be interrupted and restarted. What is the MOST cost-effective EC2 purchase option?</div>
+    <div class="eq-opt">A) On-Demand instances</div>
+    <div class="eq-opt">B) Reserved Instances (1 year)</div>
+    <div class="eq-opt">C) Spot Instances</div>
+    <div class="eq-opt">D) Dedicated Hosts</div>
+    <div class="eq-ans">ANSWER: C — Spot Instances</div>
+    <div class="eq-why">The workload is fault-tolerant (can be interrupted and restarted), runs at a predictable but non-critical time, and only runs 4 hours per night. Spot Instances are perfect here — up to 90% savings vs On-Demand, and if the instance is interrupted, the batch job just resumes. Reserved Instances would be wasteful for 4 hours/night.</div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">EBS (Elastic Block Store) — the disk attached to EC2</div>
+  <table class="ref-table">
+    <thead><tr><th>EBS type</th><th>Best for</th><th>Max IOPS</th></tr></thead>
+    <tbody>
+      <tr><td>gp3 (General Purpose SSD)</td><td>Most workloads — the default choice</td><td>16,000 IOPS</td></tr>
+      <tr><td>io2 Block Express (Provisioned IOPS SSD)</td><td>Databases requiring consistent, high IOPS (Oracle, SQL Server)</td><td>256,000 IOPS</td></tr>
+      <tr><td>st1 (Throughput Optimized HDD)</td><td>Big data, log processing, large sequential reads</td><td>500 MB/s throughput</td></tr>
+      <tr><td>sc1 (Cold HDD)</td><td>Infrequently accessed data, archive</td><td>Lowest cost HDD</td></tr>
+    </tbody>
+  </table>
+  <div class="alert al-info">
+    <span class="al-icon">→</span>
+    <span><strong>EBS vs Instance Store:</strong> Instance Store is physically attached to the EC2 host — very fast but data is LOST when the instance stops or terminates (it's ephemeral). EBS persists even when the instance is stopped. For any data you need to keep, always use EBS. Instance Store is for temporary data like caches or buffers.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — create a custom AMI from a configured instance</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create a custom AMI — snapshot of a configured instance</span></div>
+    <div class="cmd-code"><span class="comment"># 1. Launch an instance and configure it (install your software)</span>
+<span class="comment"># 2. Create an AMI (snapshot of the instance state)</span>
+
+<span class="hl">INSTANCE_ID="i-xxxxxxxxxxxxxxxxx"  </span><span class="comment"># Your instance ID</span>
+
+<span class="hl">AMI_ID=$(aws ec2 create-image \</span>
+<span class="hl">  --instance-id "$INSTANCE_ID" \</span>
+<span class="hl">  --name "my-configured-nginx-$(date +%Y%m%d)" \</span>
+<span class="hl">  --description "Nginx pre-installed, configured for production" \</span>
+<span class="hl">  --no-reboot \</span>
+<span class="hl">  --query 'ImageId' --output text)</span>
+
+<span class="hl">echo "Creating AMI: $AMI_ID"</span>
+
+<span class="comment"># Wait for AMI to be available</span>
+<span class="hl">aws ec2 wait image-available --image-ids "$AMI_ID"</span>
+<span class="hl">echo "AMI ready: $AMI_ID"</span>
+
+<span class="comment"># Now you can launch new instances pre-configured from this AMI</span>
+<span class="comment"># This is how production deployments work — bake your app into an AMI</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 64: IAM ROLES + INSTANCE PROFILES -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 64</span><div><div class="day-title">IAM Roles for EC2 — The Secure Way to Give AWS Access</div><div class="day-topic">Instance profiles, why never store credentials on EC2, how roles work</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-l">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The most important IAM concept for DevOps engineers</div>
+  <p class="explain">This is critical. <strong>Never, ever hardcode AWS access keys in application code or put them on an EC2 instance.</strong> If someone accesses your instance (hacking, accidental public S3, misconfigured security group), they can steal those keys and run up a massive AWS bill or exfiltrate your data.</p>
+  <p class="explain">The correct solution: create an IAM Role with the permissions your application needs, attach it to the EC2 instance as an Instance Profile. The EC2 instance automatically receives temporary, rotating credentials through the EC2 metadata service — no keys to steal, no keys to rotate.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    Think of a vending machine technician at a company. Instead of giving the technician a master key to every building (long-term credentials), the company gives them a temporary badge that only works on vending machine rooms and expires tonight (IAM Role). They never have a "permanent" key that can be stolen.
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — create an IAM role and attach it to an EC2 instance</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create an IAM role that allows EC2 to read from S3</span></div>
+    <div class="cmd-code"><span class="comment"># Step 1: Create the trust policy (who can assume this role)</span>
+<span class="hl">cat > ec2-trust-policy.json << 'EOF'</span>
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": {"Service": "ec2.amazonaws.com"},
+    "Action": "sts:AssumeRole"
+  }]
+}
+EOF
+
+<span class="comment"># Step 2: Create the role with the trust policy</span>
+<span class="hl">awslocal iam create-role \</span>
+<span class="hl">  --role-name ec2-s3-read-role \</span>
+<span class="hl">  --assume-role-policy-document file://ec2-trust-policy.json</span>
+
+<span class="comment"># Step 3: Attach an S3 read policy to the role</span>
+<span class="hl">awslocal iam attach-role-policy \</span>
+<span class="hl">  --role-name ec2-s3-read-role \</span>
+<span class="hl">  --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess</span>
+
+<span class="comment"># Step 4: Create an Instance Profile (the link between Role and EC2)</span>
+<span class="hl">awslocal iam create-instance-profile \</span>
+<span class="hl">  --instance-profile-name ec2-s3-read-profile</span>
+
+<span class="comment"># Step 5: Add the role to the instance profile</span>
+<span class="hl">awslocal iam add-role-to-instance-profile \</span>
+<span class="hl">  --instance-profile-name ec2-s3-read-profile \</span>
+<span class="hl">  --role-name ec2-s3-read-role</span>
+
+<span class="comment"># How your app accesses the credentials on EC2 (no keys needed!)</span>
+<span class="hl">curl http://169.254.169.254/latest/meta-data/iam/security-credentials/ec2-s3-read-role</span>
+<span class="comment"># Returns: temporary AccessKeyId, SecretAccessKey, Token, Expiration</span>
+<span class="comment"># boto3 automatically fetches these — you don't need to do this manually</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Create an IAM role on MiniStack that allows S3 read access, attach it to an instance profile</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write day-64.md: Why should you never put AWS access keys on an EC2 instance? What is the metadata service URL and what does it provide?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: day 64 - IAM roles and instance profiles for EC2</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 65-67 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D65–67</span><div><div class="day-title">Week 7 Practice + Mini-Exam on IAM & EC2</div><div class="day-topic">30 IAM/EC2 exam questions, review, gap-filling labs</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-e">Exam prep</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">10 IAM + EC2 exam questions — answer before reading the explanations</div>
+  <div class="exam-q">
+    <div class="eq-label">QUESTION 1 — IAM BASICS</div>
+    <div class="eq-q">A company wants to grant a contractor temporary access to their AWS account without creating a long-term IAM user. What should they use?</div>
+    <div class="eq-opt">A) Create an IAM user with a time-limited password</div>
+    <div class="eq-opt">B) Share the root account credentials temporarily</div>
+    <div class="eq-opt">C) Create an IAM Role and provide the contractor's AWS account ID to assume the role</div>
+    <div class="eq-opt">D) Create an IAM Group for contractors with minimal permissions</div>
+    <div class="eq-ans">ANSWER: C — IAM Role with cross-account trust</div>
+    <div class="eq-why">IAM Roles with cross-account access allow external accounts to assume a role without creating long-term credentials. The contractor uses their own AWS credentials to assume your role. The role grants temporary credentials that expire automatically.</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">QUESTION 2 — SECURITY GROUPS</div>
+    <div class="eq-q">An EC2 instance cannot receive SSH connections from the internet. The instance is in a public subnet with a public IP. The Security Group has an inbound rule allowing port 22 from 0.0.0.0/0. What should you check?</div>
+    <div class="eq-opt">A) The IAM role attached to the instance</div>
+    <div class="eq-opt">B) The NACL on the subnet — it may be blocking port 22 inbound or ephemeral ports outbound</div>
+    <div class="eq-opt">C) The EC2 instance type — some types don't support SSH</div>
+    <div class="eq-opt">D) CloudTrail logging</div>
+    <div class="eq-ans">ANSWER: B — NACL</div>
+    <div class="eq-why">If the Security Group allows SSH (port 22), the next layer is the NACL. Remember NACLs are stateless — they need both the inbound rule (allow port 22 in) AND an outbound rule (allow ephemeral ports 1024-65535 out for the SSH response). A custom NACL that only allows port 22 inbound but blocks the response ports outbound would cause exactly this symptom.</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">QUESTION 3 — PRICING</div>
+    <div class="eq-q">A startup has a web application that gets unpredictable traffic spikes. The application can be interrupted for up to 2 minutes without user impact, as requests are queued in SQS. What is the most cost-effective compute option?</div>
+    <div class="eq-opt">A) On-Demand instances with Auto Scaling</div>
+    <div class="eq-opt">B) Reserved Instances (1 year, no upfront)</div>
+    <div class="eq-opt">C) Spot Instances in an Auto Scaling Group with Spot interruption handling</div>
+    <div class="eq-opt">D) Dedicated Hosts</div>
+    <div class="eq-ans">ANSWER: C — Spot Instances with interruption handling</div>
+    <div class="eq-why">Spot Instances save up to 90% vs On-Demand. The SQS queue means no requests are lost when a Spot Instance is reclaimed. The 2-minute warning allows graceful draining. Auto Scaling with mixed instance types (Spot + On-Demand fallback) is the production-grade pattern for this scenario.</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">QUESTION 4 — IAM POLICIES</div>
+    <div class="eq-q">A developer can read objects from S3 bucket "app-data" but cannot list the bucket contents. An administrator checks the developer's IAM policy and sees it includes "s3:GetObject" on "arn:aws:s3:::app-data/*". Why can't the developer list the bucket?</div>
+    <div class="eq-opt">A) GetObject does not include listing permissions</div>
+    <div class="eq-opt">B) The policy needs to also include "s3:ListBucket" on "arn:aws:s3:::app-data" (without the /*)</div>
+    <div class="eq-opt">C) S3 listing requires separate paid permissions</div>
+    <div class="eq-opt">D) The developer needs to be added to the S3 administrators group</div>
+    <div class="eq-ans">ANSWER: B — ListBucket requires the bucket ARN, not the object ARN</div>
+    <div class="eq-why">GetObject permissions apply to objects (arn:aws:s3:::bucket/*). ListBucket permissions apply to the bucket itself (arn:aws:s3:::bucket). You need BOTH resources in the policy. This is a classic S3 permission mistake — remember: two resource entries, two different ARN formats.</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">QUESTION 5 — EC2 STORAGE</div>
+    <div class="eq-q">An application requires the highest possible disk I/O performance for a database workload. The data does not need to survive instance termination. What storage option should you use?</div>
+    <div class="eq-opt">A) EBS gp3 (General Purpose SSD)</div>
+    <div class="eq-opt">B) EBS io2 Block Express</div>
+    <div class="eq-opt">C) EC2 Instance Store</div>
+    <div class="eq-opt">D) EFS (Elastic File System)</div>
+    <div class="eq-ans">ANSWER: C — EC2 Instance Store</div>
+    <div class="eq-why">Instance Store is physically attached to the EC2 host (no network hop). This gives the highest possible IOPS and throughput. The tradeoff: data is lost when the instance stops or terminates (ephemeral). Since the question says the data doesn't need to survive termination, Instance Store is correct. Use io2 Block Express when you need both high IOPS AND durability.</div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable — week 7 close</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Answer all 5 exam questions before reading answers — track your score</div></div>
+    <div class="chk"><div class="chk-box"></div><div>For every question you got wrong: rebuild that concept in MiniStack or the console</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Add 20 more IAM/EC2 questions from ExamTopics — do them daily from now on</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit all week 7 code to GitHub with a week-7.md summary</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 8: S3 + VPC ═══════════════════════════ -->
+<div class="section" id="s2">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 3 · WEEK 8 · DAYS 68–74</div>
+  <div class="week-title">S3 + VPC — Storage and Networking Architecture</div>
+  <div class="week-sub">S3 is the most versatile AWS service — object storage, static websites, backup, data lakes, CI/CD artifact storage. VPC is the networking foundation that every other service lives inside. Understanding VPC is not optional — it affects every architecture you'll ever design in AWS.</div>
+  <div class="week-tags">
+    <span class="tag">S3 buckets/objects</span><span class="tag">Storage classes</span><span class="tag">Bucket policies</span>
+    <span class="tag">VPC design</span><span class="tag">Public vs private subnets</span>
+    <span class="tag">Internet Gateway</span><span class="tag">NAT Gateway</span><span class="tag">Route tables</span>
+  </div>
+</div>
+
+<!-- DAY 68: S3 -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 68</span><div><div class="day-title">S3 — Object Storage from First Principles</div><div class="day-topic">Buckets, objects, storage classes, versioning, lifecycle policies</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is S3 and how is it different from a filesystem?</div>
+  <p class="explain">S3 (Simple Storage Service) is <strong>object storage</strong> — not a filesystem. The key difference: in S3, there is no hierarchy of folders. What looks like <code>photos/2026/january/pic.jpg</code> is actually a single object with the key <code>photos/2026/january/pic.jpg</code>. The slashes are part of the key name, not real directories. This matters because S3 scales differently than a filesystem — you can store trillions of objects with no performance degradation.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    S3 is like a massive warehouse with a flat floor (no shelves, no rooms). Each box (object) has a unique label (key). You can name labels with slashes to organize them (photos/2026/pic.jpg), but underneath it's all one giant flat space. The benefit: you can retrieve any box instantly by its label — no directory traversal, no fragmentation, no disk full errors.
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>S3 storage class</th><th>Access pattern</th><th>Cost vs Standard</th><th>Use case</th></tr></thead>
+    <tbody>
+      <tr><td>S3 Standard</td><td>Frequent access (milliseconds)</td><td>Baseline</td><td>Active application data, websites, uploads</td></tr>
+      <tr><td>S3 Standard-IA (Infrequent Access)</td><td>Infrequent but must be fast when accessed</td><td>~40% cheaper storage, retrieval fee</td><td>Backups, disaster recovery data you rarely touch</td></tr>
+      <tr><td>S3 One Zone-IA</td><td>Infrequent, single AZ acceptable</td><td>~50% cheaper than Standard-IA</td><td>Secondary backups that can be recreated if lost</td></tr>
+      <tr><td>S3 Glacier Instant Retrieval</td><td>Archive, ms retrieval when accessed</td><td>~68% cheaper</td><td>Data accessed once per quarter</td></tr>
+      <tr><td>S3 Glacier Flexible Retrieval</td><td>Archive, 1–12 hour retrieval</td><td>~77% cheaper</td><td>Long-term backups</td></tr>
+      <tr><td>S3 Glacier Deep Archive</td><td>Coldest archive, 12–48 hour retrieval</td><td>~95% cheaper</td><td>7-year retention for compliance (banks, healthcare)</td></tr>
+      <tr><td>S3 Intelligent-Tiering</td><td>Unknown/changing patterns</td><td>Small monitoring fee, automatic cost optimization</td><td>Unknown access patterns — let AWS optimize</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">S3 security — the four layers you must understand</div>
+  <p class="explain">S3 has a layered security model. Understanding the interaction between layers is critical for the SAA-C03 exam:</p>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div><strong>Block Public Access (account level)</strong> — the master safety switch. When enabled, it overrides ALL bucket policies and ACLs that would make objects public. This is what prevents data breaches from misconfigured bucket policies. Always enabled by default on new accounts.</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Bucket Policy (resource-based policy)</strong> — a JSON policy attached to the bucket. Controls access for any AWS principal, external accounts, and anonymous users. This is how you make objects public (if Block Public Access is disabled).</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>IAM Policy (identity-based policy)</strong> — controls what AWS users/roles can do. Applied at the user/role level, not the bucket level. Both the IAM policy AND the bucket policy must allow an action for it to succeed (for cross-account access).</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>ACLs (Access Control Lists)</strong> — legacy, per-object. AWS recommends against using ACLs for new implementations. Bucket policies are more powerful and easier to manage.</div></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — s3-backup.py + static website on MiniStack</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">s3-backup.py — automated backup with versioning and lifecycle (MiniStack)</span></div>
+    <div class="cmd-code"><span class="hl">#!/usr/bin/env python3</span>
+<span class="hl">"""s3-backup.py — backs up a directory to S3 with encryption and lifecycle policies"""</span>
+
+<span class="hl">import boto3</span>
+<span class="hl">import tarfile</span>
+<span class="hl">import tempfile</span>
+<span class="hl">import argparse</span>
+<span class="hl">import logging</span>
+<span class="hl">from pathlib import Path</span>
+<span class="hl">from datetime import datetime</span>
+
+<span class="hl">logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")</span>
+<span class="hl">log = logging.getLogger(__name__)</span>
+
+<span class="hl">def get_s3(local: bool):</span>
+<span class="hl">    if local:</span>
+<span class="hl">        return boto3.client('s3', endpoint_url='http://localhost:4566',</span>
+<span class="hl">                           region_name='us-east-1',</span>
+<span class="hl">                           aws_access_key_id='test',</span>
+<span class="hl">                           aws_secret_access_key='test')</span>
+<span class="hl">    return boto3.client('s3')</span>
+
+<span class="hl">def ensure_bucket(s3, bucket_name: str) -> None:</span>
+<span class="hl">    """Create bucket if it doesn't exist, enable versioning"""</span>
+<span class="hl">    try:</span>
+<span class="hl">        s3.head_bucket(Bucket=bucket_name)</span>
+<span class="hl">        log.info("Bucket %s already exists", bucket_name)</span>
+<span class="hl">    except Exception:</span>
+<span class="hl">        s3.create_bucket(Bucket=bucket_name)</span>
+<span class="hl">        log.info("Created bucket: %s", bucket_name)</span>
+
+<span class="hl">    # Enable versioning so we keep backup history</span>
+<span class="hl">    s3.put_bucket_versioning(</span>
+<span class="hl">        Bucket=bucket_name,</span>
+<span class="hl">        VersioningConfiguration={'Status': 'Enabled'}</span>
+<span class="hl">    )</span>
+
+<span class="hl">    # Set lifecycle policy: move to Glacier after 30 days, delete after 90</span>
+<span class="hl">    lifecycle_policy = {</span>
+<span class="hl">        'Rules': [{</span>
+<span class="hl">            'ID': 'backup-lifecycle',</span>
+<span class="hl">            'Status': 'Enabled',</span>
+<span class="hl">            'Filter': {'Prefix': 'backups/'},</span>
+<span class="hl">            'Transitions': [</span>
+<span class="hl">                {'Days': 30, 'StorageClass': 'GLACIER'},</span>
+<span class="hl">            ],</span>
+<span class="hl">            'Expiration': {'Days': 90}   # Delete after 90 days</span>
+<span class="hl">        }]</span>
+<span class="hl">    }</span>
+<span class="hl">    s3.put_bucket_lifecycle_configuration(</span>
+<span class="hl">        Bucket=bucket_name,</span>
+<span class="hl">        LifecycleConfiguration=lifecycle_policy</span>
+<span class="hl">    )</span>
+<span class="hl">    log.info("Lifecycle policy applied to %s", bucket_name)</span>
+
+<span class="hl">def create_and_upload_backup(s3, source_dir: Path, bucket_name: str) -> str:</span>
+<span class="hl">    """Compress directory and upload to S3"""</span>
+<span class="hl">    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')</span>
+<span class="hl">    archive_name = f"backup_{source_dir.name}_{timestamp}.tar.gz"</span>
+<span class="hl">    s3_key = f"backups/{archive_name}"</span>
+
+<span class="hl">    # Create compressed archive in a temp file</span>
+<span class="hl">    with tempfile.NamedTemporaryFile(suffix='.tar.gz', delete=False) as tmp:</span>
+<span class="hl">        with tarfile.open(tmp.name, 'w:gz') as tar:</span>
+<span class="hl">            tar.add(source_dir, arcname=source_dir.name)</span>
+<span class="hl">        tmp_path = Path(tmp.name)</span>
+
+<span class="hl">    log.info("Archive created: %s (%s bytes)", archive_name, tmp_path.stat().st_size)</span>
+
+<span class="hl">    # Upload with server-side encryption</span>
+<span class="hl">    s3.upload_file(</span>
+<span class="hl">        str(tmp_path),</span>
+<span class="hl">        bucket_name,</span>
+<span class="hl">        s3_key,</span>
+<span class="hl">        ExtraArgs={'ServerSideEncryption': 'AES256'}  # SSE-S3 encryption</span>
+<span class="hl">    )</span>
+
+<span class="hl">    tmp_path.unlink()  # Clean up temp file</span>
+<span class="hl">    log.info("Uploaded to s3://%s/%s", bucket_name, s3_key)</span>
+<span class="hl">    return s3_key</span>
+
+<span class="hl">def main():</span>
+<span class="hl">    parser = argparse.ArgumentParser(description='S3 Backup Tool')</span>
+<span class="hl">    parser.add_argument('source_dir', type=Path, help='Directory to back up')</span>
+<span class="hl">    parser.add_argument('bucket', help='S3 bucket name')</span>
+<span class="hl">    parser.add_argument('--local', action='store_true', help='Use MiniStack')</span>
+<span class="hl">    args = parser.parse_args()</span>
+
+<span class="hl">    s3 = get_s3(args.local)</span>
+<span class="hl">    ensure_bucket(s3, args.bucket)</span>
+<span class="hl">    key = create_and_upload_backup(s3, args.source_dir.resolve(), args.bucket)</span>
+
+<span class="hl">    # List all backups</span>
+<span class="hl">    response = s3.list_objects_v2(Bucket=args.bucket, Prefix='backups/')</span>
+<span class="hl">    print(f"\nAll backups in s3://{args.bucket}/backups/:")</span>
+<span class="hl">    for obj in response.get('Contents', []):</span>
+<span class="hl">        print(f"  {obj['Key']} — {obj['Size']:,} bytes")</span>
+
+<span class="hl">if __name__ == '__main__':</span>
+<span class="hl">    main()</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Test on MiniStack</span></div>
+    <div class="cmd-code"><span class="hl">python3 s3-backup.py ~/phase-1 my-backup-bucket --local</span>
+<span class="comment"># Creates compressed backup of your phase-1 folder, uploads to MiniStack S3</span>
+<span class="comment"># Verify: awslocal s3 ls s3://my-backup-bucket/backups/</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 69: S3 STATIC WEBSITE + PRESIGNED URLS -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 69</span><div><div class="day-title">S3 Advanced — Static Websites, Pre-Signed URLs, Cross-Region Replication</div><div class="day-topic">Host a portfolio site on S3, generate time-limited access URLs, exam patterns</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-l">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Hosting a static website on S3</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create and configure an S3 static website</span></div>
+    <div class="cmd-code"><span class="comment"># Create bucket (bucket name must match domain for Route 53 integration later)</span>
+<span class="hl">awslocal s3 mb s3://my-portfolio-website</span>
+
+<span class="comment"># Create a simple HTML page</span>
+<span class="hl">cat > index.html << 'EOF'</span>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Niyhi - DevOps Engineer&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Niyhi Adeyemi&lt;/h1&gt;
+  &lt;p&gt;DevOps Engineer | AWS Certified | Lagos, Nigeria&lt;/p&gt;
+  &lt;p&gt;&lt;a href="https://github.com/niyhi"&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+
+<span class="hl">cat > error.html << 'EOF'</span>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;404 - Page Not Found&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
+EOF
+
+<span class="comment"># Upload files</span>
+<span class="hl">awslocal s3 cp index.html s3://my-portfolio-website/</span>
+<span class="hl">awslocal s3 cp error.html s3://my-portfolio-website/</span>
+
+<span class="comment"># Enable static website hosting</span>
+<span class="hl">awslocal s3 website s3://my-portfolio-website \</span>
+<span class="hl">  --index-document index.html \</span>
+<span class="hl">  --error-document error.html</span>
+
+<span class="comment"># For real AWS: you also need to disable Block Public Access and add a bucket policy</span>
+<span class="hl">cat > public-bucket-policy.json << 'EOF'</span>
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::my-portfolio-website/*"
+  }]
+}
+EOF
+<span class="hl">awslocal s3api put-bucket-policy \</span>
+<span class="hl">  --bucket my-portfolio-website \</span>
+<span class="hl">  --policy file://public-bucket-policy.json</span>
+
+<span class="comment"># On real AWS, website URL format: http://bucket-name.s3-website-region.amazonaws.com</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Pre-signed URLs — time-limited access without making objects public</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Generate a pre-signed URL that expires in 1 hour</span></div>
+    <div class="cmd-code"><span class="comment"># Generate via CLI</span>
+<span class="hl">awslocal s3 presign s3://my-portfolio-website/index.html --expires-in 3600</span>
+<span class="comment"># Returns a URL valid for 1 hour — anyone with the URL can download</span>
+<span class="comment"># After 1 hour: 403 Access Denied</span>
+
+<span class="comment"># Generate via Python/boto3</span>
+<span class="hl">import boto3</span>
+<span class="hl">s3 = boto3.client('s3', endpoint_url='http://localhost:4566', ...)</span>
+<span class="hl">url = s3.generate_presigned_url(</span>
+<span class="hl">    'get_object',</span>
+<span class="hl">    Params={'Bucket': 'my-portfolio-website', 'Key': 'index.html'},</span>
+<span class="hl">    ExpiresIn=3600</span>  <span class="comment"># seconds</span>
+<span class="hl">)</span>
+<span class="hl">print(f"Download URL (expires in 1 hour): {url}")</span></div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — PRE-SIGNED URLS</div>
+    <div class="eq-q">A company stores sensitive documents in a private S3 bucket. They want to allow users to download specific documents for a limited time without making the bucket public or creating IAM users for customers. What is the BEST solution?</div>
+    <div class="eq-opt">A) Create a public S3 bucket and rotate the bucket policy every hour</div>
+    <div class="eq-opt">B) Use S3 pre-signed URLs with a short expiration time generated by a Lambda function</div>
+    <div class="eq-opt">C) Create individual IAM users for each customer</div>
+    <div class="eq-opt">D) Use S3 bucket ACLs to grant time-limited access</div>
+    <div class="eq-ans">ANSWER: B — Pre-signed URLs via Lambda</div>
+    <div class="eq-why">Pre-signed URLs are perfect for temporary, customer-facing access to private objects. The bucket stays private. The Lambda function generates a URL for the specific object requested, with an expiration matching your business requirements (e.g., 15 minutes for a download link). After expiry, the URL is useless.</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 70-71: VPC -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D70–71</span><div><div class="day-title">VPC — Building Your Private Network in AWS</div><div class="day-topic">Subnets, route tables, Internet Gateway, NAT Gateway, Security Groups, NACLs</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab (2 days)</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">VPC architecture — understand this before building anything in AWS</div>
+  <p class="explain">A VPC (Virtual Private Cloud) is your private section of the AWS cloud — a logically isolated network where you launch your resources. Think of it as your own private data centre inside AWS, but you control all the networking rules.</p>
+  <div class="arch-diagram">
+<span class="layer">REGION: us-east-1</span>
+<span class="arrow">└─</span> <span class="layer">VPC: 10.0.0.0/16</span> (65,534 IPs)
+    <span class="arrow">├─</span> <span class="layer">Availability Zone: us-east-1a</span>
+    <span class="arrow">│   ├─</span> <span class="component">Public Subnet: 10.0.1.0/24</span>  ← has route to Internet Gateway
+    <span class="arrow">│   │    Resources: Load Balancer, Bastion host, NAT Gateway</span>
+    <span class="arrow">│   ├─</span> <span class="component">Private App Subnet: 10.0.3.0/24</span> ← routes outbound via NAT Gateway
+    <span class="arrow">│   │    Resources: EC2 instances (app servers)
+    <span class="arrow">│   └─</span> <span class="component">Private DB Subnet: 10.0.5.0/24</span> ← NO internet access at all
+    <span class="arrow">│        Resources: RDS databases
+    <span class="arrow">├─</span> <span class="layer">Availability Zone: us-east-1b</span> ← mirror of 1a for high availability
+    <span class="arrow">│   ├─</span> <span class="component">Public Subnet: 10.0.2.0/24</span>
+    <span class="arrow">│   ├─</span> <span class="component">Private App Subnet: 10.0.4.0/24</span>
+    <span class="arrow">│   └─</span> <span class="component">Private DB Subnet: 10.0.6.0/24</span>
+    <span class="arrow">├─</span> <span class="component">Internet Gateway (IGW)</span> ← one per VPC, enables internet access for public subnets
+    <span class="arrow">└─</span> <span class="component">NAT Gateway</span> ← in public subnet, allows private subnets to initiate outbound internet (not inbound)
+<span class="note">
+Route Table: Public Subnet
+  10.0.0.0/16  → local   (VPC internal traffic)
+  0.0.0.0/0    → igw-xxx (everything else goes to internet)
+
+Route Table: Private Subnet
+  10.0.0.0/16  → local
+  0.0.0.0/0    → nat-xxx (outbound internet via NAT Gateway)
+  (NO 0.0.0.0/0 to IGW — internet cannot initiate connections in)</span>
+  </div>
+  <div class="alert al-info">
+    <span class="al-icon">→</span>
+    <span><strong>What makes a subnet public vs private?</strong> It's purely the route table. A "public subnet" is just a subnet whose route table has a route <code>0.0.0.0/0 → Internet Gateway</code>. A "private subnet" has either no default route, or routes through a NAT Gateway instead. There's no magic checkbox — just a route table entry.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 70 lab — build a production VPC on MiniStack</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Complete production VPC with public + private subnets, IGW, NAT Gateway</span></div>
+    <div class="cmd-code"><span class="comment"># ── Step 1: Create the VPC ─────────────────────────────────────────</span>
+<span class="var">VPC_ID</span>=<span class="hl">$(awslocal ec2 create-vpc \</span>
+<span class="hl">    --cidr-block 10.0.0.0/16 \</span>
+<span class="hl">    --query 'Vpc.VpcId' --output text)</span>
+
+<span class="hl">awslocal ec2 create-tags --resources "$VPC_ID" \</span>
+<span class="hl">    --tags Key=Name,Value=production-vpc</span>
+
+<span class="comment"># Enable DNS hostnames (required for RDS and ELB)</span>
+<span class="hl">awslocal ec2 modify-vpc-attribute \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --enable-dns-hostnames</span>
+
+<span class="hl">echo "VPC: $VPC_ID"</span>
+
+<span class="comment"># ── Step 2: Create subnets in 2 AZs ───────────────────────────────</span>
+<span class="hl">PUB_1A=$(awslocal ec2 create-subnet \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --cidr-block 10.0.1.0/24 \</span>
+<span class="hl">    --availability-zone us-east-1a \</span>
+<span class="hl">    --query 'Subnet.SubnetId' --output text)</span>
+
+<span class="hl">PUB_1B=$(awslocal ec2 create-subnet \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --cidr-block 10.0.2.0/24 \</span>
+<span class="hl">    --availability-zone us-east-1b \</span>
+<span class="hl">    --query 'Subnet.SubnetId' --output text)</span>
+
+<span class="hl">PRIV_APP_1A=$(awslocal ec2 create-subnet \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --cidr-block 10.0.3.0/24 \</span>
+<span class="hl">    --availability-zone us-east-1a \</span>
+<span class="hl">    --query 'Subnet.SubnetId' --output text)</span>
+
+<span class="hl">PRIV_APP_1B=$(awslocal ec2 create-subnet \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --cidr-block 10.0.4.0/24 \</span>
+<span class="hl">    --availability-zone us-east-1b \</span>
+<span class="hl">    --query 'Subnet.SubnetId' --output text)</span>
+
+<span class="hl">PRIV_DB_1A=$(awslocal ec2 create-subnet \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --cidr-block 10.0.5.0/24 \</span>
+<span class="hl">    --availability-zone us-east-1a \</span>
+<span class="hl">    --query 'Subnet.SubnetId' --output text)</span>
+
+<span class="hl">PRIV_DB_1B=$(awslocal ec2 create-subnet \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --cidr-block 10.0.6.0/24 \</span>
+<span class="hl">    --availability-zone us-east-1b \</span>
+<span class="hl">    --query 'Subnet.SubnetId' --output text)</span>
+
+<span class="hl">echo "Created 6 subnets (2 public, 2 private-app, 2 private-db)"</span>
+
+<span class="comment"># ── Step 3: Internet Gateway ───────────────────────────────────────</span>
+<span class="var">IGW_ID</span>=<span class="hl">$(awslocal ec2 create-internet-gateway \</span>
+<span class="hl">    --query 'InternetGateway.InternetGatewayId' --output text)</span>
+
+<span class="hl">awslocal ec2 attach-internet-gateway \</span>
+<span class="hl">    --internet-gateway-id "$IGW_ID" --vpc-id "$VPC_ID"</span>
+
+<span class="hl">echo "Internet Gateway: $IGW_ID (attached to VPC)"</span>
+
+<span class="comment"># ── Step 4: Create public route table ─────────────────────────────</span>
+<span class="var">PUB_RT</span>=<span class="hl">$(awslocal ec2 create-route-table \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --query 'RouteTable.RouteTableId' --output text)</span>
+
+<span class="comment"># Add default route to internet gateway (this makes it a "public" route table)</span>
+<span class="hl">awslocal ec2 create-route \</span>
+<span class="hl">    --route-table-id "$PUB_RT" \</span>
+<span class="hl">    --destination-cidr-block 0.0.0.0/0 \</span>
+<span class="hl">    --gateway-id "$IGW_ID"</span>
+
+<span class="comment"># Associate public subnets with the public route table</span>
+<span class="hl">awslocal ec2 associate-route-table --route-table-id "$PUB_RT" --subnet-id "$PUB_1A"</span>
+<span class="hl">awslocal ec2 associate-route-table --route-table-id "$PUB_RT" --subnet-id "$PUB_1B"</span>
+
+<span class="comment"># Enable auto-assign public IPs for public subnets</span>
+<span class="hl">awslocal ec2 modify-subnet-attribute \</span>
+<span class="hl">    --subnet-id "$PUB_1A" --map-public-ip-on-launch</span>
+
+<span class="hl">echo "Public route tables configured"</span>
+
+<span class="comment"># ── Step 5: NAT Gateway in public subnet ──────────────────────────</span>
+<span class="comment"># Note: NAT Gateway requires an Elastic IP</span>
+<span class="var">EIP_ALLOC</span>=<span class="hl">$(awslocal ec2 allocate-address \</span>
+<span class="hl">    --domain vpc --query 'AllocationId' --output text)</span>
+
+<span class="var">NAT_GW</span>=<span class="hl">$(awslocal ec2 create-nat-gateway \</span>
+<span class="hl">    --subnet-id "$PUB_1A" \</span>
+<span class="hl">    --allocation-id "$EIP_ALLOC" \</span>
+<span class="hl">    --query 'NatGateway.NatGatewayId' --output text)</span>
+
+<span class="hl">echo "NAT Gateway: $NAT_GW (in public subnet 1a)"</span>
+
+<span class="comment"># ── Step 6: Private route table pointing to NAT Gateway ───────────</span>
+<span class="var">PRIV_RT</span>=<span class="hl">$(awslocal ec2 create-route-table \</span>
+<span class="hl">    --vpc-id "$VPC_ID" --query 'RouteTable.RouteTableId' --output text)</span>
+
+<span class="hl">awslocal ec2 create-route \</span>
+<span class="hl">    --route-table-id "$PRIV_RT" \</span>
+<span class="hl">    --destination-cidr-block 0.0.0.0/0 \</span>
+<span class="hl">    --nat-gateway-id "$NAT_GW"</span>
+
+<span class="comment"># Associate private app subnets with private route table</span>
+<span class="hl">for subnet in "$PRIV_APP_1A" "$PRIV_APP_1B"; do</span>
+<span class="hl">    awslocal ec2 associate-route-table \</span>
+<span class="hl">        --route-table-id "$PRIV_RT" --subnet-id "$subnet"</span>
+<span class="hl">done</span>
+
+<span class="hl">echo "Production VPC complete! Architecture:"</span>
+<span class="hl">echo "  VPC: $VPC_ID (10.0.0.0/16)"</span>
+<span class="hl">echo "  Public subnets: $PUB_1A (1a), $PUB_1B (1b)"</span>
+<span class="hl">echo "  Private app subnets: $PRIV_APP_1A (1a), $PRIV_APP_1B (1b)"</span>
+<span class="hl">echo "  Private DB subnets: $PRIV_DB_1A (1a), $PRIV_DB_1B (1b)"</span>
+<span class="hl">echo "  IGW: $IGW_ID | NAT: $NAT_GW"</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Exam patterns — VPC is heavily tested</div>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — VPC ARCHITECTURE</div>
+    <div class="eq-q">A company has EC2 instances in private subnets that need to download software updates from the internet but must not be reachable from the internet. What should be implemented?</div>
+    <div class="eq-opt">A) Assign Elastic IPs to the instances</div>
+    <div class="eq-opt">B) Add the instances to a public subnet</div>
+    <div class="eq-opt">C) Deploy a NAT Gateway in a public subnet and add a route from the private subnet to the NAT Gateway</div>
+    <div class="eq-opt">D) Deploy an Internet Gateway directly connected to the private subnet</div>
+    <div class="eq-ans">ANSWER: C — NAT Gateway</div>
+    <div class="eq-why">NAT Gateway translates private IPs to its own public IP for outbound connections. The response comes back to the NAT Gateway which forwards it to the instance. Crucially, the internet cannot initiate connections to the private instance — all connections are initiated from inside. Option A would expose the instance to the internet. Option D is architecturally impossible (IGW works at the VPC level, not subnet level).</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — VPC COST</div>
+    <div class="eq-q">A company has EC2 instances in a private subnet that only access S3 — no other internet access is needed. The current setup uses a NAT Gateway costing $150/month. How can the company reduce this cost without compromising security?</div>
+    <div class="eq-opt">A) Move the instances to a public subnet</div>
+    <div class="eq-opt">B) Use a VPC Gateway Endpoint for S3 — free and routes traffic privately within the AWS network</div>
+    <div class="eq-opt">C) Move to a smaller NAT Gateway tier</div>
+    <div class="eq-opt">D) Configure direct internet access for the instances</div>
+    <div class="eq-ans">ANSWER: B — VPC Gateway Endpoint for S3</div>
+    <div class="eq-why">VPC Endpoints let resources in private subnets access S3 and DynamoDB without going through a NAT Gateway or internet. Traffic stays on AWS's private network. Gateway Endpoints are free (no per-hour charge, no data processing fee). This is a common cost optimization pattern — eliminate the NAT Gateway if your private instances only need S3/DynamoDB access.</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 72-74 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D72–74</span><div><div class="day-title">VPC Security + Week 8 Consolidation</div><div class="day-topic">VPC Endpoints, VPC Peering, VPC Flow Logs, Security Group deep dive</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Exam practice</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">VPC connectivity options — SAA-C03 love to ask these</div>
+  <table class="ref-table">
+    <thead><tr><th>Option</th><th>What it is</th><th>Use case</th><th>Key limitation</th></tr></thead>
+    <tbody>
+      <tr><td>VPC Peering</td><td>Direct private connection between two VPCs (same or different accounts)</td><td>Connect dev and prod VPCs, connect partner company VPCs</td><td>Non-transitive — if A peers with B and B peers with C, A cannot reach C through B</td></tr>
+      <tr><td>Transit Gateway</td><td>Hub-and-spoke for connecting many VPCs and on-premises</td><td>Enterprise with 10+ VPCs</td><td>Has hourly charge — overkill for 2-3 VPCs</td></tr>
+      <tr><td>VPC Gateway Endpoint</td><td>Free private connection to S3 and DynamoDB</td><td>Private subnets accessing S3/DynamoDB without NAT</td><td>Only S3 and DynamoDB — use Interface Endpoint for other services</td></tr>
+      <tr><td>VPC Interface Endpoint (PrivateLink)</td><td>Private connection to AWS services or your own services</td><td>Access SQS, SNS, EC2 API, etc. without internet</td><td>Has hourly + data processing charge</td></tr>
+      <tr><td>Site-to-Site VPN</td><td>Encrypted tunnel from on-premises to AWS over the public internet</td><td>Hybrid cloud — connect your office to AWS VPC</td><td>Dependent on internet quality, max ~1.25 Gbps</td></tr>
+      <tr><td>Direct Connect</td><td>Dedicated physical fibre connection from your data centre to AWS</td><td>Enterprise, consistent high bandwidth, compliance</td><td>Expensive, takes weeks to provision</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">VPC Flow Logs — diagnose network issues</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Enable VPC Flow Logs and analyze rejected traffic</span></div>
+    <div class="cmd-code"><span class="comment"># Enable flow logs for a VPC (sends to CloudWatch Logs)</span>
+<span class="hl">awslocal ec2 create-flow-logs \</span>
+<span class="hl">    --resource-type VPC \</span>
+<span class="hl">    --resource-ids "$VPC_ID" \</span>
+<span class="hl">    --traffic-type ALL \</span>
+<span class="hl">    --log-destination-type cloud-watch-logs \</span>
+<span class="hl">    --log-group-name /aws/vpc/flowlogs</span>
+
+<span class="comment"># Flow log record format:</span>
+<span class="comment"># version account-id interface-id srcaddr dstaddr srcport dstport protocol packets bytes start end action log-status</span>
+
+<span class="comment"># Example REJECT record (something was blocked by a security group or NACL):</span>
+<span class="comment"># 2 123456789 eni-abc123 203.0.113.5 10.0.3.10 12345 22 6 1 40 1706745600 1706745660 REJECT OK</span>
+<span class="comment"># Meaning: Someone from 203.0.113.5 tried to SSH into 10.0.3.10 — REJECTED</span>
+<span class="comment"># This is how you diagnose "why can't my app connect to the database"</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Week 8 deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Complete s3-backup.py with versioning + lifecycle policies — working on MiniStack</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Build the complete production VPC on MiniStack — 6 subnets, IGW, NAT Gateway, route tables</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Draw your VPC architecture using draw.io (app.diagrams.net) — save as week-8-vpc-architecture.png</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Answer 5 more VPC exam questions from ExamTopics. For every wrong answer: rebuild that concept.</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: week 8 - S3 backup tool + production VPC + architecture diagrams</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 9: RDS + ELB + ASG ═══════════════════════════ -->
+<div class="section" id="s3">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 3 · WEEK 9 · DAYS 75–81</div>
+  <div class="week-title">RDS + ELB + Auto Scaling — Databases and High Availability</div>
+  <div class="week-sub">This week builds the core of a production web architecture — managed databases, load balancing across multiple instances, and automatic scaling when traffic increases. These three services together represent over 20% of the SAA-C03 exam questions on resilient architectures.</div>
+  <div class="week-tags">
+    <span class="tag">RDS Multi-AZ</span><span class="tag">Read Replicas</span><span class="tag">ALB vs NLB</span>
+    <span class="tag">Target Groups</span><span class="tag">Auto Scaling Groups</span>
+    <span class="tag">Launch Templates</span><span class="tag">Scaling policies</span>
+  </div>
+</div>
+
+<!-- RDS -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 75</span><div><div class="day-title">RDS — Managed Relational Databases</div><div class="day-topic">Multi-AZ, Read Replicas, automated backups, database engines</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is RDS and why use it instead of running a database on EC2?</div>
+  <p class="explain">RDS (Relational Database Service) is a managed database service. AWS handles: OS patching, database engine upgrades, automated backups, failover, replication, and monitoring. You focus on your schema and queries. Running a database on EC2 yourself means you handle all of that — and it's a significant operational burden.</p>
+  <table class="ref-table">
+    <thead><tr><th>RDS concept</th><th>What it does</th><th>Key exam facts</th></tr></thead>
+    <tbody>
+      <tr><td>Multi-AZ deployment</td><td>RDS maintains a synchronous standby replica in a different AZ. Automatic failover if primary fails (60-120 seconds).</td><td>For high availability/disaster recovery — NOT for read performance improvement. Standby cannot serve read traffic.</td></tr>
+      <tr><td>Read Replica</td><td>Asynchronous read-only copy of the database. Can be in same AZ, different AZ, or different region.</td><td>For read scaling — offload read-heavy queries. Cannot serve write traffic. Can be promoted to standalone DB if primary fails (manual process).</td></tr>
+      <tr><td>Automated Backups</td><td>Daily snapshot + transaction logs retained for 1–35 days. Allows Point-in-Time Recovery.</td><td>Free storage up to the size of your DB. Deleted when you delete the RDS instance.</td></tr>
+      <tr><td>Manual Snapshots</td><td>User-initiated snapshots that persist until you delete them.</td><td>Survive instance deletion. Use for migration or long-term retention.</td></tr>
+      <tr><td>RDS Proxy</td><td>Sits between your app and RDS, pools and shares DB connections.</td><td>Reduces connection overhead for Lambda functions (which create a new connection on every invocation).</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — MULTI-AZ VS READ REPLICA</div>
+    <div class="eq-q">A company's RDS database is experiencing high CPU from read-heavy reporting queries that are slowing down write operations for the main application. What is the BEST solution?</div>
+    <div class="eq-opt">A) Enable Multi-AZ deployment</div>
+    <div class="eq-opt">B) Create a Read Replica and direct reporting queries to it</div>
+    <div class="eq-opt">C) Increase the RDS instance size</div>
+    <div class="eq-opt">D) Enable automated backups</div>
+    <div class="eq-ans">ANSWER: B — Read Replica</div>
+    <div class="eq-why">Multi-AZ is for availability (failover), not performance — the standby cannot serve queries. Read Replicas are specifically for this: offload read-heavy workloads to a separate replica, keeping the primary available for writes. This is a very common SAA-C03 pattern question.</div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — create RDS PostgreSQL on MiniStack and connect from Python</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create RDS instance on MiniStack and connect from Python</span></div>
+    <div class="cmd-code"><span class="comment"># Create an RDS subnet group (required — specifies which subnets RDS can use)</span>
+<span class="hl">awslocal rds create-db-subnet-group \</span>
+<span class="hl">    --db-subnet-group-name production-db-subnet-group \</span>
+<span class="hl">    --db-subnet-group-description "Subnet group for production databases" \</span>
+<span class="hl">    --subnet-ids "$PRIV_DB_1A" "$PRIV_DB_1B"</span>
+
+<span class="comment"># Create PostgreSQL RDS instance</span>
+<span class="hl">awslocal rds create-db-instance \</span>
+<span class="hl">    --db-instance-identifier production-postgres \</span>
+<span class="hl">    --db-instance-class db.t3.micro \</span>
+<span class="hl">    --engine postgres \</span>
+<span class="hl">    --master-username dbadmin \</span>
+<span class="hl">    --master-user-password "SecurePass123!" \</span>
+<span class="hl">    --db-name appdb \</span>
+<span class="hl">    --allocated-storage 20 \</span>
+<span class="hl">    --multi-az \</span>
+<span class="hl">    --storage-encrypted \</span>
+<span class="hl">    --backup-retention-period 7 \</span>
+<span class="hl">    --db-subnet-group-name production-db-subnet-group \</span>
+<span class="hl">    --no-publicly-accessible</span>
+
+<span class="comment"># Get the RDS endpoint</span>
+<span class="hl">awslocal rds describe-db-instances \</span>
+<span class="hl">    --db-instance-identifier production-postgres \</span>
+<span class="hl">    --query 'DBInstances[0].Endpoint.Address' --output text</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Python: connect to RDS and run CRUD operations</span></div>
+    <div class="cmd-code"><span class="hl">#!/usr/bin/env python3</span>
+<span class="hl">"""rds-test.py — test RDS connection with connection pooling"""</span>
+<span class="hl">import psycopg2</span>
+<span class="hl">from psycopg2 import pool</span>
+<span class="hl">import os</span>
+
+<span class="comment"># In production: get credentials from AWS Secrets Manager or environment variables</span>
+<span class="comment"># NEVER hardcode credentials</span>
+<span class="var">DB_HOST</span> = <span class="hl">os.environ.get('DB_HOST', 'localhost')</span>
+<span class="var">DB_NAME</span> = <span class="hl">os.environ.get('DB_NAME', 'appdb')</span>
+<span class="var">DB_USER</span> = <span class="hl">os.environ.get('DB_USER', 'dbadmin')</span>
+<span class="var">DB_PASS</span> = <span class="hl">os.environ.get('DB_PASS', 'SecurePass123!')</span>
+<span class="var">DB_PORT</span> = <span class="hl">int(os.environ.get('DB_PORT', '5432'))</span>
+
+<span class="comment"># Connection pool: reuse connections instead of creating new ones for every query</span>
+<span class="hl">connection_pool = pool.SimpleConnectionPool(</span>
+<span class="hl">    minconn=2,</span>   <span class="comment"># Keep 2 connections alive always</span>
+<span class="hl">    maxconn=10,  </span><span class="comment"># Allow up to 10 simultaneous connections</span>
+<span class="hl">    host=DB_HOST, database=DB_NAME,</span>
+<span class="hl">    user=DB_USER, password=DB_PASS, port=DB_PORT</span>
+<span class="hl">)</span>
+
+<span class="hl">def run_query(sql: str, params=None):</span>
+<span class="hl">    conn = connection_pool.getconn()</span>
+<span class="hl">    try:</span>
+<span class="hl">        with conn.cursor() as cur:</span>
+<span class="hl">            cur.execute(sql, params)</span>
+<span class="hl">            conn.commit()</span>
+<span class="hl">            if cur.description:  # SELECT returns rows</span>
+<span class="hl">                return cur.fetchall()</span>
+<span class="hl">    finally:</span>
+<span class="hl">        connection_pool.putconn(conn)  # Always return connection to pool!</span>
+
+<span class="comment"># Create a table and test CRUD</span>
+<span class="hl">run_query("""CREATE TABLE IF NOT EXISTS users (</span>
+<span class="hl">    id SERIAL PRIMARY KEY,</span>
+<span class="hl">    name VARCHAR(100) NOT NULL,</span>
+<span class="hl">    email VARCHAR(255) UNIQUE NOT NULL,</span>
+<span class="hl">    created_at TIMESTAMP DEFAULT NOW()</span>
+<span class="hl">)""")</span>
+
+<span class="hl">run_query("INSERT INTO users (name, email) VALUES (%s, %s)", ('Niyhi', 'niyhi@example.com'))</span>
+
+<span class="hl">users = run_query("SELECT * FROM users")</span>
+<span class="hl">for user in users:</span>
+<span class="hl">    print(f"User: {user}")</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ELB + ASG -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D76–78</span><div><div class="day-title">Elastic Load Balancing + Auto Scaling Groups</div><div class="day-topic">ALB vs NLB, target groups, launch templates, scaling policies, stress testing</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Load balancer types — know when to use each</div>
+  <table class="ref-table">
+    <thead><tr><th>Load Balancer type</th><th>Layer</th><th>Best for</th><th>Key features</th></tr></thead>
+    <tbody>
+      <tr><td>Application Load Balancer (ALB)</td><td>Layer 7 (HTTP/HTTPS)</td><td>Web applications, microservices, HTTP routing</td><td>Path-based routing (/api → service A, /app → service B), host-based routing, WebSocket, Lambda targets</td></tr>
+      <tr><td>Network Load Balancer (NLB)</td><td>Layer 4 (TCP/UDP)</td><td>Ultra-low latency, static IP required, non-HTTP protocols</td><td>Millions of requests/second, static IP per AZ, TLS termination, handles spiky traffic better</td></tr>
+      <tr><td>Gateway Load Balancer (GWLB)</td><td>Layer 3 (IP)</td><td>Third-party virtual appliances (firewalls, IDS)</td><td>Transparent network gateway, routes traffic through virtual appliances</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — ALB vs NLB</div>
+    <div class="eq-q">An application needs to route requests to different microservices based on the URL path. /api requests go to the API service and /images requests go to the image service. Which load balancer supports this?</div>
+    <div class="eq-opt">A) Network Load Balancer with path-based routing</div>
+    <div class="eq-opt">B) Application Load Balancer with listener rules for path-based routing</div>
+    <div class="eq-opt">C) Classic Load Balancer</div>
+    <div class="eq-opt">D) Gateway Load Balancer</div>
+    <div class="eq-ans">ANSWER: B — Application Load Balancer</div>
+    <div class="eq-why">ALB operates at Layer 7 (HTTP) and understands the URL path. You create listener rules like: IF path is /api/* THEN forward to api-target-group. NLB operates at Layer 4 (TCP) — it sees IP addresses and ports but not URL paths. Path-based routing is a core ALB feature.</div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Auto Scaling Groups — understand scaling policies</div>
+  <p class="explain">An Auto Scaling Group (ASG) manages a fleet of EC2 instances. It automatically replaces unhealthy instances, scales out when demand increases, and scales in when demand decreases. The key configuration: <strong>minimum</strong> (never fewer than), <strong>maximum</strong> (never more than), and <strong>desired</strong> (target count right now).</p>
+  <table class="ref-table">
+    <thead><tr><th>Scaling policy type</th><th>How it works</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td>Target Tracking</td><td>Maintain a metric at a target value (e.g., keep average CPU at 60%)</td><td>Most common — simple to configure, AWS manages the math</td></tr>
+      <tr><td>Step Scaling</td><td>Add/remove instances in steps based on alarm thresholds (e.g., +2 if CPU > 70%, +4 if CPU > 90%)</td><td>When you need more control over scaling increments</td></tr>
+      <tr><td>Scheduled Scaling</td><td>Scale based on known, predictable patterns (e.g., scale to 10 at 8 AM, scale to 2 at 11 PM)</td><td>Predictable traffic patterns (business hours, batch jobs)</td></tr>
+      <tr><td>Predictive Scaling</td><td>Uses ML to predict future traffic and scale ahead of time</td><td>Cyclical patterns (weekend spikes, monthly billing runs)</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — create ALB + ASG and stress test it</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create Application Load Balancer with an Auto Scaling Group</span></div>
+    <div class="cmd-code"><span class="comment"># ── Create Launch Template ─────────────────────────────────────────</span>
+<span class="comment"># Launch Template defines what instances the ASG creates</span>
+<span class="hl">USER_DATA=$(base64 << 'EOF'</span>
+#!/bin/bash
+yum update -y && yum install -y nginx stress
+systemctl start nginx && systemctl enable nginx
+echo "Healthy - $(hostname)" > /usr/share/nginx/html/health
+echo "&lt;h1&gt;Instance: $(hostname) | IP: $(hostname -I | awk '{print $1}')&lt;/h1&gt;" > /usr/share/nginx/html/index.html
+EOF
+)</span>
+
+<span class="hl">TEMPLATE_ID=$(awslocal ec2 create-launch-template \</span>
+<span class="hl">    --launch-template-name web-server-template \</span>
+<span class="hl">    --version-description "Nginx web server" \</span>
+<span class="hl">    --launch-template-data "{</span>
+<span class="hl">        \"ImageId\": \"ami-0c55b159cbfafe1f0\",</span>
+<span class="hl">        \"InstanceType\": \"t2.micro\",</span>
+<span class="hl">        \"KeyName\": \"my-devops-key\",</span>
+<span class="hl">        \"UserData\": \"$USER_DATA\",</span>
+<span class="hl">        \"TagSpecifications\": [{</span>
+<span class="hl">            \"ResourceType\": \"instance\",</span>
+<span class="hl">            \"Tags\": [{\"Key\": \"Name\", \"Value\": \"asg-web-server\"}]</span>
+<span class="hl">        }]</span>
+<span class="hl">    }" \</span>
+<span class="hl">    --query 'LaunchTemplate.LaunchTemplateId' --output text)</span>
+
+<span class="comment"># ── Create Target Group ────────────────────────────────────────────</span>
+<span class="comment"># Target Group = the collection of instances the ALB routes traffic to</span>
+<span class="hl">TG_ARN=$(awslocal elbv2 create-target-group \</span>
+<span class="hl">    --name web-servers \</span>
+<span class="hl">    --protocol HTTP --port 80 \</span>
+<span class="hl">    --vpc-id "$VPC_ID" \</span>
+<span class="hl">    --health-check-path /health \</span>
+<span class="hl">    --healthy-threshold-count 2 \</span>
+<span class="hl">    --unhealthy-threshold-count 3 \</span>
+<span class="hl">    --health-check-interval-seconds 30 \</span>
+<span class="hl">    --query 'TargetGroups[0].TargetGroupArn' --output text)</span>
+
+<span class="comment"># ── Create Application Load Balancer ──────────────────────────────</span>
+<span class="hl">ALB_ARN=$(awslocal elbv2 create-load-balancer \</span>
+<span class="hl">    --name production-alb \</span>
+<span class="hl">    --subnets "$PUB_1A" "$PUB_1B" \</span>
+<span class="hl">    --type application \</span>
+<span class="hl">    --query 'LoadBalancers[0].LoadBalancerArn' --output text)</span>
+
+<span class="comment"># ── Create Listener: HTTP:80 → forward to target group ────────────</span>
+<span class="hl">awslocal elbv2 create-listener \</span>
+<span class="hl">    --load-balancer-arn "$ALB_ARN" \</span>
+<span class="hl">    --protocol HTTP --port 80 \</span>
+<span class="hl">    --default-actions Type=forward,TargetGroupArn="$TG_ARN"</span>
+
+<span class="comment"># ── Create Auto Scaling Group ──────────────────────────────────────</span>
+<span class="hl">awslocal autoscaling create-auto-scaling-group \</span>
+<span class="hl">    --auto-scaling-group-name web-asg \</span>
+<span class="hl">    --launch-template LaunchTemplateId="$TEMPLATE_ID",Version='$Latest' \</span>
+<span class="hl">    --min-size 2 --max-size 6 --desired-capacity 2 \</span>
+<span class="hl">    --vpc-zone-identifier "$PRIV_APP_1A,$PRIV_APP_1B" \</span>
+<span class="hl">    --target-group-arns "$TG_ARN" \</span>
+<span class="hl">    --health-check-type ELB \</span>
+<span class="hl">    --health-check-grace-period 60</span>
+
+<span class="comment"># ── Target Tracking Scaling Policy ────────────────────────────────</span>
+<span class="comment"># Keep average CPU at 60% — AWS will add/remove instances automatically</span>
+<span class="hl">awslocal autoscaling put-scaling-policy \</span>
+<span class="hl">    --auto-scaling-group-name web-asg \</span>
+<span class="hl">    --policy-name cpu-tracking \</span>
+<span class="hl">    --policy-type TargetTrackingScaling \</span>
+<span class="hl">    --target-tracking-configuration '{</span>
+<span class="hl">        "PredefinedMetricSpecification": {"PredefinedMetricType": "ASGAverageCPUUtilization"},</span>
+<span class="hl">        "TargetValue": 60.0,</span>
+<span class="hl">        "ScaleInCooldown": 300,</span>
+<span class="hl">        "ScaleOutCooldown": 60</span>
+<span class="hl">    }'</span>
+
+<span class="hl">echo "ASG + ALB created. Stress test:"</span>
+<span class="hl">echo "  Install ab: sudo apt install apache2-utils"</span>
+<span class="hl">echo "  Run: ab -n 100000 -c 100 http://[ALB-DNS]/"</span>
+<span class="hl">echo "  Watch scaling: awslocal autoscaling describe-scaling-activities"</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 79-81: CONSOLIDATION -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D79–81</span><div><div class="day-title">ElastiCache + Week 9 Exam Practice</div><div class="day-topic">Redis vs Memcached, caching patterns, 15 exam questions</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-e">Exam prep + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">ElastiCache — in-memory caching for databases</div>
+  <p class="explain">ElastiCache provides managed in-memory caches. The most common use case: cache database query results so the database isn't hit on every request. A query that takes 200ms from RDS takes 0.1ms from Redis cache.</p>
+  <table class="ref-table">
+    <thead><tr><th>Feature</th><th>Redis</th><th>Memcached</th></tr></thead>
+    <tbody>
+      <tr><td>Data structures</td><td>Rich: strings, lists, sets, sorted sets, hashes, geospatial</td><td>Simple key-value only</td></tr>
+      <tr><td>Persistence</td><td>Yes — RDB snapshots and AOF (Append Only File)</td><td>No — purely in-memory, data lost on restart</td></tr>
+      <tr><td>Replication</td><td>Yes — primary + read replicas, automatic failover</td><td>No replication</td></tr>
+      <tr><td>Multi-threading</td><td>Single-threaded (mostly)</td><td>Multi-threaded — scales with CPU cores</td></tr>
+      <tr><td>Use case</td><td>Session storage, leaderboards, pub/sub messaging, rate limiting</td><td>Simple caching, horizontal scaling for pure speed</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — ELASTICACHE PATTERN</div>
+    <div class="eq-q">A social media application stores user session data and needs it to survive ElastiCache node failures. The session data is read 100x more than it is written. Which solution BEST meets these requirements?</div>
+    <div class="eq-opt">A) Memcached with multi-threading enabled</div>
+    <div class="eq-opt">B) Redis with replication and persistence (AOF) enabled</div>
+    <div class="eq-opt">C) DAX (DynamoDB Accelerator) cluster</div>
+    <div class="eq-opt">D) S3 with Transfer Acceleration</div>
+    <div class="eq-ans">ANSWER: B — Redis with replication and AOF</div>
+    <div class="eq-why">Redis supports data persistence (data survives restarts) and replication (automatic failover if primary node fails). Memcached has no persistence or replication. The 100:1 read:write ratio means Read Replicas in Redis would also help. DAX is for DynamoDB only. S3 is wrong tier for session data.</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 10: LAMBDA + DYNAMODB + SQS ═══════════════════════════ -->
+<div class="section" id="s4">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 3 · WEEK 10 · DAYS 82–88</div>
+  <div class="week-title">Lambda + DynamoDB + SQS + SNS — Serverless and Async Patterns</div>
+  <div class="week-sub">Serverless is one of the fastest-growing areas in cloud — and Lambda questions appear frequently on the SAA-C03. DynamoDB and SQS/SNS together make up the "decoupled architecture" pattern that the exam tests repeatedly. Master these three services and you unlock a massive chunk of the exam.</div>
+  <div class="week-tags">
+    <span class="tag">Lambda functions</span><span class="tag">Event triggers</span><span class="tag">Cold starts</span>
+    <span class="tag">DynamoDB partition keys</span><span class="tag">GSI</span>
+    <span class="tag">SQS queues</span><span class="tag">SNS topics</span><span class="tag">Fan-out pattern</span>
+  </div>
+</div>
+
+<!-- LAMBDA -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 82</span><div><div class="day-title">Lambda — Serverless Computing Explained</div><div class="day-topic">Functions, triggers, execution model, cold starts, pricing, limits</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is Lambda and when should you use it?</div>
+  <p class="explain">AWS Lambda runs your code in response to events without you managing any servers. You upload code, define the trigger (an S3 upload, an API call, a cron schedule, an SQS message), and Lambda handles everything else — provisioning compute, scaling, monitoring, and billing you per 100ms of execution.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    Lambda is like a food delivery service. When an order comes in (event), the kitchen (Lambda) springs into action, prepares the food (runs your code), delivers it (returns a response), and goes idle again. You don't pay the kitchen staff when no orders come in — you only pay per delivery. Compare this to EC2: EC2 is like hiring full-time kitchen staff who are paid whether or not any orders come in.
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>Lambda concept</th><th>What it means</th><th>Key exam fact</th></tr></thead>
+    <tbody>
+      <tr><td>Cold Start</td><td>First invocation after a period of inactivity — Lambda must initialize the container (~100ms-1s)</td><td>Problem for latency-sensitive apps. Fix: Provisioned Concurrency (pre-warm containers) or keep function warm via scheduled event</td></tr>
+      <tr><td>Timeout</td><td>Max execution time per invocation</td><td>Max 15 minutes. Default is 3 seconds — change this for long-running tasks.</td></tr>
+      <tr><td>Memory</td><td>128MB to 10,240MB. CPU scales proportionally with memory.</td><td>If your function is slow, try increasing memory — more CPU allocation speeds it up.</td></tr>
+      <tr><td>Concurrency</td><td>How many simultaneous invocations can run</td><td>Default account limit: 1,000 concurrent executions. Set Reserved Concurrency to guarantee capacity for critical functions.</td></tr>
+      <tr><td>Execution role</td><td>IAM Role attached to Lambda — defines what AWS resources it can access</td><td>Lambda needs permissions via its execution role to write to S3, read from DynamoDB, etc.</td></tr>
+      <tr><td>Event sources</td><td>What triggers Lambda</td><td>S3 (object created/deleted), API Gateway, SQS, SNS, DynamoDB Streams, CloudWatch Events/EventBridge, Cognito, ALB</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — build a serverless image pipeline on MiniStack</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create an S3 → Lambda → DynamoDB pipeline (all on MiniStack)</span></div>
+    <div class="cmd-code"><span class="comment"># ── Step 1: Create the Lambda function code ────────────────────────</span>
+<span class="hl">mkdir lambda_pipeline && cd lambda_pipeline</span>
+
+<span class="hl">cat > handler.py << 'EOF'</span>
+import boto3
+import json
+import os
+from datetime import datetime
+
+# Initialize clients outside the handler (reused across warm invocations)
+s3 = boto3.client('s3', endpoint_url=os.environ.get('AWS_ENDPOINT', None))
+dynamodb = boto3.resource('dynamodb', endpoint_url=os.environ.get('AWS_ENDPOINT', None))
+sns = boto3.client('sns', endpoint_url=os.environ.get('AWS_ENDPOINT', None))
+
+def handler(event, context):
+    """
+    Triggered by S3 PutObject event.
+    Reads metadata, saves to DynamoDB, sends SNS notification.
+    """
+    # Extract the S3 event details
+    for record in event.get('Records', []):
+        bucket = record['s3']['bucket']['name']
+        key = record['s3']['object']['key']
+        size = record['s3']['object']['size']
+
+        print(f"Processing upload: s3://{bucket}/{key} ({size} bytes)")
+
+        # Get additional metadata from S3
+        try:
+            head = s3.head_object(Bucket=bucket, Key=key)
+            content_type = head.get('ContentType', 'unknown')
+        except Exception as e:
+            content_type = 'unknown'
+            print(f"Could not get metadata: {e}")
+
+        # Save metadata to DynamoDB
+        table = dynamodb.Table('file-uploads')
+        table.put_item(Item={
+            'file_key': key,
+            'bucket': bucket,
+            'size_bytes': size,
+            'content_type': content_type,
+            'uploaded_at': datetime.utcnow().isoformat(),
+            'status': 'processed'
+        })
+
+        print(f"Saved metadata to DynamoDB for {key}")
+
+        # Send SNS notification
+        try:
+            topic_arn = os.environ.get('SNS_TOPIC_ARN', 'arn:aws:sns:us-east-1:000000000000:file-uploads')
+            sns.publish(
+                TopicArn=topic_arn,
+                Subject=f"New file uploaded: {key}",
+                Message=json.dumps({
+                    'bucket': bucket,
+                    'key': key,
+                    'size': size,
+                    'type': content_type
+                })
+            )
+        except Exception as e:
+            print(f"SNS notification failed: {e}")
+
+    return {'statusCode': 200, 'body': 'Processed'}
+EOF
+
+<span class="comment"># Package the Lambda function</span>
+<span class="hl">zip function.zip handler.py</span>
+
+<span class="comment"># ── Step 2: Create DynamoDB table ─────────────────────────────────</span>
+<span class="hl">awslocal dynamodb create-table \</span>
+<span class="hl">    --table-name file-uploads \</span>
+<span class="hl">    --attribute-definitions AttributeName=file_key,AttributeType=S \</span>
+<span class="hl">    --key-schema AttributeName=file_key,KeyType=HASH \</span>
+<span class="hl">    --billing-mode PAY_PER_REQUEST</span>
+
+<span class="comment"># ── Step 3: Create SNS topic ───────────────────────────────────────</span>
+<span class="hl">SNS_ARN=$(awslocal sns create-topic \</span>
+<span class="hl">    --name file-uploads \</span>
+<span class="hl">    --query 'TopicArn' --output text)</span>
+
+<span class="hl">echo "SNS Topic: $SNS_ARN"</span>
+
+<span class="comment"># ── Step 4: Create IAM execution role for Lambda ───────────────────</span>
+<span class="hl">awslocal iam create-role \</span>
+<span class="hl">    --role-name lambda-pipeline-role \</span>
+<span class="hl">    --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}'</span>
+
+<span class="hl">awslocal iam attach-role-policy \</span>
+<span class="hl">    --role-name lambda-pipeline-role \</span>
+<span class="hl">    --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess</span>
+
+<span class="hl">awslocal iam attach-role-policy \</span>
+<span class="hl">    --role-name lambda-pipeline-role \</span>
+<span class="hl">    --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess</span>
+
+<span class="hl">awslocal iam attach-role-policy \</span>
+<span class="hl">    --role-name lambda-pipeline-role \</span>
+<span class="hl">    --policy-arn arn:aws:iam::aws:policy/AmazonSNSFullAccess</span>
+
+<span class="comment"># ── Step 5: Deploy Lambda function ────────────────────────────────</span>
+<span class="hl">LAMBDA_ARN=$(awslocal lambda create-function \</span>
+<span class="hl">    --function-name file-processor \</span>
+<span class="hl">    --runtime python3.11 \</span>
+<span class="hl">    --handler handler.handler \</span>
+<span class="hl">    --zip-file fileb://function.zip \</span>
+<span class="hl">    --role arn:aws:iam::000000000000:role/lambda-pipeline-role \</span>
+<span class="hl">    --environment Variables="{AWS_ENDPOINT=http://localhost:4566,SNS_TOPIC_ARN=$SNS_ARN}" \</span>
+<span class="hl">    --timeout 30 \</span>
+<span class="hl">    --memory-size 256 \</span>
+<span class="hl">    --query 'FunctionArn' --output text)</span>
+
+<span class="comment"># ── Step 6: Create S3 bucket and add Lambda trigger ───────────────</span>
+<span class="hl">awslocal s3 mb s3://upload-bucket</span>
+
+<span class="hl">awslocal s3api put-bucket-notification-configuration \</span>
+<span class="hl">    --bucket upload-bucket \</span>
+<span class="hl">    --notification-configuration "{</span>
+<span class="hl">        \"LambdaFunctionConfigurations\": [{</span>
+<span class="hl">            \"LambdaFunctionArn\": \"$LAMBDA_ARN\",</span>
+<span class="hl">            \"Events\": [\"s3:ObjectCreated:*\"]</span>
+<span class="hl">        }]</span>
+<span class="hl">    }"</span>
+
+<span class="hl">echo "Pipeline ready! Test it:"</span>
+<span class="hl">echo "awslocal s3 cp /etc/hostname s3://upload-bucket/test.txt"</span>
+<span class="hl">echo "Then check DynamoDB: awslocal dynamodb scan --table-name file-uploads"</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Test the pipeline end-to-end</span></div>
+    <div class="cmd-code"><span class="comment"># Upload a file — this should trigger Lambda automatically</span>
+<span class="hl">awslocal s3 cp /etc/hostname s3://upload-bucket/hostname.txt</span>
+<span class="hl">awslocal s3 cp /etc/os-release s3://upload-bucket/os-info.txt</span>
+
+<span class="comment"># Check Lambda was invoked (view logs)</span>
+<span class="hl">awslocal logs describe-log-streams \</span>
+<span class="hl">    --log-group-name /aws/lambda/file-processor</span>
+
+<span class="comment"># Check DynamoDB has the metadata</span>
+<span class="hl">awslocal dynamodb scan --table-name file-uploads</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DYNAMODB -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D83–84</span><div><div class="day-title">DynamoDB — NoSQL at Scale</div><div class="day-topic">Partition keys, sort keys, GSI, query vs scan, capacity modes</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">DynamoDB — when to use NoSQL instead of SQL</div>
+  <p class="explain">DynamoDB is AWS's managed NoSQL key-value and document database. It scales automatically to millions of requests per second with single-digit millisecond latency. The tradeoff: unlike SQL databases, you must know your access patterns BEFORE designing the table.</p>
+  <table class="ref-table">
+    <thead><tr><th>Concept</th><th>What it is</th><th>Rule of thumb</th></tr></thead>
+    <tbody>
+      <tr><td>Partition Key (Hash Key)</td><td>The primary key — used to distribute data across partitions. Must be unique if no Sort Key.</td><td>Choose high-cardinality values (user_id, order_id). Never use low-cardinality (status, date) — causes "hot partition"</td></tr>
+      <tr><td>Sort Key (Range Key)</td><td>Secondary part of a composite primary key. Allows multiple items with the same partition key.</td><td>Common pattern: partition_key=user_id, sort_key=timestamp — lets you query "all orders for user X sorted by time"</td></tr>
+      <tr><td>GSI (Global Secondary Index)</td><td>An alternate index with different partition/sort key. Enables queries on non-primary key attributes.</td><td>Add when you need to query by a different attribute. Costs extra — don't add GSIs you don't need.</td></tr>
+      <tr><td>Query vs Scan</td><td>Query uses the partition key — efficient. Scan reads every item in the table — expensive and slow at scale.</td><td>NEVER use Scan in production on large tables. If you need to Scan often, add a GSI.</td></tr>
+      <tr><td>Provisioned vs On-Demand capacity</td><td>Provisioned: specify read/write units per second (cheaper at predictable traffic). On-Demand: pay per request (better for unpredictable traffic)</td><td>Start with On-Demand. Switch to Provisioned once you know your usage patterns.</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — DYNAMODB DESIGN</div>
+    <div class="eq-q">An e-commerce application stores orders in DynamoDB. The table has order_id as the partition key. The team needs to query "all orders placed by user X in the last 30 days" efficiently. What should they add?</div>
+    <div class="eq-opt">A) Do a full table Scan and filter by user_id and timestamp</div>
+    <div class="eq-opt">B) Create a Global Secondary Index with user_id as partition key and order_date as sort key</div>
+    <div class="eq-opt">C) Migrate to RDS to support this query pattern</div>
+    <div class="eq-opt">D) Add user_id as a Local Secondary Index</div>
+    <div class="eq-ans">ANSWER: B — GSI with user_id (PK) + order_date (SK)</div>
+    <div class="eq-why">A table Scan reads every item — expensive at scale. A GSI allows querying by user_id (partition key) and filtering by order_date (sort key), using Query instead of Scan. This scales efficiently. LSI (Local Secondary Index) shares the same partition key as the table — not helpful here since we need to query by user_id, which is different from order_id.</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SQS + SNS -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D85–88</span><div><div class="day-title">SQS + SNS — Decoupled Architectures</div><div class="day-topic">Queues vs topics, fan-out pattern, dead-letter queues, visibility timeout</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Lab + Exam Practice</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">SQS vs SNS — different tools for different problems</div>
+  <table class="ref-table">
+    <thead><tr><th>Service</th><th>Pattern</th><th>Retention</th><th>Use cases</th></tr></thead>
+    <tbody>
+      <tr><td>SQS (Simple Queue Service)</td><td>Pull — consumers poll the queue for messages</td><td>Up to 14 days. Messages deleted only after consumer explicitly deletes them.</td><td>Work queues, task offloading, decoupling microservices, order processing</td></tr>
+      <tr><td>SNS (Simple Notification Service)</td><td>Push — SNS pushes messages to all subscribers immediately</td><td>No retention — messages not delivered are lost</td><td>Fan-out (one event → many subscribers), alerts, mobile push notifications</td></tr>
+    </tbody>
+  </table>
+  <p class="explain"><strong>The Fan-Out Pattern:</strong> SNS + SQS together. One SNS topic, multiple SQS queues subscribed to it. When an event fires, SNS delivers to all queues simultaneously. Each service processes from its own queue independently. This decouples producers from consumers completely.</p>
+  <div class="arch-diagram">
+<span class="layer">Fan-out architecture example: Order placed</span>
+                                  
+<span class="component">Order Service</span>
+    <span class="arrow">└── publishes to →</span> <span class="component">SNS Topic: order-placed</span>
+                            <span class="arrow">├── delivers to →</span> <span class="component">SQS Queue: email-notifications</span>
+                            <span class="arrow">│                    └── consumed by →</span> <span class="layer">Email Lambda</span>
+                            <span class="arrow">├── delivers to →</span> <span class="component">SQS Queue: inventory-updates</span>
+                            <span class="arrow">│                    └── consumed by →</span> <span class="layer">Inventory Service</span>
+                            <span class="arrow">└── delivers to →</span> <span class="component">SQS Queue: analytics</span>
+                                             <span class="arrow">└── consumed by →</span> <span class="layer">Analytics Service</span>
+<span class="note">
+Order Service doesn't know about Email, Inventory, or Analytics.
+Adding a new subscriber = subscribe a new SQS queue to SNS. Zero code changes to Order Service.</span>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — SQS VISIBILITY TIMEOUT</div>
+    <div class="eq-q">An SQS consumer receives a message and starts processing it. While processing, the visibility timeout expires. The message reappears in the queue and another consumer picks it up. Now the same message is being processed twice. What is the correct solution?</div>
+    <div class="eq-opt">A) Use a FIFO queue instead of a Standard queue</div>
+    <div class="eq-opt">B) Make the consumer extend the visibility timeout before it expires, or set a longer initial timeout that exceeds the processing time</div>
+    <div class="eq-opt">C) Delete the message immediately upon receipt before processing</div>
+    <div class="eq-opt">D) Use SNS instead of SQS</div>
+    <div class="eq-ans">ANSWER: B — Extend visibility timeout</div>
+    <div class="eq-why">The Visibility Timeout is how long a message is hidden from other consumers after being received. If processing takes longer than the timeout, the message becomes visible again (SQS assumes the consumer died). Solution: increase the timeout, OR have the consumer call ChangeMessageVisibility to extend it mid-processing. Option C (delete before processing) would cause data loss if the consumer crashes. Option A helps with ordering but not visibility timeout.</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 11: ADVANCED + CAPSTONE ═══════════════════════════ -->
+<div class="section" id="s5">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 4 · WEEK 11 · DAYS 89–100</div>
+  <div class="week-title">Advanced Services + Month 3 Capstone on Real AWS</div>
+  <div class="week-sub">This week rounds out your AWS knowledge with CloudFront, Route 53, CloudWatch, and ECS Fargate — all heavily tested on the exam. Then the big build: your production 3-tier application on real AWS. One session, one budget, full teardown afterwards.</div>
+  <div class="week-tags">
+    <span class="tag">CloudFront CDN</span><span class="tag">Route 53 DNS</span><span class="tag">CloudWatch</span>
+    <span class="tag">ECS Fargate</span><span class="tag">ACM SSL certificates</span>
+    <span class="tag">3-tier production build</span>
+  </div>
+</div>
+
+<!-- CLOUDFRONT + ROUTE 53 -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D89–91</span><div><div class="day-title">CloudFront + Route 53 — CDN and DNS</div><div class="day-topic">CDN distributions, origins, cache behaviors, DNS record types, routing policies</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Exam-critical</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">CloudFront — global content delivery network</div>
+  <p class="explain">CloudFront sits in front of your application and caches content at 400+ edge locations worldwide. When a user in Lagos requests your website hosted in us-east-1, CloudFront serves the cached content from a nearby edge location (e.g., Johannesburg) — instead of routing all the way to Virginia. This reduces latency, reduces load on your origin, and improves resilience.</p>
+  <table class="ref-table">
+    <thead><tr><th>CloudFront concept</th><th>What it means</th><th>Key exam fact</th></tr></thead>
+    <tbody>
+      <tr><td>Origin</td><td>The source of your content — S3 bucket, ALB, EC2 instance, or custom HTTP server</td><td>You can have multiple origins in one distribution for different path patterns</td></tr>
+      <tr><td>Distribution</td><td>The CloudFront configuration — maps a domain to origins with cache behaviors</td><td>Takes 15-20 minutes to deploy globally after creation</td></tr>
+      <tr><td>Cache Behavior</td><td>Rules for how to handle specific URL path patterns — what to cache, how long, which origin to use</td><td>Path /api/* might bypass cache (dynamic), while /images/* caches for 24h</td></tr>
+      <tr><td>TTL (Time To Live)</td><td>How long CloudFront caches content before checking origin for updates</td><td>Default: 24 hours. Use Cache-Control headers from origin to override per-object.</td></tr>
+      <tr><td>OAC (Origin Access Control)</td><td>Restricts S3 access so only CloudFront can access your bucket directly — users can't bypass CloudFront</td><td>Replace the older OAI (Origin Access Identity). Use OAC for new deployments.</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Route 53 — DNS routing policies</div>
+  <table class="ref-table">
+    <thead><tr><th>Routing policy</th><th>How it works</th><th>Use case</th></tr></thead>
+    <tbody>
+      <tr><td>Simple</td><td>Returns a single IP. Can return multiple IPs randomly.</td><td>Single server, simple setup</td></tr>
+      <tr><td>Weighted</td><td>Route X% to endpoint A, Y% to endpoint B</td><td>A/B testing, gradual traffic migration between versions</td></tr>
+      <tr><td>Latency-based</td><td>Routes to AWS region with lowest latency for the user</td><td>Multi-region apps where users should hit the closest region</td></tr>
+      <tr><td>Failover</td><td>Routes to primary; if health check fails, routes to secondary</td><td>Disaster recovery — active-passive setup</td></tr>
+      <tr><td>Geolocation</td><td>Routes based on geographic location of the user</td><td>Show different content to different countries, compliance requirements</td></tr>
+      <tr><td>Geoproximity</td><td>Routes based on distance, with a configurable bias</td><td>Shift traffic gradually from one region to another</td></tr>
+      <tr><td>Multi-Value Answer</td><td>Returns multiple healthy IPs randomly — basic client-side load balancing</td><td>Not a substitute for ELB — doesn't handle session affinity or complex routing</td></tr>
+    </tbody>
+  </table>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — ROUTE 53 ROUTING</div>
+    <div class="eq-q">A company's website is hosted in us-east-1 and eu-west-1. Users should always be directed to the region with the lowest network latency for their location. Which Route 53 routing policy should be used?</div>
+    <div class="eq-opt">A) Weighted routing (50% to each region)</div>
+    <div class="eq-opt">B) Geolocation routing (US users to us-east-1, European users to eu-west-1)</div>
+    <div class="eq-opt">C) Latency-based routing</div>
+    <div class="eq-opt">D) Simple routing with two records</div>
+    <div class="eq-ans">ANSWER: C — Latency-based routing</div>
+    <div class="eq-why">Latency-based routing sends users to whichever region has the lowest latency for them. Geolocation routes by geography (country/continent) — a user in Eastern Europe might be closer to us-east-1 than eu-west-1. Weighted just splits 50/50 regardless of latency. Latency-based is the correct choice when the goal is "lowest latency for the user."</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- CLOUDWATCH + ECS -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D92–95</span><div><div class="day-title">CloudWatch + ECS Fargate — Monitoring and Serverless Containers</div><div class="day-topic">Metrics, logs, alarms, dashboards, ECS vs EKS vs Lambda</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-t">Theory + Exam practice</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">CloudWatch — the eyes of AWS</div>
+  <table class="ref-table">
+    <thead><tr><th>CloudWatch feature</th><th>What it does</th><th>Key exam detail</th></tr></thead>
+    <tbody>
+      <tr><td>Metrics</td><td>Numerical data over time — EC2 CPU, RDS connections, Lambda duration</td><td>Standard metrics: 5-minute resolution. Detailed monitoring: 1-minute (costs extra).</td></tr>
+      <tr><td>Alarms</td><td>Triggers actions when a metric crosses a threshold</td><td>Three states: OK, ALARM, INSUFFICIENT_DATA. Can trigger: SNS, Auto Scaling, EC2 actions.</td></tr>
+      <tr><td>Logs</td><td>Centralized log storage and search</td><td>Retention from 1 day to never. Use Metric Filters to extract metric data from log lines.</td></tr>
+      <tr><td>Dashboards</td><td>Custom visualizations of your metrics</td><td>Can include metrics from multiple regions in one dashboard.</td></tr>
+      <tr><td>Events / EventBridge</td><td>Rule-based triggers on AWS events or on a schedule</td><td>EventBridge (formerly CloudWatch Events) is the modern name. Can trigger Lambda, SQS, SNS, ECS, Step Functions.</td></tr>
+      <tr><td>Container Insights</td><td>Enhanced monitoring for ECS and EKS clusters</td><td>Must be enabled manually. Provides cluster, service, task, and container-level metrics.</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">ECS Fargate — containers without managing servers</div>
+  <p class="explain">ECS (Elastic Container Service) with Fargate launch type removes the need to manage EC2 instances. You define your container (Docker image, CPU, RAM), and Fargate provisions and runs it. You pay per second for the CPU and RAM your container uses.</p>
+  <div class="exam-q">
+    <div class="eq-label">EXAM QUESTION — ECS vs EKS vs LAMBDA</div>
+    <div class="eq-q">A company wants to run Docker containers without managing any infrastructure. They need to run containers on demand when triggered by an event, and each container runs for up to 10 minutes. Which service should they use?</div>
+    <div class="eq-opt">A) ECS with EC2 launch type</div>
+    <div class="eq-opt">B) ECS with Fargate launch type</div>
+    <div class="eq-opt">C) Lambda (with container image support)</div>
+    <div class="eq-opt">D) EKS with managed node groups</div>
+    <div class="eq-ans">ANSWER: B — ECS with Fargate</div>
+    <div class="eq-why">Fargate runs containers without managing EC2. Lambda container support exists but has a 15-minute max timeout — 10 minutes is fine, BUT the question says "Docker containers" which implies ECS. ECS with EC2 requires managing instances. EKS is Kubernetes — overkill and more management. Fargate is the "no infrastructure management + Docker containers" answer.</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- BIG CAPSTONE BUILD -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D96–100</span><div><div class="day-title">Phase 2 Capstone — Production 3-Tier App on Real AWS</div><div class="day-topic">The big build: VPC + EC2 ASG + ALB + RDS + ElastiCache + CloudFront + Route 53 + CloudWatch</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-c">CAPSTONE BUILD</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The architecture — everything you've learned this month in one system</div>
+  <div class="arch-diagram">
+<span class="layer">PRODUCTION 3-TIER ARCHITECTURE ON AWS</span>
+  
+<span class="layer">Internet</span>
+  <span class="arrow">│</span>
+  <span class="arrow">▼</span>
+<span class="component">Route 53</span> (DNS → CloudFront domain)
+  <span class="arrow">│</span>
+  <span class="arrow">▼</span>
+<span class="component">CloudFront</span> (CDN, HTTPS, caches static assets, WAF)
+  <span class="arrow">│</span>
+  <span class="arrow">▼</span>
+<span class="layer">VPC: 10.0.0.0/16 (us-east-1)</span>
+  <span class="arrow">│</span>
+  <span class="arrow">├─</span> <span class="component">Application Load Balancer</span> (public subnets 1a + 1b)
+  <span class="arrow">│       │</span>
+  <span class="arrow">│       ▼</span>
+  <span class="arrow">│  </span><span class="component">Auto Scaling Group</span> (min 2, max 6, t2.micro)
+  <span class="arrow">│  </span><span class="component">EC2 instances: Node.js API</span> (private app subnets 1a + 1b)
+  <span class="arrow">│       │              │</span>
+  <span class="arrow">│       │              ▼</span>
+  <span class="arrow">│       │    </span><span class="component">ElastiCache Redis</span> (session + query cache)
+  <span class="arrow">│       │</span>
+  <span class="arrow">│       ▼</span>
+  <span class="arrow">│  </span><span class="component">RDS PostgreSQL Multi-AZ</span> (private DB subnets 1a + 1b)
+  <span class="arrow">│  </span><span class="component">RDS Read Replica</span> (for analytics queries)
+  <span class="arrow">│</span>
+  <span class="arrow">└─</span> <span class="component">SQS Queue</span> (async task processing)
+     <span class="component">SNS Topic</span> → email/Slack alerts
+     <span class="component">CloudWatch</span> → dashboards, alarms, billing alerts
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Budget and session rules — this is a real AWS session</div>
+  <div class="alert al-warn">
+    <span class="al-icon">▲</span>
+    <span><strong>Budget for this session: ₦10,000–₦12,000 (8 hours max).</strong> Before starting: set billing alert at ₦500, budget alert at ₦5,000. Keep the session to 8 hours — start at 7 AM, finish and run nuke.sh by 4 PM. The expensive components: NAT Gateway (~₦40/hr), RDS Multi-AZ (~₦65/hr), ALB (~₦20/hr). EC2 t2.micro is free tier.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Build sequence — follow this order exactly</div>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div>Run your VPC build script (from Week 8) against real AWS — takes 10 minutes. Verify 6 subnets, IGW, NAT Gateway.</div></div>
+    <div class="step"><div class="step-n"></div><div>Request an ACM SSL certificate for your domain (or use a test domain). Certificate validation via DNS — takes 5 minutes.</div></div>
+    <div class="step"><div class="step-n"></div><div>Launch RDS PostgreSQL Multi-AZ in private DB subnets. Set up a read replica. Takes 15 minutes to provision.</div></div>
+    <div class="step"><div class="step-n"></div><div>While RDS provisions: create ElastiCache Redis cluster in private subnet.</div></div>
+    <div class="step"><div class="step-n"></div><div>Create ALB in public subnets with HTTPS listener (443) → target group → HTTP (80) to EC2.</div></div>
+    <div class="step"><div class="step-n"></div><div>Create Launch Template with user data that installs Node.js, clones a simple API from GitHub, starts it.</div></div>
+    <div class="step"><div class="step-n"></div><div>Create Auto Scaling Group (min 2, max 6) in private app subnets, attached to the ALB target group.</div></div>
+    <div class="step"><div class="step-n"></div><div>Create CloudFront distribution with ALB as origin, connect to Route 53 (or just use CloudFront domain for testing).</div></div>
+    <div class="step"><div class="step-n"></div><div>Create CloudWatch dashboard with: EC2 CPU, RDS connections, ALB request count, custom billing metric.</div></div>
+    <div class="step"><div class="step-n"></div><div>Test end-to-end: hit the CloudFront URL, see the response from an EC2 instance behind the ALB that reads from RDS.</div></div>
+    <div class="step"><div class="step-n"></div><div>Take screenshots of every AWS console view. Draw the architecture in draw.io.</div></div>
+    <div class="step"><div class="step-n"></div><div>Run <code>nuke.sh</code>. Verify $0 running cost. Write the blog post.</div></div>
+  </div>
+</div>
+<div class="capstone">
+  <div class="cap-eyebrow">MONTH 3 CAPSTONE REQUIREMENTS</div>
+  <div class="cap-title">Blog post #1: "Building a production AWS architecture from scratch"</div>
+  <div class="cap-desc">A 2,500-word blog post on Dev.to and Hashnode covering every architecture decision: why Multi-AZ for RDS, why NAT Gateway for private subnets, why CloudFront, why ElastiCache. Include your draw.io architecture diagram. Link to your GitHub scripts. This drives visibility months before you start job hunting.</div>
+  <div class="cap-reqs">
+    <div class="cap-req">draw.io architecture diagram showing all VPC components, services, and traffic flow</div>
+    <div class="cap-req">Screenshots: VPC dashboard, RDS instances, ASG scaling events, CloudWatch dashboard</div>
+    <div class="cap-req">All build scripts (VPC, EC2 launcher, ASG) committed to GitHub</div>
+    <div class="cap-req">Blog post published on Dev.to + Hashnode with the architecture diagram</div>
+    <div class="cap-req">Total AWS spend for the session: under ₦12,000 and immediately torn down</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ EXAM SPRINT ═══════════════════════════ -->
+<div class="section" id="s6">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 4 · WEEKS 12–13 · DAYS 101–120</div>
+  <div class="week-title">SAA-C03 Certification Sprint</div>
+  <div class="week-sub">The exam is 65 questions in 130 minutes. Passing score: 720/1000. Your target: 750+. The only way to pass is to rebuild every service you get wrong — not just read the explanation. Three full timed practice exams, daily question drilling, and strategic review of weak areas.</div>
+  <div class="week-tags">
+    <span class="tag">150–200 questions/day</span><span class="tag">3 full timed exams</span>
+    <span class="tag">Rebuild every wrong answer</span><span class="tag">SAA-C03 Exam Day</span>
+  </div>
+</div>
+
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D101–107</span><div><div class="day-title">Week 12 — Topic-by-Topic Question Drilling</div><div class="day-topic">One AWS service per day, 150–200 questions per day minimum</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-e">Exam sprint</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Daily topic focus and question targets</div>
+  <table class="ref-table">
+    <thead><tr><th>Day</th><th>Focus area</th><th>Questions</th><th>Rebuild drill</th></tr></thead>
+    <tbody>
+      <tr><td>101</td><td>IAM — policies, roles, SCP, cross-account</td><td>150+</td><td>Create an IAM role with a custom policy in console for every wrong answer</td></tr>
+      <tr><td>102</td><td>VPC — subnets, NACLs, endpoints, peering, Transit Gateway</td><td>150+</td><td>Draw the VPC topology from every wrong question by hand</td></tr>
+      <tr><td>103</td><td>EC2 + ASG + ELB — pricing models, instance types, scaling</td><td>150+</td><td>Write the answer to pricing questions in a spreadsheet (build a cost model)</td></tr>
+      <tr><td>104</td><td>S3 + storage — classes, encryption, replication, lifecycle</td><td>150+</td><td>Write a lifecycle policy for each wrong question in JSON</td></tr>
+      <tr><td>105</td><td>RDS + DynamoDB + ElastiCache</td><td>150+</td><td>Explain Multi-AZ vs Read Replica aloud without notes</td></tr>
+      <tr><td>106</td><td>Lambda + SQS + SNS + EventBridge</td><td>150+</td><td>Draw the event-driven architecture from each question</td></tr>
+      <tr><td>107</td><td>Security — KMS, WAF, Shield, GuardDuty, Security Hub</td><td>150+</td><td>Write a 2-sentence explanation of each security service</td></tr>
+    </tbody>
+  </table>
+  <div class="alert al-success">
+    <span class="al-icon">→</span>
+    <span><strong>The rebuild rule:</strong> Every question you get wrong — do not just read the explanation and move on. Go to MiniStack or the AWS console and rebuild the concept within 30 minutes. If the wrong answer was about Multi-AZ failover, create a Multi-AZ RDS instance and read about the failover mechanism. This is what converts wrong answers into permanent knowledge.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">10 more exam questions across domains — critical patterns</div>
+  <div class="exam-q">
+    <div class="eq-label">HIGH-FREQUENCY PATTERN — DISASTER RECOVERY</div>
+    <div class="eq-q">A company needs a disaster recovery strategy for their production database. RTO (Recovery Time Objective) is 1 hour and RPO (Recovery Point Objective) is 15 minutes. Which strategy meets these requirements at the LOWEST cost?</div>
+    <div class="eq-opt">A) Backup and Restore — restore from nightly snapshot</div>
+    <div class="eq-opt">B) Pilot Light — a minimal version of the environment is always running</div>
+    <div class="eq-opt">C) Warm Standby — a scaled-down but fully functional copy always running</div>
+    <div class="eq-opt">D) Multi-Site Active-Active — full production environment in two regions</div>
+    <div class="eq-ans">ANSWER: B — Pilot Light</div>
+    <div class="eq-why">RTO 1 hour and RPO 15 minutes rules out Backup/Restore (RPO = time since last backup, usually hours). Multi-Site Active-Active and Warm Standby are more expensive. Pilot Light keeps core data replication running (meeting 15-min RPO) and can be scaled up within 1 hour (meeting RTO). This is the cost-optimized middle ground.</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">HIGH-FREQUENCY PATTERN — STORAGE SELECTION</div>
+    <div class="eq-q">A company needs to store 5 TB of data that is accessed once per year for compliance auditing. The retrieval time for a compliance audit can be up to 12 hours. Which storage solution is the MOST cost-effective?</div>
+    <div class="eq-opt">A) S3 Standard</div>
+    <div class="eq-opt">B) S3 Standard-IA</div>
+    <div class="eq-opt">C) S3 Glacier Deep Archive</div>
+    <div class="eq-opt">D) EBS Cold HDD (sc1)</div>
+    <div class="eq-ans">ANSWER: C — S3 Glacier Deep Archive</div>
+    <div class="eq-why">Data accessed once per year with up to 12-hour retrieval = Glacier Deep Archive. It's the cheapest S3 storage class (~$0.00099/GB/month — about 95% cheaper than Standard). Retrieval takes 12–48 hours, which matches the 12-hour requirement. EBS is for block storage attached to EC2 — wrong service. Standard and Standard-IA are overkill and expensive for annual access.</div>
+  </div>
+  <div class="exam-q">
+    <div class="eq-label">HIGH-FREQUENCY PATTERN — DECOUPLING</div>
+    <div class="eq-q">A monolithic application processes orders synchronously. During sales events, the processing queue backs up, users see slow responses, and some orders are lost. How should the architecture be improved?</div>
+    <div class="eq-opt">A) Scale up the database (larger RDS instance)</div>
+    <div class="eq-opt">B) Add more EC2 instances to the Auto Scaling Group with no queue</div>
+    <div class="eq-opt">C) Accept orders into an SQS queue immediately, confirm to the user, and process asynchronously</div>
+    <div class="eq-opt">D) Enable ElastiCache to cache order requests</div>
+    <div class="eq-ans">ANSWER: C — SQS queue for decoupling</div>
+    <div class="eq-why">The core problem is tight coupling — the frontend waits for the entire order processing to complete. By accepting the order into SQS and returning "Order received" immediately, the user gets a fast response and no orders are lost (SQS retains them up to 14 days). The processing workers drain the queue at their own pace. This is the fundamental "decoupling" pattern that AWS loves to test.</div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D108–119</span><div><div class="day-title">Week 13 — Full Timed Practice Exams + Exam Day</div><div class="day-topic">3 full 65-question exams, gap filling, final review, exam day</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-e">Exam sprint</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Full exam schedule — weeks 13</div>
+  <table class="ref-table">
+    <thead><tr><th>Day</th><th>Activity</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td>108 (Mon)</td><td>Practice Exam 1 — 65 questions, 130 minutes, timed. No pausing.</td><td>Score your result. Aim for 70%+</td></tr>
+      <tr><td>109 (Tue)</td><td>Full review of every wrong answer from Exam 1. For each wrong: find the AWS doc, rebuild in MiniStack.</td><td>Document WHY you got it wrong</td></tr>
+      <tr><td>110 (Wed)</td><td>Practice Exam 2 — 65 questions, 130 minutes, timed.</td><td>Score higher than Exam 1. Aim 78%+</td></tr>
+      <tr><td>111 (Thu)</td><td>Full review of Exam 2 wrongs. Focus on patterns — which domain keeps catching you?</td><td>Identify your #1 weak domain</td></tr>
+      <tr><td>112 (Fri)</td><td>Practice Exam 3 — 65 questions, 130 minutes. Target: 85%+</td><td>Exam 3 score predicts actual exam score</td></tr>
+      <tr><td>113 (Sat)</td><td>Review Exam 3 wrongs. Read the AWS Well-Architected Framework whitepapers (30 min each pillar).</td><td>Final weak area identification</td></tr>
+      <tr><td>114 (Sun)</td><td>Light review only. Read your personal error log. Review cheat sheets. NO new topics.</td><td>Let your brain consolidate</td></tr>
+      <tr><td>115 (Mon)</td><td>More drilling on weakest areas. Read AWS service FAQs for top 5 weakest services.</td><td>Fill the last gaps</td></tr>
+      <tr><td>116–118</td><td>Continue question drilling. If scoring 85%+ consistently: you are ready.</td><td>Maintain momentum, don't over-study</td></tr>
+      <tr><td>119 (Sun)</td><td>FINAL DAY BEFORE EXAM: Skim notes only. Early dinner. 8+ hours sleep.</td><td>No new studying. Rest is preparation.</td></tr>
+      <tr><td>120 (Mon)</td><td>EXAM DAY — Pearson VUE Lagos or online proctored</td><td>Target: 750+/1000 (pass = 720)</td></tr>
+    </tbody>
+  </table>
+  <div class="alert al-info">
+    <span class="al-icon">→</span>
+    <span><strong>Exam booking:</strong> Book at aws.amazon.com/certification → Pearson VUE. If taking in Lagos, search for test centres — there are usually centres on Victoria Island and Lekki. Book at least 2 weeks in advance. Exam cost: ₦240,000. Bring two forms of ID. Arrive 30 minutes early.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Time management strategy for the exam</div>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div><strong>First pass (80 min):</strong> Answer every question you know confidently. Mark any question that requires more thought. Target: 40+ questions answered in first pass.</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Second pass (40 min):</strong> Return to flagged questions. Eliminate obviously wrong answers first. Between two remaining options: ask yourself "which is more specific to the requirement?" — AWS often tests precision.</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Final 10 min:</strong> Review any unanswered questions. Make a guess — there's no penalty for wrong answers. Never leave a question blank.</div></div>
+  </div>
+  <div class="alert al-note">
+    <span class="al-icon">→</span>
+    <span><strong>The two key elimination strategies:</strong> (1) If the question asks for "MOST cost-effective" and one answer includes dedicated hosts, eliminate it first. (2) If the question asks for "highest availability" and one answer uses a single AZ, eliminate it. The exam rewards knowing which answers are categorically wrong before finding the right answer.</span>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="gate">
+  <div class="gate-title">PHASE 2 COMPLETE — YOU ARE READY FOR PHASE 3 WHEN:</div>
+  <div class="gate-item">AWS SAA-C03 certification earned — score card posted to LinkedIn and portfolio</div>
+  <div class="gate-item">You can draw a production VPC architecture from memory including CIDR blocks, route tables, IGW, NAT Gateway, security groups, and NACLs</div>
+  <div class="gate-item">iam-audit.py and s3-backup.py are on GitHub with tests, professional READMEs, and work against both MiniStack and real AWS</div>
+  <div class="gate-item">You can explain the difference between Multi-AZ and Read Replica, SQS and SNS, ALB and NLB — fluently, without notes</div>
+  <div class="gate-item">Blog post #1 is live with architecture diagram — linked from your GitHub profile</div>
+  <div class="gate-item">Real AWS spend for all of Phase 2: under ₦30,000 total</div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">SAA</div><div class="ml">certified</div></div>
+  <div class="metric"><div class="mv">20+</div><div class="ml">services mastered</div></div>
+  <div class="metric"><div class="mv">₦30k</div><div class="ml">max total spend</div></div>
+  <div class="metric"><div class="mv">2</div><div class="ml">Python tools on GitHub</div></div>
+  <div class="metric"><div class="mv">1</div><div class="ml">blog post live</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ RESOURCES ═══════════════════════════ -->
+<div class="section" id="s7">
+<div class="week-header">
+  <div class="week-eyebrow">PHASE 2 REFERENCE</div>
+  <div class="week-title">Resources, Exam Prep, and Cost Tools</div>
+  <div class="week-sub">Everything you need for Phase 2. Every resource is free unless marked with a cost.</div>
+</div>
+
+<div class="res-grid">
+  <div class="res-card">
+    <div class="res-cat">FREE VIDEO COURSES</div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS SAA Full Course — freeCodeCamp (14h) — youtube.com/watch?v=Ia-UEYYR44s</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS VPC Tutorial — freeCodeCamp — youtube.com/watch?v=fpxDGU2KdkA</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS IAM Tutorial — freeCodeCamp — youtube.com/watch?v=_ZCTvmaPgao</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS EC2 Tutorial — freeCodeCamp — youtube.com/watch?v=8TlukLu11Yo</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS S3 Tutorial — freeCodeCamp — youtube.com/watch?v=tfU0JEZjcsg</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Exam Readiness — Skill Builder — explore.skillbuilder.aws (free)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Practice Questions — Skill Builder — explore.skillbuilder.aws/learn/courses/</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">FREE EXAM PRACTICE</div>
+    <div class="res-item"><div class="res-dot"></div><div>ExamTopics SAA-C03 — examtopics.com — 1000+ community questions, read discussions</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Official Practice Questions — explore.skillbuilder.aws — free sample question sets</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>ExamCert free questions — examcert.app/exams/aws-saa-c03</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Whizlabs free trial — whizlabs.com — 30 free questions to start</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Well-Architected Framework — aws.amazon.com/architecture/well-architected — read all 6 pillars</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Service FAQs — aws.amazon.com/faqs — read FAQ for each service you study</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">PAID (WORTH EVERY NAIRA)</div>
+    <div class="res-item"><div class="res-dot"></div><div>Tutorials Dojo SAA-C03 Practice Exams — ~₦15,000 on Udemy. Jon Bonso's exams are 10% harder than the real exam. If you score 75% here, you'll pass. Best investment in Phase 2.</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS SAA-C03 Exam — ₦240,000 at Pearson VUE. Book at least 2 weeks in advance at aws.amazon.com/certification.</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">DOCUMENTATION</div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS VPC User Guide — docs.aws.amazon.com/vpc/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS IAM User Guide — docs.aws.amazon.com/IAM/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS S3 User Guide — docs.aws.amazon.com/AmazonS3/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS EC2 User Guide — docs.aws.amazon.com/ec2/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS RDS User Guide — docs.aws.amazon.com/AmazonRDS/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>SAA-C03 Exam Guide (official PDF) — d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS-Certified-Solutions-Architect-Associate_Exam-Guide.pdf</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">COST MANAGEMENT TOOLS</div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Cost Calculator — calculator.aws — estimate costs before building</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Billing Dashboard — console.aws.amazon.com/billing — check this DAILY</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Cost Explorer — analyze your spending patterns</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Budgets — set hard limits with email alerts (set at ₦1,000 threshold)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>nuke.sh — your custom script that terminates all resources. Run after every session.</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">LOCAL DEVELOPMENT TOOLS</div>
+    <div class="res-item"><div class="res-dot"></div><div>MiniStack — docker run -d -p 4566:4566 ministackorg/ministack</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS CLI v2 — docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>boto3 docs — boto3.amazonaws.com/v1/documentation/api/latest/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>draw.io — app.diagrams.net — architecture diagrams, free</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Postman — postman.com — test API Gateway + Lambda APIs</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Apache Bench (ab) — apt install apache2-utils — load test your ALB</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="alert al-success">
+  <span class="al-icon">✓</span>
+  <span><strong>Phase 2 is the certification phase — and it's worth it.</strong> The SAA-C03 certification signals to employers that you understand AWS architecture at a design level, not just a "clicking in the console" level. Engineers with this certification command 30–50% higher starting salaries than uncertified candidates with the same hands-on experience. The ₦240,000 exam fee pays back in the first 3 weeks of employment at your target salary.</span>
+</div>
+</div>
+
+</main>
+
+<button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</button>
+
+<script>
+const SECTS = ['s0','s1','s2','s3','s4','s5','s6','s7'];
+function go(n){
+  SECTS.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.toggle('on',i===n);
+  });
+  document.querySelectorAll('.tnav').forEach((el,i)=>el.classList.toggle('on',i===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function td(header){
+  header.closest('.day').classList.toggle('open');
+}
+</script>
+</body>
+</html>

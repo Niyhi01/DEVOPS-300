@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niyhi's DevOps Engineering Roadmap — 10 Months</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --bg2: #13161d;
+  --bg3: #1a1e28;
+  --bg4: #212535;
+  --line: rgba(255,255,255,0.07);
+  --line2: rgba(255,255,255,0.12);
+  --text: #e8eaf0;
+  --text2: #9ba3b8;
+  --text3: #5c6480;
+  --accent: #5b8af5;
+  --accent2: #3d6fd4;
+  --green: #3ecf8e;
+  --green2: #1a8f5c;
+  --amber: #f0a347;
+  --amber2: #c47b1e;
+  --red: #f06060;
+  --purple: #9b7ef5;
+  --teal: #3ec8cf;
+  --pink: #f57eb6;
+  --gray: #6b7280;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Sora', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* ── LAYOUT ── */
+.container{max-width:960px;margin:0 auto;padding:0 2rem}
+.page-header{padding:4rem 0 3rem;border-bottom:1px solid var(--line)}
+.page-header h1{font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:-0.02em;line-height:1.2;margin-bottom:.75rem}
+.page-header p{color:var(--text2);font-size:15px;max-width:580px;line-height:1.7}
+.tagline{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.5rem}
+.pill{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px;border:1px solid var(--line2);color:var(--text2)}
+.pill.green{border-color:rgba(62,207,142,.3);color:var(--green)}
+.pill.amber{border-color:rgba(240,163,71,.3);color:var(--amber)}
+.pill.blue{border-color:rgba(91,138,245,.3);color:var(--accent)}
+.pill.purple{border-color:rgba(155,126,245,.3);color:var(--purple)}
+
+/* ── NAVIGATION ── */
+.phase-nav{position:sticky;top:0;z-index:100;background:rgba(13,15,20,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:.75rem 0}
+.nav-inner{display:flex;gap:6px;overflow-x:auto;padding:0 2rem;max-width:960px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.navbtn{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:4px;border:1px solid var(--line2);color:var(--text3);cursor:pointer;white-space:nowrap;background:transparent;transition:all .2s;letter-spacing:.04em}
+.navbtn:hover{color:var(--text2);border-color:var(--line2);background:var(--bg3)}
+.navbtn.on{color:var(--text);border-color:var(--accent);background:rgba(91,138,245,.1)}
+
+/* ── TIMELINE BAR ── */
+.timeline{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin:2.5rem 0 0;padding:0}
+.tm{padding:8px 6px;background:var(--bg3);border:1px solid var(--line);border-radius:4px;text-align:center;cursor:pointer;transition:all .18s}
+.tm:hover{background:var(--bg4);border-color:var(--line2)}
+.tm.on{border-color:var(--accent);background:rgba(91,138,245,.12)}
+.tm-num{font-family:var(--mono);font-size:10px;color:var(--text3);display:block}
+.tm-label{font-size:9px;color:var(--text3);display:block;margin-top:2px}
+.tm.on .tm-num{color:var(--accent)}
+
+/* ── SECTIONS ── */
+.section{padding:3rem 0;border-bottom:1px solid var(--line);display:none}
+.section.on{display:block}
+.section-header{margin-bottom:2rem}
+.section-num{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.08em;margin-bottom:.4rem}
+.section-title{font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-bottom:.6rem}
+.section-desc{color:var(--text2);font-size:14px;line-height:1.7;max-width:680px}
+.section-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem}
+
+/* ── COVENANT ── */
+.covenant{background:var(--bg2);border:1px solid var(--line2);border-left:3px solid var(--accent);border-radius:6px;padding:1.5rem;margin-bottom:2.5rem}
+.covenant-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;margin-bottom:1.25rem}
+.rule{display:flex;gap:12px;padding:.75rem 0;border-bottom:1px solid var(--line)}
+.rule:last-child{border-bottom:none;padding-bottom:0}
+.rule-n{font-family:var(--mono);font-size:11px;color:var(--accent);min-width:24px;padding-top:2px;flex-shrink:0}
+.rule-body{font-size:13px;color:var(--text2);line-height:1.6}
+.rule-body strong{color:var(--text);font-weight:500;display:block;margin-bottom:2px}
+
+/* ── WEEKS ── */
+.weeks{display:flex;flex-direction:column;gap:10px}
+.week{background:var(--bg2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.week-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s;gap:12px}
+.week-header:hover{background:var(--bg3)}
+.wh-left{display:flex;align-items:center;gap:10px;min-width:0}
+.wh-tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;flex-shrink:0}
+.wh-title{font-size:13px;font-weight:500;color:var(--text)}
+.wh-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.wh-days{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.toggle-icon{font-size:10px;color:var(--text3);transition:transform .2s;display:inline-block}
+.week.open .toggle-icon{transform:rotate(180deg)}
+.week-body{padding:16px;display:none;border-top:1px solid var(--line)}
+.week.open .week-body{display:block}
+
+/* ── CONTENT BLOCKS ── */
+.block{margin-bottom:18px}
+.block:last-child{margin-bottom:0}
+.block-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.block-label::after{content:'';flex:1;height:1px;background:var(--line)}
+.item{display:flex;gap:10px;font-size:13px;color:var(--text2);margin-bottom:6px;line-height:1.5}
+.item:last-child{margin-bottom:0}
+.item .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.item .dot.concept{background:var(--purple)}
+.item .dot.build{background:var(--green)}
+.item .dot.warn{background:var(--amber)}
+.item code{font-family:var(--mono);font-size:11px;background:var(--bg4);border:1px solid var(--line);padding:1px 5px;border-radius:3px;color:var(--teal)}
+
+/* ── DAILY LABS ── */
+.lab{background:var(--bg3);border-radius:4px;border:1px solid var(--line);padding:10px 12px;margin-bottom:6px}
+.lab:last-child{margin-bottom:0}
+.lab-day{font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:3px}
+.lab-text{font-size:12px;color:var(--text2);line-height:1.5}
+.lab-text code{font-family:var(--mono);font-size:11px;background:var(--bg4);border:1px solid var(--line);padding:1px 4px;border-radius:3px;color:var(--teal)}
+
+/* ── CAPSTONE ── */
+.capstone{background:var(--bg3);border:1px solid var(--line2);border-left:3px solid var(--green);border-radius:6px;padding:14px 16px;margin-top:14px}
+.capstone-tag{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.06em;margin-bottom:5px}
+.capstone-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
+.capstone-body{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* ── ALERTS ── */
+.alert{border-radius:4px;padding:10px 14px;margin-top:12px;font-size:12px;line-height:1.6;display:flex;gap:8px}
+.alert-warn{background:rgba(240,163,71,.08);border:1px solid rgba(240,163,71,.25);color:var(--amber)}
+.alert-info{background:rgba(91,138,245,.08);border:1px solid rgba(91,138,245,.25);color:#8aabf7}
+.alert-note{background:rgba(155,126,245,.08);border:1px solid rgba(155,126,245,.25);color:#b9a3f9}
+.alert-icon{flex-shrink:0;font-size:14px;margin-top:1px}
+
+/* ── METRICS ── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:1.5rem}
+.metric{background:var(--bg3);border:1px solid var(--line);border-radius:5px;padding:12px 14px}
+.metric-val{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--text);line-height:1}
+.metric-label{font-size:11px;color:var(--text3);margin-top:4px}
+
+/* ── RESOURCES ── */
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:1rem}
+.res-card{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.res-cat{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;margin-bottom:10px}
+.res-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);margin-bottom:6px;line-height:1.45}
+.res-item:last-child{margin-bottom:0}
+.res-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.res-item a{color:var(--accent);text-decoration:none}
+.res-item a:hover{text-decoration:underline}
+
+/* ── BUDGET ── */
+.budget-table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:13px}
+.budget-table th{text-align:left;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid var(--line2)}
+.budget-table td{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--text2)}
+.budget-table td:last-child{font-family:var(--mono);color:var(--text);text-align:right}
+.budget-table tr.total td{color:var(--green);font-weight:500;border-top:1px solid var(--line2)}
+.budget-table td code{font-family:var(--mono);font-size:11px;color:var(--teal)}
+
+/* ── PROGRESS PHASES (overview) ── */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:1rem}
+.ov-card{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.ov-card:hover{border-color:var(--line2);background:var(--bg3)}
+.ov-num{font-family:var(--mono);font-size:10px;margin-bottom:6px}
+.ov-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.ov-months{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.ov-bar{height:3px;border-radius:2px;margin-top:10px;opacity:.7}
+
+/* ── DIVIDER ── */
+.divider{border:none;border-top:1px solid var(--line);margin:2rem 0}
+
+/* ── SCROLL TO TOP ── */
+.back-top{position:fixed;bottom:2rem;right:2rem;background:var(--bg3);border:1px solid var(--line2);border-radius:5px;padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--text2);cursor:pointer;transition:all .2s;z-index:200}
+.back-top:hover{background:var(--bg4);color:var(--text)}
+
+/* ── PRINT ── */
+@media print {
+  body{background:#fff;color:#111;font-size:12px}
+  .phase-nav,.back-top{display:none}
+  .section{display:block!important;page-break-inside:avoid}
+  .week-body{display:block!important}
+  .bg2,.bg3,.bg4,.covenant,.alert,.capstone,.lab,.metric,.res-card,.ov-card,.budget-table td{background:#f8f8f8!important;color:#222!important;border-color:#ddd!important}
+  a{color:#1a56db}
+  :root{--text:#111;--text2:#333;--text3:#666;--line:#ddd;--line2:#ccc;--accent:#1a56db;--green:#0a6640;--amber:#8b4f0a;--teal:#0e6b70;--purple:#5b3fa8}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .container{padding:0 1rem}
+  .nav-inner{padding:0 1rem}
+  .page-header{padding:2rem 0 2rem}
+  .timeline{grid-template-columns:repeat(5,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+<div class="container">
+  <div class="tagline">Niyhi's cloud-AI-DevOps engineering blueprint</div>
+  <h1>10 Months.<br>Builder's Edition.</h1>
+  <p>A project-first, low-cloud-cost roadmap to a $3k–$5k/month remote DevOps role. Every week ends with something real. Every month ends with a portfolio piece you can demo in an interview.</p>
+  <div class="meta-row">
+    <span class="pill blue">10 months · Jan–Oct 2026</span>
+    <span class="pill green">300+ hours of builds</span>
+    <span class="pill amber">₦240k max cloud spend (exam only)</span>
+    <span class="pill purple">Target: $3,000–$5,000/month remote</span>
+    <span class="pill">Lagos, Nigeria → international remote</span>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</div>
+</header>
+
+<nav class="phase-nav">
+  <div class="nav-inner" id="phasenav"></div>
+</nav>
+
+<main class="container">
+
+<!-- ═══════════════════════════ OVERVIEW ═══════════════════════════ -->
+<div class="section on" id="ph-0">
+<div class="section-header">
+  <div class="section-num">START HERE</div>
+  <div class="section-title">The full picture</div>
+  <div class="section-desc">Ten months broken into seven phases. Each phase has a clear entry requirement, a set of builds, and a milestone you can demonstrate. Read the covenant first — it runs through everything.</div>
+</div>
+
+<div class="covenant">
+  <div class="covenant-title">// THE BUILDER'S COVENANT — NON-NEGOTIABLE</div>
+  <div class="rule"><div class="rule-n">01</div><div class="rule-body"><strong>75/25 local-first split</strong>75% of all work happens locally using Kind clusters, MiniStack (the free MIT-licensed AWS emulator that replaced LocalStack's free tier in 2026 — <code>docker run -p 4566:4566 ministackorg/ministack</code>), VirtualBox/WSL2 VMs. The 25% on real cloud: spin up via Terraform only, screenshot proof, run <code>nuke.sh</code> before ending the session. Your AWS bill for 10 months should not exceed ₦40,000 total outside the exam fee.</div></div>
+  <div class="rule"><div class="rule-n">02</div><div class="rule-body"><strong>The hard kill switch — deploy it on day 1</strong>Before any cloud work: write <code>nuke.sh</code> — an AWS CLI script that terminates all EC2 instances, deletes all running RDS instances, drops EKS clusters, empties and deletes S3 buckets, and removes NAT gateways. AWS billing alert at ₦500. Budget alert at ₦1,000. Check the cost dashboard every morning before starting work.</div></div>
+  <div class="rule"><div class="rule-n">03</div><div class="rule-body"><strong>No copy-paste, ever</strong>You type every character of every script, YAML manifest, and Terraform block. AI can explain why your code fails. AI can describe an approach. AI can review what you wrote. AI does not write the code. The muscle memory — the ability to write a Deployment YAML from a blank file in an interview — lives in your hands or nowhere.</div></div>
+  <div class="rule"><div class="rule-n">04</div><div class="rule-body"><strong>Break it deliberately after every build</strong>Delete a pod. Corrupt a config. Kill a node. Spike CPU to 100%. Introduce a bad environment variable. You are not done with a build until you've seen at least 2 failure modes and recovered from both. Troubleshooting experience is worth more than any certification in a real interview.</div></div>
+  <div class="rule"><div class="rule-n">05</div><div class="rule-body"><strong>Ship and document every week</strong>Every week ends with: (a) a git commit with working code, (b) a reflection file <code>week-XX.md</code> answering: what did I build, what broke, what surprised me, what would I do differently. Every month ends with a portfolio-grade project that is live, linked, and explainable in 3 minutes to a non-technical person.</div></div>
+  <div class="rule"><div class="rule-n">06</div><div class="rule-body"><strong>Python runs in parallel from month 1</strong>Bash for system glue. Python for everything complex: automation scripts, AWS SDK (boto3), monitoring tooling, testing, ML infrastructure. Write at least 10 lines of Python every single day from month 1 week 4 onward. Do not wait for a dedicated Python phase. It does not exist.</div></div>
+  <div class="rule"><div class="rule-n">07</div><div class="rule-body"><strong>The daily schedule is not optional</strong>Mon–Fri: 6:00–7:30 AM theory/practice, 8:30–11:00 PM evening project build. Sat–Sun: 7:00–9:00 AM review and planning, 2:00–8:00 PM deep project work. Weekly total: ~35 hours. Miss a session: make it up the same week. No such thing as a free skip.</div></div>
+</div>
+
+<div class="overview-grid">
+  <div class="ov-card" onclick="show(1)"><div class="ov-num" style="color:#7b8ff5">PHASE 1</div><div class="ov-title">Bare-metal core</div><div class="ov-months">Months 1–2 · Days 1–60</div><div class="ov-bar" style="background:#7b8ff5;width:60%"></div></div>
+  <div class="ov-card" onclick="show(2)"><div class="ov-num" style="color:#3ecf8e">PHASE 2</div><div class="ov-title">AWS + certification</div><div class="ov-months">Months 3–4 · Days 61–120</div><div class="ov-bar" style="background:#3ecf8e;width:70%"></div></div>
+  <div class="ov-card" onclick="show(3)"><div class="ov-num" style="color:#f0a347">PHASE 3</div><div class="ov-title">Infrastructure as Code</div><div class="ov-months">Month 5 · Days 121–150</div><div class="ov-bar" style="background:#f0a347;width:50%"></div></div>
+  <div class="ov-card" onclick="show(4)"><div class="ov-num" style="color:#5b8af5">PHASE 4</div><div class="ov-title">Docker + Kubernetes</div><div class="ov-months">Months 6–7 · Days 151–210</div><div class="ov-bar" style="background:#5b8af5;width:75%"></div></div>
+  <div class="ov-card" onclick="show(5)"><div class="ov-num" style="color:#f57eb6">PHASE 5</div><div class="ov-title">CI/CD + GitOps</div><div class="ov-months">Month 8 · Days 211–240</div><div class="ov-bar" style="background:#f57eb6;width:55%"></div></div>
+  <div class="ov-card" onclick="show(6)"><div class="ov-num" style="color:#3ec8cf">PHASE 6</div><div class="ov-title">Observability + EKS prod</div><div class="ov-months">Month 9 · Days 241–270</div><div class="ov-bar" style="background:#3ec8cf;width:65%"></div></div>
+  <div class="ov-card" onclick="show(7)"><div class="ov-num" style="color:#9b7ef5">PHASE 7</div><div class="ov-title">Portfolio + job hunting</div><div class="ov-months">Month 10 · Days 271–300</div><div class="ov-bar" style="background:#9b7ef5;width:80%"></div></div>
+</div>
+
+<div class="alert alert-info" style="margin-top:1.5rem">
+  <span class="alert-icon">→</span>
+  <span>MiniStack setup (free LocalStack replacement): <code>docker run -d -p 4566:4566 ministackorg/ministack</code>. Then use <code>aws --endpoint-url=http://localhost:4566 s3 ls</code> — same CLI, same boto3 code, zero cost. Supports S3, SQS, Lambda, DynamoDB, EC2, RDS, ElastiCache, API Gateway, IAM, STS, Cognito, and 30+ more services. MIT licensed, no account required.</span>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ PHASE 1 ═══════════════════════════ -->
+<div class="section" id="ph-1">
+<div class="section-header">
+  <div class="section-num">PHASE 1 · MONTHS 1–2 · DAYS 1–60</div>
+  <div class="section-title">Bare-metal core: Linux · Bash · Python · Networking · Git</div>
+  <div class="section-desc">The foundation that makes everything else possible. No cloud. No Docker. Pure Linux internals, automation scripts, and networking from first principles. This is what separates engineers who know what's happening from engineers who just run commands.</div>
+  <div class="section-badges">
+    <span class="pill">100% local — ₦0 cloud spend</span>
+    <span class="pill green">Month 1 output: bash automation suite</span>
+    <span class="pill green">Month 2 output: Python CLI tools + pro GitHub profile</span>
+  </div>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(123,143,245,.15);color:#7b8ff5">M1 W1</span><span class="wh-title">Linux internals — how the OS actually works</span></div>
+      <div class="wh-right"><span class="wh-days">Days 1–5</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts to internalize</div>
+        <div class="item"><div class="dot concept"></div><div>The VFS (Virtual File System) — why Linux treats everything as a file. Inodes, superblocks, dentries. File descriptor limits (<code>ulimit -n</code>) and what happens when you hit them (EMFILE error).</div></div>
+        <div class="item"><div class="dot concept"></div><div>Hard links vs symlinks at the inode level — what happens to each when the original file is deleted. Why Docker layers use hard links internally.</div></div>
+        <div class="item"><div class="dot concept"></div><div><code>/proc</code> and <code>/sys</code> virtual filesystems — how the kernel exposes live runtime data without any disk I/O. Navigate <code>/proc/[PID]/cmdline</code>, <code>/proc/[PID]/fd</code>, <code>/proc/meminfo</code>, <code>/proc/net/dev</code>.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Process state machine: R (Runnable), S (Interruptible sleep), D (Uninterruptible — disk I/O wait, unkillable), T (Stopped), Z (Zombie — finished but parent hasn't called wait()).</div></div>
+        <div class="item"><div class="dot concept"></div><div>Kernel signals: SIGTERM(15) — catchable, graceful shutdown. SIGKILL(9) — uncatchable, kernel forcefully destroys process. SIGHUP(1) — traditionally reload config. SIGINT(2) — Ctrl+C.</div></div>
+        <div class="item"><div class="dot concept"></div><div>System calls — how user-space requests kernel privileges: <code>fork</code> (clone process), <code>execve</code> (replace process image), <code>waitpid</code> (prevent zombies), <code>open/read/write</code> (file I/O). Use <code>strace</code> to watch these live.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Daily lab deliverables</div>
+        <div class="lab"><div class="lab-day">DAY 1</div><div class="lab-text">VFS mapping. Create a file, a hard link, and a symlink. Use <code>stat</code> to record all three inodes. Delete the original. Document exactly what happens to each link — which is still readable and why.</div></div>
+        <div class="lab"><div class="lab-day">DAY 2</div><div class="lab-text">Process tracking. Launch <code>sleep 1000 &</code>. Navigate to <code>/proc/[PID]/</code>. Dump env vars via <code>cat /proc/[PID]/environ | tr '\0' '\n'</code>. List all open file descriptors via <code>/proc/[PID]/fd</code>. Count how many FDs a sleeping process holds.</div></div>
+        <div class="lab"><div class="lab-day">DAY 3</div><div class="lab-text">Zombie creation. Write a Python script that forks a child process where the parent sleeps indefinitely without calling <code>wait()</code>. Run <code>ps aux | grep Z</code> to witness the zombie flag. Kill the parent and verify the zombie is reaped by init (PID 1).</div></div>
+        <div class="lab"><div class="lab-day">DAY 4</div><div class="lab-text">Signal interception. Write a bash script with <code>trap 'echo "SIGTERM caught — cleaning up"' SIGTERM</code>. Run it in background, send <code>kill -15 [PID]</code> from another terminal. Observe the catch. Then send <code>kill -9</code>. Document why -9 cannot be intercepted by any process.</div></div>
+        <div class="lab"><div class="lab-day">DAY 5</div><div class="lab-text">Syscall analysis. Run <code>strace -o strace.log ls /etc</code>. Use <code>grep -c 'openat' strace.log</code> to count file opens. Identify which shared libraries are loaded. Write a one-page summary of what surprised you about how many syscalls a simple <code>ls</code> makes.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">WEEK 1 CAPSTONE BUILD</div>
+        <div class="capstone-title">Raw kernel health audit script</div>
+        <div class="capstone-body">Build a shell script that reads raw kernel data — no <code>top</code>, no <code>free</code>, no <code>df</code> allowed. Parse <code>/proc/meminfo</code> for exact memory utilization percentages. Read <code>/proc/loadavg</code> for 1/5/15-minute load averages. Query <code>/proc/net/dev</code> for interface TX/RX bytes. Output a clean, structured JSON to <code>/var/log/sys_audit.json</code>. This is your first portfolio artifact — add it to GitHub.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(123,143,245,.15);color:#7b8ff5">M1 W2</span><span class="wh-title">Permissions, storage architecture, and PAM</span></div>
+      <div class="wh-right"><span class="wh-days">Days 6–10</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts</div>
+        <div class="item"><div class="dot concept"></div><div>POSIX permissions bitmask — octal arithmetic for User/Group/Other. Why 755 means what it means (binary: 111 101 101). Special bits: SUID (4000), SGID (2000), Sticky (1000). Why <code>/usr/bin/passwd</code> needs SUID.</div></div>
+        <div class="item"><div class="dot concept"></div><div>ACLs — Access Control Lists beyond the standard owner/group/other model. <code>setfacl</code> and <code>getfacl</code> for fine-grained per-user permissions without changing group membership.</div></div>
+        <div class="item"><div class="dot concept"></div><div>LVM storage stack hierarchy: Physical Volumes (PV) → Volume Groups (VG) → Logical Volumes (LV) → Filesystems. Why LVM allows live filesystem expansion without downtime — critical for production servers.</div></div>
+        <div class="item"><div class="dot concept"></div><div>PAM (Pluggable Authentication Modules) — how Linux authentication is modular. <code>/etc/pam.d/</code> configuration, password complexity enforcement, session logging.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Daily lab deliverables</div>
+        <div class="lab"><div class="lab-day">DAY 6</div><div class="lab-text">Bitmask mastery. Set permissions using explicit octal values: <code>chmod 4755</code> (SUID), <code>chmod 2770</code> (SGID on directory), <code>chmod 1777</code> (sticky). Test each scenario — switch users and verify the behavior matches theory.</div></div>
+        <div class="lab"><div class="lab-day">DAY 7</div><div class="lab-text">Shared team directory. Create users <code>developer_a</code> and <code>developer_b</code>, group <code>dev_team</code>. Create <code>/opt/shared_code</code> with <code>chmod 2770</code> so any file created inside automatically inherits the group. Prove it: write a file as developer_a, edit it as developer_b.</div></div>
+        <div class="lab"><div class="lab-day">DAY 8</div><div class="lab-text">ACL precision. Grant <code>audit_user</code> read-only access to <code>/opt/shared_code</code> via <code>setfacl -m u:audit_user:r-x</code> without adding them to dev_team. Verify <code>getfacl</code> output. Then revoke access and verify again.</div></div>
+        <div class="lab"><div class="lab-day">DAY 9</div><div class="lab-text">Virtual disk emulation. Create three 100MB disk images using <code>dd if=/dev/zero of=disk1.img bs=1M count=100</code>. Attach each as a loop device via <code>losetup</code>. Verify they appear as block devices in <code>lsblk</code>.</div></div>
+        <div class="lab"><div class="lab-day">DAY 10</div><div class="lab-text">LVM build and live expansion. Initialize loop1 + loop2 as PVs. Create VG <code>vg_production</code>. Carve 150MB LV <code>lv_app_data</code>. Format as ext4, mount to <code>/mnt/production_data</code>. Write files to it. Then add loop3 to the VG, extend the LV to 250MB, resize the live filesystem — without unmounting. Verify files still intact.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">WEEK 2 CAPSTONE BUILD</div>
+        <div class="capstone-title">Live storage emergency simulation</div>
+        <div class="capstone-body">Simulate a real production scenario: <code>/mnt/production_data</code> is at 90% capacity, a critical application is writing to it continuously. Add a new disk, extend storage live, and resize the filesystem — the application must not see a single I/O error throughout. Document every command, every output, and the total time taken. This is an SRE interview scenario.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(123,143,245,.15);color:#7b8ff5">M1 W3</span><span class="wh-title">Enterprise networking — TCP/IP from first principles</span></div>
+      <div class="wh-right"><span class="wh-days">Days 11–15</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts</div>
+        <div class="item"><div class="dot concept"></div><div>TCP 3-way handshake at the packet level (SYN → SYN-ACK → ACK). The TIME_WAIT state and why it matters for high-traffic servers (port exhaustion). TCP vs UDP tradeoffs at the application level.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Subnetting and CIDR — binary arithmetic for /24, /25, /26, /28, /30. Calculate usable hosts, network address, broadcast address without a calculator. This appears directly in AWS VPC design.</div></div>
+        <div class="item"><div class="dot concept"></div><div>DNS resolution chain — recursive resolver → root nameserver → TLD → authoritative. TTL and what it means for zero-downtime deployments. Split-horizon DNS for internal services.</div></div>
+        <div class="item"><div class="dot concept"></div><div>iptables/UFW — INPUT, OUTPUT, FORWARD chains. Stateful vs stateless filtering. How rules are evaluated in order. Connection tracking (<code>-m conntrack --ctstate ESTABLISHED</code>).</div></div>
+        <div class="item"><div class="dot concept"></div><div>Network namespaces — how containers get isolated networking. Veth pairs, bridge interfaces. This is the exact mechanism Docker uses — you will build it by hand before Docker abstracts it.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Daily lab deliverables</div>
+        <div class="lab"><div class="lab-day">DAY 11</div><div class="lab-text">TCP handshake capture. Run <code>tcpdump -i any -w capture.pcap port 80</code>. Curl a local Nginx server. Open the capture with <code>tcpdump -r capture.pcap -A</code>. Manually identify SYN, SYN-ACK, ACK, FIN packets by their TCP flags field.</div></div>
+        <div class="lab"><div class="lab-day">DAY 12</div><div class="lab-text">Subnetting drill — 50 problems without a calculator. Given 10.0.0.0/22: total addresses, usable range, broadcast. Given 192.168.100.0/26: all four subnets, their ranges. Given a requirement for 500 hosts: what CIDR block is the smallest that fits? Time yourself — under 3 minutes per problem is the target.</div></div>
+        <div class="lab"><div class="lab-day">DAY 13</div><div class="lab-text">DNS full trace. Run <code>dig +trace cloudflare.com</code> and document every hop: root server response, .com TLD response, authoritative NS response, final A record. Then add a fake entry to <code>/etc/hosts</code> and observe how it overrides DNS resolution.</div></div>
+        <div class="lab"><div class="lab-day">DAY 14</div><div class="lab-text">iptables firewall. Block all incoming traffic except SSH (22) and HTTPS (443). Allow established connections out. Verify with <code>nmap -sT localhost</code>. Save rules via <code>iptables-save > /etc/iptables/rules.v4</code> so they persist across reboots.</div></div>
+        <div class="lab"><div class="lab-day">DAY 15</div><div class="lab-text">Network namespace lab — build Docker networking by hand. Create two namespaces (<code>ip netns add ns1 ns2</code>). Create a veth pair, assign one end to each namespace. Assign IPs (10.0.0.1/30, 10.0.0.2/30). Ping across namespaces. This is literally how Docker's bridge network works.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">WEEK 3 CAPSTONE BUILD</div>
+        <div class="capstone-title">Hardened Nginx reverse proxy — from scratch</div>
+        <div class="capstone-body">Build a production-hardened Nginx reverse proxy with: UFW firewall (only 443 exposed), self-signed TLS certificate via openssl, proxy_pass to a local Python HTTP server, rate limiting (limit_req_zone at 10 req/s), and access log analysis. Run <code>nmap -sV -p 1-65535 localhost</code> — only port 443 should be reachable. Commit to GitHub with a full setup guide README including the architecture diagram.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(123,143,245,.15);color:#7b8ff5">M1 W4</span><span class="wh-title">Bash scripting — 7 production-grade automation scripts</span></div>
+      <div class="wh-right"><span class="wh-days">Days 16–20</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts for production-grade bash</div>
+        <div class="item"><div class="dot concept"></div><div>Exit codes as contracts — every script must return <code>0</code> (success) or non-zero (failure). CI/CD systems make branching decisions based on exit codes. A script that silently fails is worse than no script.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Idempotency — a script run twice should produce the same result as run once. This is the foundation of reliable automation. Test every script by running it twice.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Trap and signal handling — write scripts that clean up temp files and release locks on exit or kill. Use <code>trap 'cleanup' EXIT SIGTERM SIGINT</code>.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Text processing pipeline mastery: <code>grep -E</code> (regex), <code>sed -i</code> (in-place edit), <code>awk '{print $2}'</code> (field extraction), <code>cut -d: -f1</code>, <code>sort | uniq -c | sort -rn</code> (frequency count).</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">7 scripts to build — one core deliverable per day</div>
+        <div class="lab"><div class="lab-day">SCRIPT 1 — system-monitor.sh</div><div class="lab-text">Reads CPU (<code>/proc/stat</code>), RAM (<code>/proc/meminfo</code>), disk usage per mount. Exits non-zero if any threshold is breached (configurable). Writes structured JSON alert to <code>/var/log/monitor.json</code>. Designed to run as a cron job every 5 minutes.</div></div>
+        <div class="lab"><div class="lab-day">SCRIPT 2 — backup.sh</div><div class="lab-text">Creates tar.gz archives with timestamps. Keeps last N backups (configurable), deletes older ones. Handles SIGTERM gracefully — cleans up partial archive before exiting. Logs every action with timestamps. Idempotent: running twice doesn't create duplicate backups.</div></div>
+        <div class="lab"><div class="lab-day">SCRIPT 3 — bulk-user-creator.sh</div><div class="lab-text">Reads from a CSV file (username, group, ssh_pubkey). Creates users idempotently (no failure if user already exists). Sets up home directory, adds to group, installs SSH public key, forces password change on first login. Logs every action.</div></div>
+        <div class="lab"><div class="lab-day">SCRIPT 4 — log-analyzer.sh</div><div class="lab-text">Parses Nginx access log. Outputs: top 10 source IPs by request count, top 10 endpoints by request count, all 5xx errors with timestamps, requests per minute trend. Accepts log file path as argument. Exit 1 if log file not found.</div></div>
+        <div class="lab"><div class="lab-day">SCRIPT 5 — service-watchdog.sh</div><div class="lab-text">Reads a list of services from a config file. Checks each with <code>systemctl is-active</code>. Restarts failed services. Logs every check and every restart action with timestamps. If a service fails to restart 3 times in 10 minutes, sends a critical alert (write to a special alert log file).</div></div>
+        <div class="lab"><div class="lab-day">SCRIPT 6 — disk-sentinel.sh</div><div class="lab-text">Monitors all mounted filesystems via <code>df -h</code>. Alerts when any mount exceeds 80% (warn), 90% (critical). Write the systemd service unit file that runs this as a daemon, not a cron job — understand the difference and document why you chose one over the other.</div></div>
+        <div class="lab"><div class="lab-day">SCRIPT 7 — security-hardener.sh</div><div class="lab-text">Idempotent server hardening: disables root SSH login, enforces key-only authentication, sets up UFW with minimal rules (SSH + app port only), disables unneeded services (avahi, cups, bluetooth), sets kernel parameters via <code>sysctl</code> (disable IP forwarding if not a router, enable SYN cookies). Running it twice must produce no changes the second time.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">MONTH 1 CAPSTONE — BASH AUTOMATION SUITE</div>
+        <div class="capstone-title">Production server automation toolkit — public GitHub release</div>
+        <div class="capstone-body">All 7 scripts packaged in a single GitHub repository with: a master <code>run-all.sh</code> orchestrator, a <code>config.yaml</code> for all thresholds and settings, a <code>tests/</code> folder with bats (Bash Automated Testing System) integration tests for each script, a professional README with problem statement, architecture diagram (ASCII or draw.io), and usage instructions. This is your first public portfolio piece. Make it look like something an employer would actually install.</div>
+      </div>
+      <div class="alert alert-note">
+        <span class="alert-icon">→</span>
+        <span>Start Python now. Install Python 3, write a CLI tool using <code>argparse</code> that calls your system-monitor.sh and formats the JSON output as a readable table using the <code>rich</code> library. This is your first Python artifact and it ties directly to Month 2 work.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(123,143,245,.15);color:#7b8ff5">M2 W5–6</span><span class="wh-title">Git mastery + Python for DevOps</span></div>
+      <div class="wh-right"><span class="wh-days">Days 21–60</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Git — what actually matters at the job level</div>
+        <div class="item"><div class="dot concept"></div><div>Git object model internals — blobs, trees, commits, tags. Run <code>git cat-file -p HEAD</code> and understand every field. Run <code>git cat-file -p HEAD^{tree}</code>. This is what makes debugging git problems possible.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Rebase vs merge — when each is appropriate. Rebase rewrites history (never on shared branches). Merge preserves history. Interactive rebase (<code>git rebase -i</code>) for clean commit squashing before PRs.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Trunk-based development — the workflow most modern engineering teams use. Short-lived feature branches (1–2 days max), frequent integration, feature flags for incomplete work.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Pre-commit hooks — enforce linting and tests before a commit is allowed. Use the <code>pre-commit</code> framework to manage hooks across projects. Every project you create must have this from day 1.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Semantic commits — <code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>chore:</code>, <code>refactor:</code>, <code>ci:</code>. Required standard in every professional engineering team. Your GitHub commit history must follow this from now on.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Python for DevOps — parallel track through Month 2</div>
+        <div class="item"><div class="dot build"></div><div>Core language: functions, error handling (try/except/finally), file I/O with pathlib, JSON/YAML parsing, CLI arguments with <code>argparse</code>, dataclasses for structured data.</div></div>
+        <div class="item"><div class="dot build"></div><div>Key libraries for DevOps work: <code>subprocess</code> (run shell commands, capture output), <code>requests</code> (HTTP calls to APIs), <code>boto3</code> (AWS SDK — start using this now), <code>pyyaml</code> (parse Kubernetes manifests), <code>rich</code> (beautiful CLI output), <code>click</code> (alternative to argparse, more ergonomic).</div></div>
+        <div class="item"><div class="dot build"></div><div>Testing from day 1: pytest for unit tests, write tests before or immediately after writing each function. No untested automation in any project.</div></div>
+        <div class="item"><div class="dot build"></div><div>Python boto3 builds: rewrite your iam-audit script using Python + boto3, rewrite your s3-backup script in Python. Compare the ergonomics — Python is significantly more powerful for complex logic.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Month 2 builds</div>
+        <div class="lab"><div class="lab-day">GIT WORKFLOW</div><div class="lab-text">Migrate all Month 1 work to a properly structured GitHub repo with semantic commits and a branch history that shows feature development, pull requests, and resolved merge conflicts. Add a pre-commit hook that runs <code>shellcheck</code> on bash and <code>flake8</code> + <code>black</code> on Python — commit blocked if either fails.</div></div>
+        <div class="lab"><div class="lab-day">PYTHON BUILD 1</div><div class="lab-text">A YAML-driven infrastructure config generator. Reads a YAML config file (list of servers, their roles, allowed ports), validates required fields, and generates: UFW rules script, Nginx virtual host configs, and a user setup script for each server. Template-driven automation.</div></div>
+        <div class="lab"><div class="lab-day">PYTHON BUILD 2</div><div class="lab-text">AWS resource scanner (runs against MiniStack locally). Uses boto3 to list all EC2 instances, S3 buckets, RDS instances, and IAM users. Identifies resources that have been running over 24 hours and outputs a cost-risk report. This becomes a real cost-saving tool when you point it at a real AWS account.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">MONTH 2 CAPSTONE — PROFESSIONAL GITHUB PROFILE</div>
+        <div class="capstone-title">GitHub as your portfolio — the first thing employers check</div>
+        <div class="capstone-body">Your GitHub profile must have: a pinned profile README.md (your story, skills, what you're building), 2 pinned repos (bash suite + Python tools) each with professional READMEs (problem, solution, demo GIF/screenshot, tech stack badges, installation steps, tests), semantic commit history showing consistent daily work, and green contribution squares from day 1. This is the first thing a recruiter checks before reading your resume.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">₦0</div><div class="metric-label">cloud spend</div></div>
+  <div class="metric"><div class="metric-val">7+</div><div class="metric-label">production bash scripts</div></div>
+  <div class="metric"><div class="metric-val">3+</div><div class="metric-label">Python CLI tools</div></div>
+  <div class="metric"><div class="metric-val">2</div><div class="metric-label">portfolio repos live</div></div>
+  <div class="metric"><div class="metric-val">60d</div><div class="metric-label">of daily commits</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ PHASE 2 ═══════════════════════════ -->
+<div class="section" id="ph-2">
+<div class="section-header">
+  <div class="section-num">PHASE 2 · MONTHS 3–4 · DAYS 61–120</div>
+  <div class="section-title">AWS cloud fundamentals + SAA-C03 certification</div>
+  <div class="section-desc">One AWS service per day. One working script or build per day. 75% on MiniStack locally, 25% on real AWS (Terraform spin-up → screenshot → teardown same session). The SAA-C03 exam is at the end of month 4. You earn it by building, not by watching videos.</div>
+  <div class="section-badges">
+    <span class="pill green">MiniStack for 75% of AWS work — free, no account</span>
+    <span class="pill amber">Real AWS: Terraform → screenshot → nuke.sh</span>
+    <span class="pill blue">SAA-C03 target: day 120 · ₦240,000 exam fee</span>
+  </div>
+</div>
+<div class="alert alert-warn">
+  <span class="alert-icon">△</span>
+  <span>Real AWS cost rules: billing alert at ₦500, budget alert at ₦1,000. EKS costs ~$0.10/hour per cluster (~₦160/hr). RDS Multi-AZ t3.micro costs ~$0.04/hr (~₦65/hr). One forgotten EKS cluster = ₦38,000+ per day. Run <code>nuke.sh</code> before every session ends. No exceptions.</span>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(62,207,142,.15);color:#3ecf8e">M3 W7–8</span><span class="wh-title">AWS core services — IAM, EC2, S3, VPC, RDS, ELB, Lambda</span></div>
+      <div class="wh-right"><span class="wh-days">Days 61–80</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">MiniStack setup — run this first</div>
+        <div class="item"><div class="dot build"></div><div>Start MiniStack: <code>docker run -d -p 4566:4566 --name ministack ministackorg/ministack</code></div></div>
+        <div class="item"><div class="dot build"></div><div>Configure AWS CLI: <code>aws configure --profile local</code> (any access key/secret, region us-east-1). Add alias: <code>alias awslocal='aws --endpoint-url=http://localhost:4566 --profile local'</code></div></div>
+        <div class="item"><div class="dot build"></div><div>Test: <code>awslocal s3 mb s3://test-bucket && awslocal s3 ls</code> — should return your bucket. All boto3 code: add <code>endpoint_url='http://localhost:4566'</code> to client initialization.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Daily builds — one service, one working artifact</div>
+        <div class="lab"><div class="lab-day">DAYS 61–62 · IAM</div><div class="lab-text">Build <code>iam-audit.py</code> (Python + boto3): lists all IAM users, checks MFA status, finds access keys older than 90 days, identifies policies granting <code>*:*</code> (admin), checks for users with console access but no MFA. Outputs a structured JSON security report. Test on MiniStack, then run once against real AWS, screenshot, delete nothing (IAM is free).</div></div>
+        <div class="lab"><div class="lab-day">DAYS 63–64 · EC2</div><div class="lab-text">Build <code>ec2-launcher.sh</code>: launches instances with required tags (Name, Environment, Owner), configures security group via CLI, waits for instance to reach running state, outputs public IP. Test on MiniStack. Then on real AWS: launch t2.micro, SSH in, install Nginx via user-data, screenshot the running site, terminate immediately.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 65–66 · S3</div><div class="lab-text">Build <code>s3-backup.py</code> (boto3): uploads compressed archives with server-side encryption (SSE-S3), enables versioning on the bucket, configures lifecycle policy (transition to Glacier after 30 days, delete after 90). Separately: host your portfolio as a static S3 website with a custom index.html. Screenshot, then set it to private.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 67–68 · VPC</div><div class="lab-text">Design and build a production VPC: 2 AZs, public subnets (10.0.1.0/24, 10.0.2.0/24), private app subnets (10.0.3.0/24, 10.0.4.0/24), private DB subnets (10.0.5.0/24, 10.0.6.0/24), Internet Gateway, NAT Gateway (one per AZ for HA), correct route tables, NACLs. Draw the architecture with draw.io before building it.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 69–70 · RDS + ElastiCache</div><div class="lab-text">PostgreSQL RDS Multi-AZ in private DB subnets. Read replica. Automated backups (7-day retention). Connect from an EC2 in the app subnet. Write a Python connection-pooling test script using <code>psycopg2</code> that runs 1000 concurrent queries. Launch ElastiCache Redis. Test cache-aside pattern with Python: check cache first, fall back to DB.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 71–72 · ELB + ASG</div><div class="lab-text">Application Load Balancer with two EC2 targets (Nginx). Auto Scaling Group (min 2, max 6, desired 2). Launch template with user-data that installs Nginx and serves hostname. CloudWatch alarm: CPU > 70% → scale out. Stress test with Apache Bench (<code>ab -n 10000 -c 100 http://[alb-dns]/</code>). Screenshot ASG scaling events. Then terminate everything.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 73–76 · Lambda + API Gateway + DynamoDB</div><div class="lab-text">Serverless image pipeline on MiniStack: S3 upload triggers Lambda (Python), Lambda resizes to thumbnail/medium/large using Pillow, saves to output S3 folders, writes metadata to DynamoDB, publishes SNS notification. Then build a REST API: API Gateway → Lambda CRUD functions → DynamoDB. All on MiniStack, no real AWS cost.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 77–80 · CloudWatch + SNS + SQS</div><div class="lab-text">CloudWatch dashboard with widgets for EC2 CPU, RDS connections, ALB request count, custom metrics from your monitor script. Alarm rules (CPU >80%, error rate >5%). SNS topic for alerts (subscribe your email). SQS standard queue + FIFO queue. Build an order processor: API Gateway → Lambda → SQS → worker Lambda → DynamoDB. Dead-letter queue for failed messages.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(62,207,142,.15);color:#3ecf8e">M3 W9</span><span class="wh-title">Month 3 capstone — production 3-tier application on AWS</span></div>
+      <div class="wh-right"><span class="wh-days">Days 81–90</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Full system build — the only full cloud session of phase 2</div>
+        <div class="item"><div class="dot build"></div><div>Frontend: React SPA on S3 + CloudFront CDN + ACM SSL certificate + custom domain via Route 53</div></div>
+        <div class="item"><div class="dot build"></div><div>Backend: Node.js/Python API on EC2 Auto Scaling Group (min 2, max 6) behind ALB with path-based routing</div></div>
+        <div class="item"><div class="dot build"></div><div>Database tier: RDS PostgreSQL Multi-AZ (private subnet) + ElastiCache Redis (private subnet)</div></div>
+        <div class="item"><div class="dot build"></div><div>Networking: Custom VPC, 2 AZs, public/private/DB subnets, NAT Gateway, Security Groups (least-privilege)</div></div>
+        <div class="item"><div class="dot build"></div><div>Async: SQS for task queuing, SNS for alert notifications, CloudWatch dashboards + billing alarm</div></div>
+        <div class="item"><div class="dot build"></div><div>Documentation: architecture diagram (draw.io), deployment runbook, cost estimate, disaster recovery plan</div></div>
+        <div class="item"><div class="dot warn"></div><div>After screenshots: run <code>nuke.sh</code> immediately. RDS Multi-AZ + NAT Gateways are the expensive components. Estimated cost for this build: ₦5,000–₦12,000 if torn down within 8 hours.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">MONTH 3 CAPSTONE OUTPUT</div>
+        <div class="capstone-title">Architecture diagram + migration proposal</div>
+        <div class="capstone-body">Publish a 3,000-word blog post: "Building a production AWS architecture from scratch — every decision and why." Include your draw.io architecture diagram. Publish on Dev.to and Hashnode. Cross-post to LinkedIn. This is portfolio post #1 and starts driving visibility before you even start job hunting.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(62,207,142,.15);color:#3ecf8e">M4 W10–12</span><span class="wh-title">SAA-C03 certification sprint — 150–200 questions/day</span></div>
+      <div class="wh-right"><span class="wh-days">Days 91–120</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Advanced services to build while studying (weeks 10–11)</div>
+        <div class="item"><div class="dot build"></div><div>ECS Fargate — run a containerized Python Flask API without managing servers. Deploy behind ALB. Compare: when do you use ECS vs EKS vs Lambda? Write up the decision framework.</div></div>
+        <div class="item"><div class="dot build"></div><div>CloudFront + Lambda@Edge — add a Lambda function that runs at the CDN edge to modify request/response headers. A/B testing at the CDN layer.</div></div>
+        <div class="item"><div class="dot build"></div><div>VPC Flow Logs — enable, trigger a firewall rejection, query CloudWatch Logs to find the exact REJECT record. This is a real troubleshooting workflow you'll use in every ops role.</div></div>
+        <div class="item"><div class="dot build"></div><div>Week 11 written deliverable: a 5,000-word cloud migration proposal for a fictional company (on-premises → AWS). Architecture diagrams, VPC topology, IAM design, data protection, cost estimate. This becomes a portfolio writing sample and shows senior-level thinking.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Exam sprint schedule (weeks 11–12) — target 750+/1000</div>
+        <div class="lab"><div class="lab-day">WEEKS 11–12 DAILY</div><div class="lab-text">150–200 practice questions per day. ExamTopics SAA-C03 (free, 1000+ questions). Tutorials Dojo comprehensive mock series (paid — worth ₦15,000 for the quality). Rule: every wrong answer → go to MiniStack or AWS console and rebuild that service. Don't just read the explanation. Touch it.</div></div>
+        <div class="lab"><div class="lab-day">EXAM WEEK (days 109–115)</div><div class="lab-text">3 full timed practice exams (65 questions, 130 minutes each). Day 1 post-exam: full review of every wrong answer. Day 3: second exam. Day 5: third exam targeting 85%+. Day 6: light review only, review weak areas from your personal error log. Day 7: no studying, early sleep.</div></div>
+        <div class="lab"><div class="lab-day">DAY 120 — EXAM DAY</div><div class="lab-text">Take AWS SAA-C03 at Pearson VUE Lagos testing center or online proctored. Book 2 weeks in advance at aws.amazon.com/certification. Exam cost: ₦240,000. Target score: 750+/1000 (passing = 720). Arrive 30 minutes early. Bring two forms of ID.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">AWS</div><div class="metric-label">SAA-C03 certified</div></div>
+  <div class="metric"><div class="metric-val">20+</div><div class="metric-label">services hands-on</div></div>
+  <div class="metric"><div class="metric-val">MiniStack</div><div class="metric-label">free local AWS</div></div>
+  <div class="metric"><div class="metric-val">1</div><div class="metric-label">blog post published</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ PHASE 3 ═══════════════════════════ -->
+<div class="section" id="ph-3">
+<div class="section-header">
+  <div class="section-num">PHASE 3 · MONTH 5 · DAYS 121–150</div>
+  <div class="section-title">Infrastructure as Code — Terraform + Ansible</div>
+  <div class="section-desc">Terraform appears in 90%+ of DevOps job descriptions. You will code every piece of infrastructure you've built so far. By the end of this month, one command deploys your entire cloud architecture, and one command destroys it — leaving zero cost.</div>
+  <div class="section-badges">
+    <span class="pill green">80% local + MiniStack</span>
+    <span class="pill">Terraform + Ansible combined pipeline</span>
+    <span class="pill blue">Book: Terraform Up & Running (3rd ed.) — chapters 1, 2, 4</span>
+  </div>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(240,163,71,.15);color:#f0a347">M5 W13</span><span class="wh-title">HCL fundamentals, state management, and remote backends</span></div>
+      <div class="wh-right"><span class="wh-days">Days 121–130</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts</div>
+        <div class="item"><div class="dot concept"></div><div>Terraform's Directed Acyclic Graph (DAG) — how it automatically determines resource creation order based on dependency references. Run <code>terraform graph | dot -Tpng > graph.png</code> to visualize it.</div></div>
+        <div class="item"><div class="dot concept"></div><div>The state file as source of truth — <code>terraform.tfstate</code> maps your code to real cloud resources. What happens when state diverges from reality (configuration drift). Why you must never manually edit state.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Remote state with S3 + DynamoDB locking — S3 stores the state file with versioning, DynamoDB provides distributed lock (prevents concurrent applies). This is the correct production setup.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Module architecture — DRY infrastructure. Input <code>variables.tf</code> is the API contract. <code>outputs.tf</code> is the return value. Modules should be generic enough to reuse across environments.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Daily lab deliverables</div>
+        <div class="lab"><div class="lab-day">DAY 121</div><div class="lab-text">Configure local provider. Write a <code>main.tf</code> that creates a local file resource. Run <code>init → plan → apply</code>. Open the state file and read every field — understand what Terraform is tracking. Run <code>apply</code> again — verify zero changes (idempotency).</div></div>
+        <div class="lab"><div class="lab-day">DAYS 122–123</div><div class="lab-text">AWS provider + VPC resource, pointed at MiniStack. Use variables for all parameters. Use a data source block to dynamically look up the latest Amazon Linux AMI. Wire the AMI ID into an EC2 instance resource. Run <code>terraform plan</code> and read the execution plan output carefully.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 124–125</div><div class="lab-text">Remote backend. Create an S3 bucket with versioning + DynamoDB table with hash key <code>LockID</code> (this bootstraps the backend). Add the <code>backend "s3"</code> block. Run <code>terraform init</code> to migrate local state to S3. Verify state file appears in S3 bucket. Test locking: start a plan in one terminal, immediately start another in a second terminal — the second must block.</div></div>
+        <div class="lab"><div class="lab-day">DAYS 126–128</div><div class="lab-text">Module architecture. Create <code>modules/vpc/</code>, <code>modules/ec2/</code>, <code>modules/rds/</code>. Each module has <code>main.tf</code>, <code>variables.tf</code>, <code>outputs.tf</code>. Create <code>environments/staging/</code> and <code>environments/production/</code> — both call the same modules with different variable values (different CIDR ranges, different instance sizes).</div></div>
+        <div class="lab"><div class="lab-day">DAYS 129–130</div><div class="lab-text"><code>terraform import</code> — create an S3 bucket manually in the AWS console (or MiniStack). Then write the Terraform resource block for it and run <code>terraform import aws_s3_bucket.my_bucket my-bucket-name</code> to bring it under Terraform management. This skill is critical in real jobs where existing infrastructure isn't yet in IaC.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(240,163,71,.15);color:#f0a347">M5 W14</span><span class="wh-title">Advanced Terraform — expressions, testing, and state interrogation</span></div>
+      <div class="wh-right"><span class="wh-days">Days 131–140</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Advanced HCL concepts</div>
+        <div class="item"><div class="dot concept"></div><div>Dynamic blocks — generate repeated nested blocks from a list. Useful for security group ingress rules, IAM policy statements.</div></div>
+        <div class="item"><div class="dot concept"></div><div><code>for_each</code> vs <code>count</code> — for_each is almost always better (stable keys vs numeric indexes). How deleting one item in a count-based resource destroys and recreates all subsequent resources.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Terraform functions: <code>lookup(map, key, default)</code>, <code>merge(map1, map2)</code>, <code>flatten(list)</code>, <code>toset(list)</code>, <code>cidrsubnet(cidr, newbits, netnum)</code> for VPC subnet math.</div></div>
+        <div class="item"><div class="dot concept"></div><div>State interrogation commands: <code>terraform state list</code>, <code>terraform state show resource</code>, <code>terraform state mv</code> (rename a resource in state without destroying it), <code>terraform state rm</code> (remove from state without destroying the real resource).</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Builds for week 14</div>
+        <div class="lab"><div class="lab-day">MINISTACK TERRAFORM INTEGRATION</div><div class="lab-text">Point Terraform at MiniStack: add <code>endpoints { s3 = "http://localhost:4566" sqs = "http://localhost:4566" ... }</code> to the AWS provider. Run your full VPC + EC2 + S3 Terraform code locally for free. This is your development loop — build locally, apply to real AWS only for the final proof.</div></div>
+        <div class="lab"><div class="lab-day">TERRATEST</div><div class="lab-text">Write 3 Terratest tests (Go) for your VPC module: (1) verify the VPC CIDR is correct, (2) verify public subnets have an IGW route, (3) verify private subnets route through NAT Gateway. Run them against MiniStack in CI. Go basics needed: functions, structs, testing package — spend 2 hours learning only what you need for Terratest.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(240,163,71,.15);color:#f0a347">M5 W15–16</span><span class="wh-title">Ansible — configuration management</span></div>
+      <div class="wh-right"><span class="wh-days">Days 141–150</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Why Ansible (and why not just Terraform)</div>
+        <div class="item"><div class="dot concept"></div><div>Terraform creates and manages infrastructure (VMs, networks, databases). Ansible configures what runs inside that infrastructure (packages, services, files, users). You need both for a complete automation stack.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Ansible is agentless — it uses SSH. No daemon to maintain on target machines. This makes it simpler to adopt on existing infrastructure.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Playbooks, roles, and galaxy — the structure that makes Ansible reusable and shareable across teams.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Builds for weeks 15–16</div>
+        <div class="item"><div class="dot build"></div><div>Playbooks for: Nginx setup and configuration, Docker installation, user management, UFW firewall rules, application deployment from a GitHub release.</div></div>
+        <div class="item"><div class="dot build"></div><div>Ansible Vault for secrets — never store credentials in plaintext. Encrypt sensitive variables with <code>ansible-vault encrypt_string</code>.</div></div>
+        <div class="item"><div class="dot build"></div><div>Dynamic inventory — write a Python inventory script that queries MiniStack EC2 to build the inventory automatically. No more manually updating inventory files.</div></div>
+        <div class="item"><div class="dot build"></div><div>Integration pipeline: Terraform creates EC2 instances and outputs their IPs to a file. A bash script converts Terraform outputs to an Ansible inventory. Ansible runs the configuration playbook. One command does the full provisioning + configuration cycle.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">MONTH 5 CAPSTONE — FULL IaC STACK</div>
+        <div class="capstone-title">One command deploys and configures your entire cloud architecture</div>
+        <div class="capstone-body">Recreate the Month 3 3-tier architecture entirely in Terraform modules (VPC, EC2 ASG, RDS, ElastiCache, ALB, CloudFront, Route 53, CloudWatch, SNS). Paired with Ansible playbooks that configure EC2 instances post-creation. Run <code>terraform destroy</code>, then <code>terraform apply + ansible-playbook</code> — identical system comes back. Run this against MiniStack for free development, real AWS for the final proof screenshot. Total real AWS session cost: under ₦8,000.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">1 cmd</div><div class="metric-label">deploys full infra</div></div>
+  <div class="metric"><div class="metric-val">3</div><div class="metric-label">environments (dev/stg/prod)</div></div>
+  <div class="metric"><div class="metric-val">Ansible</div><div class="metric-label">+ Terraform pipeline</div></div>
+  <div class="metric"><div class="metric-val">Tested</div><div class="metric-label">Terratest for modules</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ PHASE 4 ═══════════════════════════ -->
+<div class="section" id="ph-4">
+<div class="section-header">
+  <div class="section-num">PHASE 4 · MONTHS 6–7 · DAYS 151–210</div>
+  <div class="section-title">Docker + Kubernetes — containerize and orchestrate everything</div>
+  <div class="section-desc">The e-commerce microservices system you build here becomes the centerpiece of your portfolio. 5 services. 5 infrastructure components. Fully containerized, orchestrated on Kubernetes, with deliberate failure drills baked in. This is what employers want to see.</div>
+  <div class="section-badges">
+    <span class="pill green">90% local — Docker + Kind cluster</span>
+    <span class="pill blue">Portfolio centerpiece build</span>
+    <span class="pill purple">Deliberate failure drills required</span>
+  </div>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(91,138,245,.15);color:#5b8af5">M6 W17</span><span class="wh-title">Docker — containerize everything, optimize everything</span></div>
+      <div class="wh-right"><span class="wh-days">Days 151–165</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts</div>
+        <div class="item"><div class="dot concept"></div><div>Union filesystems and layer caching — why <code>COPY . .</code> should always come last in a Dockerfile. Why <code>RUN apt-get update && apt-get install</code> must be in a single RUN to avoid stale cache bugs.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Multi-stage builds — compile in a builder stage (full SDK), ship only the binary in a minimal runtime stage. Cuts image sizes by 70–90%. Mandatory for all production images.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Security defaults: non-root user (<code>USER appuser</code>), read-only root filesystem (<code>--read-only</code>), dropped Linux capabilities (<code>--cap-drop ALL</code>), no <code>latest</code> tags ever.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Image scanning with Trivy — run <code>trivy image [image-name]</code>. Fix all HIGH and CRITICAL vulnerabilities before any image is considered complete.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Builds</div>
+        <div class="item"><div class="dot build"></div><div>Containerize your Python Flask API from Month 2. Optimize: multi-stage build (builder + python:3.12-slim-alpine), non-root user, no dev dependencies in runtime image. Target: under 80MB.</div></div>
+        <div class="item"><div class="dot build"></div><div>Containerize 5 different applications: Nginx static site, Node.js Express API, Go REST service, Python Flask, React app. Compare image sizes before and after optimization. Document the diff in your README.</div></div>
+        <div class="item"><div class="dot build"></div><div>Scan all 5 images with Trivy. Fix every HIGH/CRITICAL finding. Document: what caused each vulnerability (outdated base image? specific package?) and how you fixed it.</div></div>
+        <div class="item"><div class="dot build"></div><div>Push all images to Docker Hub with proper tagging: <code>username/image-name:v1.0.0</code>, <code>username/image-name:latest</code>. Never push unscanned images.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(91,138,245,.15);color:#5b8af5">M6 W18–19</span><span class="wh-title">Docker Compose — build the e-commerce microservices system</span></div>
+      <div class="wh-right"><span class="wh-days">Days 166–180</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">The system you are building (this becomes your K8s migration target)</div>
+        <div class="item"><div class="dot build"></div><div>Frontend service — React SPA served by Nginx. Static build artifacts, health check on <code>/</code>.</div></div>
+        <div class="item"><div class="dot build"></div><div>User service — Node.js with JWT authentication. Registration, login, token refresh, profile endpoints. PostgreSQL for user data.</div></div>
+        <div class="item"><div class="dot build"></div><div>Product service — Python Flask. Product catalog CRUD, image upload to S3 (or MiniStack S3). MongoDB for product data.</div></div>
+        <div class="item"><div class="dot build"></div><div>Order service — Go. Order creation, status updates, order history. PostgreSQL for order data. Publishes events to RabbitMQ.</div></div>
+        <div class="item"><div class="dot build"></div><div>Payment service — Node.js. Mock payment gateway. Reads from RabbitMQ order events, processes payment, publishes result.</div></div>
+        <div class="item"><div class="dot build"></div><div>Infrastructure: PostgreSQL (users + orders), MongoDB (products), Redis (sessions + cache), RabbitMQ (async messaging), Nginx (API gateway + routing).</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Docker Compose requirements</div>
+        <div class="item"><div class="dot build"></div><div>Health checks on every service (<code>healthcheck: test: [...]</code>). Services that depend on databases use <code>depends_on: condition: service_healthy</code>.</div></div>
+        <div class="item"><div class="dot build"></div><div>Resource limits: every service has <code>deploy: resources: limits: cpus/memory</code>. No service can starve others.</div></div>
+        <div class="item"><div class="dot build"></div><div>3 custom networks: <code>frontend-net</code> (Nginx + React), <code>backend-net</code> (all services), <code>database-net</code> (services + databases only). Nginx is on frontend-net only — it cannot directly reach databases.</div></div>
+        <div class="item"><div class="dot build"></div><div>Named volumes for all databases. Test: stop all containers, start again — all data persists.</div></div>
+        <div class="item"><div class="dot build"></div><div>Dev vs prod compose files: <code>docker-compose.yml</code> (base) + <code>docker-compose.dev.yml</code> (volume mounts for hot reload) + <code>docker-compose.prod.yml</code> (no volume mounts, resource limits active).</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Full user journey test (mandatory before moving to K8s)</div>
+        <div class="item"><div class="dot build"></div><div>User registers → logs in → receives JWT → browses products → adds to cart → places order → order service publishes to RabbitMQ → payment service processes → status updated → user sees confirmation. Every step verified with Postman or curl.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">MONTH 6 CAPSTONE</div>
+        <div class="capstone-title">Blog post: "Building production microservices with Docker Compose"</div>
+        <div class="capstone-body">Publish a deep-dive blog post covering every architecture decision: why these 5 services, why RabbitMQ over direct HTTP calls, why MongoDB for products and PostgreSQL for orders, how the network isolation works, what you'd do differently. Publish on Dev.to + Hashnode. This is portfolio post #2.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(91,138,245,.15);color:#5b8af5">M7 W20–23</span><span class="wh-title">Kubernetes — migrate the microservices and go production-ready</span></div>
+      <div class="wh-right"><span class="wh-days">Days 181–210</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Core concepts to internalize</div>
+        <div class="item"><div class="dot concept"></div><div>The reconciliation loop — the controller manager constantly compares desired state (your YAML) against actual cluster state and acts on every difference. This is the core design principle of Kubernetes.</div></div>
+        <div class="item"><div class="dot concept"></div><div>etcd as the cluster brain — all cluster state lives here. If etcd is unhealthy, the cluster cannot make any scheduling decisions. This is why etcd HA matters.</div></div>
+        <div class="item"><div class="dot concept"></div><div>StatefulSet guarantees — stable network identity (pod-0, pod-1), ordered scaling and termination, own PVC per pod. Required for any database running in Kubernetes.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Pod disruption budgets — ensure at least N replicas remain available during voluntary disruptions (node drains, upgrades). Required for production workloads.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Week 20 — K8s fundamentals on Kind</div>
+        <div class="lab"><div class="lab-day">CLUSTER SETUP</div><div class="lab-text">Install kubectl + Kind. Create a multi-node cluster with a Kind config file: 1 control-plane + 3 workers. Verify all nodes Ready. Explore control plane components: <code>kubectl get pods -n kube-system</code>. Understand what each pod does: kube-apiserver, etcd, kube-scheduler, kube-controller-manager, coredns, kube-proxy.</div></div>
+        <div class="lab"><div class="lab-day">PODS + DEPLOYMENTS</div><div class="lab-text">Write a Pod YAML from scratch (no generator). Then a ReplicaSet (3 replicas). Delete one pod manually — watch the ReplicaSet recreate it. Wrap it in a Deployment. Perform a rolling update: update the image version, run <code>kubectl rollout status</code>, verify zero downtime. Roll back: <code>kubectl rollout undo</code>.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Weeks 21–22 — Migration: Docker Compose → Kubernetes</div>
+        <div class="item"><div class="dot build"></div><div>Deploy all 5 microservices as Deployments with ClusterIP Services. Verify service discovery by DNS: exec into user-service pod, curl <code>http://product-service:8080/products</code>.</div></div>
+        <div class="item"><div class="dot build"></div><div>ConfigMaps for application configuration (environment-specific config). Secrets for DB credentials, JWT secrets, API keys. Mount as both env vars and as files (test both approaches). Perform a rolling restart after ConfigMap update.</div></div>
+        <div class="item"><div class="dot build"></div><div>StatefulSet for PostgreSQL (3 replicas, headless service, VolumeClaimTemplates). Headless service provides stable DNS: <code>postgres-0.postgres-headless.default.svc.cluster.local</code>.</div></div>
+        <div class="item"><div class="dot build"></div><div>Nginx Ingress Controller — path-based routing: <code>/api/users</code> → user-service, <code>/api/products</code> → product-service, <code>/</code> → frontend. TLS termination with a self-signed cert. HPA on all stateless services (target CPU 60%).</div></div>
+        <div class="item"><div class="dot build"></div><div>RBAC: ServiceAccount per microservice with minimal Role permissions (e.g., product-service SA can only read ConfigMaps, not Secrets). Network Policies: database-net deny-all, allow only from backend-net. Verify the isolation works.</div></div>
+        <div class="item"><div class="dot build"></div><div>DaemonSet: log collector (fluentd or promtail) runs on every node. CronJob: database backup every night at 02:00. Init container on each service: waits for its database to be ready before starting. Sidecar pattern: add a metrics sidecar to the user-service.</div></div>
+        <div class="item"><div class="dot build"></div><div>Helm chart wrapping the entire system: <code>helm install ecommerce ./charts/ecommerce --values values-prod.yaml</code>. One command deploys all 10 Deployments, 8 Services, 5 ConfigMaps, 4 Secrets, 2 StatefulSets, 1 Ingress, 5 HPAs.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Week 23 — Mandatory failure drills</div>
+        <div class="lab"><div class="lab-day">DRILL 1 — NODE DRAIN</div><div class="lab-text"><code>kubectl drain [node] --ignore-daemonsets --delete-emptydir-data</code>. Watch pods reschedule to remaining nodes. Verify the e-commerce system stays available throughout. Time the migration. Then uncordon the node.</div></div>
+        <div class="lab"><div class="lab-day">DRILL 2 — DATABASE POD KILL</div><div class="lab-text">Delete postgres-0 pod. Watch StatefulSet recreate it with the same name and same PVC. Verify data written before the kill is still present after recovery. Time the full recovery and document it.</div></div>
+        <div class="lab"><div class="lab-day">DRILL 3 — OOMKill</div><div class="lab-text">Set a service's memory limit to 10Mi. Watch it OOMKill and enter CrashLoopBackOff. Diagnose using <code>kubectl describe pod</code> (look for OOMKilled exit code 137) and <code>kubectl logs --previous</code>. Fix the limit. Document the diagnostic steps.</div></div>
+        <div class="lab"><div class="lab-day">DRILL 4 — IMAGE PULL FAILURE</div><div class="lab-text">Deploy a pod with a nonexistent image tag. Watch the ErrImagePull → ImagePullBackOff progression. Use <code>kubectl describe pod</code> to find the exact error. Fix the image reference. Document the diagnostic workflow you'd use in production.</div></div>
+        <div class="lab"><div class="lab-day">DRILL 5 — PENDING POD</div><div class="lab-text">Request more CPU/memory than any node has available. Watch pod stay in Pending. Use <code>kubectl describe pod</code> to read the scheduler's reason. Fix by adjusting resource requests. Document what the scheduler message tells you.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">PHASE 4 CAPSTONE — PORTFOLIO CENTERPIECE</div>
+        <div class="capstone-title">E-commerce microservices on Kubernetes — film a demo video</div>
+        <div class="capstone-body">The complete system on Kind with Helm charts, production RBAC, Network Policies, HPA, StatefulSets, and an Ingress. A professional README with: problem statement, full architecture diagram (draw.io), tech stack table with version numbers, installation steps, and a link to your demo video. Film a 4-minute OBS Studio demo: show the Helm install, the running pods, the HPA scaling under load, and one failure drill recovering. This video goes in every job application and LinkedIn post.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">5</div><div class="metric-label">microservices running</div></div>
+  <div class="metric"><div class="metric-val">Helm</div><div class="metric-label">full system chart</div></div>
+  <div class="metric"><div class="metric-val">5</div><div class="metric-label">failure drills done</div></div>
+  <div class="metric"><div class="metric-val">Demo</div><div class="metric-label">video published</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ PHASE 5 ═══════════════════════════ -->
+<div class="section" id="ph-5">
+<div class="section-header">
+  <div class="section-num">PHASE 5 · MONTH 8 · DAYS 211–240</div>
+  <div class="section-title">CI/CD pipelines + GitOps with ArgoCD</div>
+  <div class="section-desc">Automate every deployment. From code commit to production — no human involvement unless there's an error, in which case it auto-rolls back. This is the most visible skill in every DevOps job description: "Experience with CI/CD pipelines."</div>
+  <div class="section-badges">
+    <span class="pill pink">GitHub Actions</span>
+    <span class="pill purple">ArgoCD GitOps</span>
+    <span class="pill green">OIDC — no stored AWS credentials</span>
+    <span class="pill">Zero manual deployments by end of month</span>
+  </div>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(245,126,182,.15);color:#f57eb6">M8 W25–26</span><span class="wh-title">GitHub Actions — 3 production pipelines</span></div>
+      <div class="wh-right"><span class="wh-days">Days 211–228</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Non-negotiable pipeline design principles</div>
+        <div class="item"><div class="dot concept"></div><div>OIDC federation — GitHub Actions authenticates to AWS via OpenID Connect token (not access keys). Configure IAM Identity Provider in AWS, create an IAM role that trusts GitHub's OIDC provider. Zero stored credentials, zero rotation burden.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Artifact immutability — the Docker image built at commit SHA <code>abc123</code> is the exact same image promoted to production. No rebuilding between environments. Tag images with the Git commit SHA, not <code>latest</code>.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Pipeline as security control — Trivy scans and OPA policy checks must block the pipeline, not just report. A pipeline that reports HIGH vulnerabilities but still deploys is not a security control.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Caching for speed — cache: npm/pip dependencies, Docker layer cache via actions/cache, Terraform plugin cache. A slow pipeline gets bypassed by developers under pressure.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Pipeline 1 — development (push to dev branch)</div>
+        <div class="item"><div class="dot build"></div><div>Trigger: push to <code>dev</code> branch or PR targeting dev</div></div>
+        <div class="item"><div class="dot build"></div><div>Steps: checkout → setup language (Node/Python) → install dependencies (cached) → run linter (eslint/flake8/shellcheck) → run tests (jest/pytest) → build Docker image (multi-stage) → Trivy scan (block on CRITICAL, warn on HIGH) → push to ECR with commit SHA tag → kubectl apply to dev namespace → run integration tests → Slack notify (success/failure)</div></div>
+        <div class="item"><div class="dot build"></div><div>Time target: under 8 minutes total. Optimize caching until you hit this.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Pipeline 2 — staging (push to main)</div>
+        <div class="item"><div class="dot build"></div><div>All dev steps + OPA policy check: no <code>latest</code> tags, no containers running as root, no images without Trivy scan</div></div>
+        <div class="item"><div class="dot build"></div><div>Deploy to staging namespace → smoke tests (5 core endpoints must return 200) → k6 performance test (100 VUs for 60 seconds, p99 latency &lt; 500ms) → team Slack notification</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Pipeline 3 — production (tag v*.*.*)</div>
+        <div class="item"><div class="dot build"></div><div>Trigger: push of a semver tag (v1.2.3)</div></div>
+        <div class="item"><div class="dot build"></div><div>Manual approval gate: an engineer must approve in GitHub before deploy begins</div></div>
+        <div class="item"><div class="dot build"></div><div>Canary deploy: 10% traffic to new version → wait 15 min → check error rate (auto-rollback if >1%) → 50% → wait 15 min → check → 100%</div></div>
+        <div class="item"><div class="dot build"></div><div>Auto-rollback: monitors Prometheus error rate metric during canary. If threshold breached, pipeline triggers a rollback deployment automatically and pages the on-call channel.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Terraform pipeline (separate workflow)</div>
+        <div class="item"><div class="dot build"></div><div>On PR: <code>terraform plan</code> — post the plan output as a PR comment. Reviewer must see exactly what will change before approving.</div></div>
+        <div class="item"><div class="dot build"></div><div>On merge to main: <code>terraform apply -auto-approve</code> — only for dev/staging. Production requires a separate manual workflow trigger with an explicit approval step.</div></div>
+        <div class="item"><div class="dot build"></div><div>Never auto-apply Terraform to production. This rule must be enforced by the pipeline, not by trust.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(245,126,182,.15);color:#f57eb6">M8 W27–28</span><span class="wh-title">ArgoCD GitOps — declarative, self-healing deployments</span></div>
+      <div class="wh-right"><span class="wh-days">Days 229–240</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">GitOps principles</div>
+        <div class="item"><div class="dot concept"></div><div>Git is the source of truth for cluster state. If it's not in Git, it doesn't exist. If it's in Git, the cluster will converge to it — automatically.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Pull-based deployment — ArgoCD polls your Git repo for changes and pulls them into the cluster. No pipeline needs kubectl access to the cluster (eliminates a major security risk).</div></div>
+        <div class="item"><div class="dot concept"></div><div>Self-healing drift correction — if someone manually changes a resource (kubectl edit), ArgoCD detects the drift and reverts it to match Git within the sync interval.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Builds</div>
+        <div class="lab"><div class="lab-day">REPO STRUCTURE</div><div class="lab-text">Two repos: <code>ecommerce-app</code> (application code) and <code>ecommerce-gitops</code> (Kubernetes manifests only). Structure: <code>base/</code> (shared manifests), <code>overlays/dev/</code>, <code>overlays/staging/</code>, <code>overlays/prod/</code> (Kustomize patches). <code>argocd-apps/</code> (ApplicationSet definitions for each environment).</div></div>
+        <div class="lab"><div class="lab-day">FULL GITOPS WORKFLOW</div><div class="lab-text">Developer pushes code → GitHub Actions builds image → pipeline updates the image tag in <code>ecommerce-gitops</code> overlays/prod/kustomization.yaml → ArgoCD detects the change (webhook or poll) → syncs to cluster → application deployed. Developer never runs kubectl. Operator never touches the cluster directly.</div></div>
+        <div class="lab"><div class="lab-day">DISASTER RECOVERY TEST</div><div class="lab-text">Delete the entire <code>ecommerce</code> namespace: <code>kubectl delete namespace ecommerce</code>. Watch ArgoCD detect the drift and recreate the entire namespace from Git within the sync window. Time it. Document the exact sequence of events in your runbook.</div></div>
+        <div class="lab"><div class="lab-day">ROLLBACK TEST</div><div class="lab-text">Simulate a bad deploy: update the image tag in Git to a broken version. Watch ArgoCD deploy it. Watch the error rate spike (in Prometheus, if you have it set up — or just kubectl get pods). Revert the Git commit. Watch ArgoCD auto-deploy the previous good version. Total rollback time goal: under 3 minutes.</div></div>
+      </div>
+      <div class="capstone">
+        <div class="capstone-tag">MONTH 8 CAPSTONE</div>
+        <div class="capstone-title">Zero-touch deployment — the most powerful interview demo</div>
+        <div class="capstone-body">Write a change to one microservice. Push to the dev branch. Time the entire journey: lint → test → build → scan → deploy → integration test → promotion to staging → canary to production. Target: under 12 minutes, zero manual steps. Record this as a screen capture. This is the demo you show in every DevOps interview. Blog post #3: "Building a zero-touch deployment pipeline with GitHub Actions and ArgoCD."</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">3</div><div class="metric-label">CI/CD pipelines</div></div>
+  <div class="metric"><div class="metric-val">0</div><div class="metric-label">manual deployments</div></div>
+  <div class="metric"><div class="metric-val">OIDC</div><div class="metric-label">no stored credentials</div></div>
+  <div class="metric"><div class="metric-val">Auto</div><div class="metric-label">rollback on error</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ PHASE 6 ═══════════════════════════ -->
+<div class="section" id="ph-6">
+<div class="section-header">
+  <div class="section-num">PHASE 6 · MONTH 9 · DAYS 241–270</div>
+  <div class="section-title">Observability + DevSecOps + production EKS</div>
+  <div class="section-desc">You can't operate what you can't see. This month adds the full observability stack, hardens everything for security, and migrates the e-commerce system to production AWS EKS — provisioned entirely by Terraform.</div>
+  <div class="section-badges">
+    <span class="pill green">Prometheus + Grafana + Loki</span>
+    <span class="pill">kube-bench + Vault + OPA</span>
+    <span class="pill amber">EKS via Terraform — teardown after screenshots</span>
+  </div>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(62,200,207,.15);color:#3ec8cf">M9 W29–30</span><span class="wh-title">Production observability stack</span></div>
+      <div class="wh-right"><span class="wh-days">Days 241–255</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">The 4 golden signals — SRE fundamentals</div>
+        <div class="item"><div class="dot concept"></div><div>Latency — how long requests take. Always separate success latency from error latency (errors often return faster, masking real latency problems).</div></div>
+        <div class="item"><div class="dot concept"></div><div>Traffic — requests per second. Baseline this so anomalies are obvious.</div></div>
+        <div class="item"><div class="dot concept"></div><div>Errors — rate of failed requests. Track 5xx separately from 4xx (4xx is often a client issue).</div></div>
+        <div class="item"><div class="dot concept"></div><div>Saturation — how full is your system. CPU, memory, disk I/O, queue depth, connection pool exhaustion. Usually the leading indicator before failures.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Builds — observability stack</div>
+        <div class="item"><div class="dot build"></div><div>Deploy kube-prometheus-stack via Helm on Kind. Configure scraping targets: Kubernetes nodes (node-exporter), pods (automatic via annotations), each microservice's custom <code>/metrics</code> endpoint (add prometheus-client library to each service), PostgreSQL exporter, Redis exporter, Nginx exporter.</div></div>
+        <div class="item"><div class="dot build"></div><div>6 Grafana dashboards: (1) cluster overview — node CPU/RAM/network/disk, (2) per-service golden signals — latency p50/p95/p99, RPS, error rate, (3) PostgreSQL — connections, query time, cache hit ratio, (4) Redis — hit rate, evictions, memory usage, (5) pipeline metrics — build duration, deploy frequency, failure rate, (6) business KPIs — orders per minute, checkout success rate, active users.</div></div>
+        <div class="item"><div class="dot build"></div><div>Alertmanager routing: critical alerts (pod down, error rate >5%, node CPU >90%) → Slack <code>#critical-alerts</code>. Warning alerts (error rate >1%, latency p99 >2s) → Slack <code>#warnings</code>. Write a routing tree, not a single receiver.</div></div>
+        <div class="item"><div class="dot build"></div><div>Loki + Promtail on Kind. Write LogQL queries: find all 5xx errors in the last hour, correlate error log spikes with deployment timestamps (show me what was deployed when errors started), find the top 10 most frequent error messages across all services.</div></div>
+        <div class="item"><div class="dot build"></div><div>SLO definition and tracking: "99.5% of checkout requests complete successfully in under 2 seconds over a 28-day rolling window." Build the Grafana panel using multi-window multi-burn-rate alerts. Write the error budget policy: if budget is 50% consumed in first 7 days of the month, freeze non-critical deploys.</div></div>
+        <div class="item"><div class="dot build"></div><div>On-call runbooks for 5 alert types: CrashLoopBackOff, high error rate, pod OOMKilled, node disk pressure, PostgreSQL connection exhaustion. Each runbook: symptom → first 3 diagnostic commands → likely causes → resolution steps → escalation path.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(62,200,207,.15);color:#3ec8cf">M9 W31</span><span class="wh-title">DevSecOps — security hardening across all layers</span></div>
+      <div class="wh-right"><span class="wh-days">Days 256–263</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">AWS security hardening</div>
+        <div class="item"><div class="dot build"></div><div>Enable: GuardDuty (threat detection), Security Hub (security posture aggregator), Config (resource compliance rules), CloudTrail (API audit log), IAM Access Analyzer (overpermissive policies).</div></div>
+        <div class="item"><div class="dot build"></div><div>Encryption everywhere: S3 (SSE-KMS), EBS (CMK), RDS (encryption at rest), ElastiCache (in-transit). Enable VPC Flow Logs to CloudWatch.</div></div>
+        <div class="item"><div class="dot build"></div><div>Write 5 Config rules: no public S3 buckets, no unencrypted EBS volumes, MFA enabled on root, no security groups open to 0.0.0.0/0 on port 22, CloudTrail enabled in all regions.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Kubernetes security hardening</div>
+        <div class="item"><div class="dot build"></div><div>Pod Security Standards: enforce Restricted profile on production namespace. This blocks: privileged containers, hostNetwork, hostPID, root containers, host paths.</div></div>
+        <div class="item"><div class="dot build"></div><div>Network Policies: default deny-all ingress/egress on production namespace. Explicit allow rules for each service pair that needs to communicate. Test with a pod that should be blocked — verify it cannot connect.</div></div>
+        <div class="item"><div class="dot build"></div><div>OPA Gatekeeper admission controller: policies that block: images without a specific ECR registry prefix, containers without resource limits, deployments with fewer than 2 replicas, pods with privilege escalation allowed.</div></div>
+        <div class="item"><div class="dot build"></div><div>Secrets management migration: move all Kubernetes Secrets to HashiCorp Vault (run locally in dev). Applications use the Vault Agent sidecar to fetch secrets at runtime. No secrets exist in YAML files or Git.</div></div>
+        <div class="item"><div class="dot build"></div><div>Image signing: sign all container images with Cosign. Add a Gatekeeper policy that rejects any pod running an unsigned image. This is supply chain security.</div></div>
+        <div class="item"><div class="dot build"></div><div>Run kube-bench (CIS Kubernetes Benchmark). Fix every FAIL item. Write a security audit report documenting each finding, its severity, and your remediation. This document goes in your portfolio.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(62,200,207,.15);color:#3ec8cf">M9 W32</span><span class="wh-title">AWS EKS — production cluster via Terraform</span></div>
+      <div class="wh-right"><span class="wh-days">Days 264–270</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">EKS production build (real AWS — keep under 8 hours)</div>
+        <div class="item"><div class="dot build"></div><div>EKS cluster via Terraform (not eksctl — you know Terraform): managed node groups in private subnets (2 AZs, min 2 max 6 nodes), proper VPC, IAM roles with least-privilege.</div></div>
+        <div class="item"><div class="dot build"></div><div>Add-ons via Terraform: AWS Load Balancer Controller, EBS CSI Driver, Cluster Autoscaler, CoreDNS (managed), kube-proxy (managed), VPC CNI (managed).</div></div>
+        <div class="item"><div class="dot build"></div><div>IRSA (IAM Roles for Service Accounts): each microservice gets its own IAM role with the minimum permissions it needs. Product-service can only access its S3 bucket. Order-service can only write to SQS. No service has access it doesn't use.</div></div>
+        <div class="item"><div class="dot build"></div><div>Migrate databases to managed services: RDS PostgreSQL Multi-AZ (private subnet), ElastiCache Redis (private subnet). Update connection strings via AWS Secrets Manager. No databases running as pods in production.</div></div>
+        <div class="item"><div class="dot build"></div><div>Cost optimization: mixed node groups (on-demand for stateful workloads, spot for stateless). Set accurate resource requests and limits — over-provisioning wastes money, under-provisioning causes OOMKills.</div></div>
+        <div class="item"><div class="dot build"></div><div>Deploy observability stack on EKS. Verify all dashboards work against real metrics.</div></div>
+        <div class="item"><div class="dot warn"></div><div>After screenshots: run <code>nuke.sh</code>. EKS cluster alone costs ~₦160/hr per node. 3 nodes for 8 hours ≈ ₦3,800. Add RDS Multi-AZ and NAT Gateways and you're at ₦8,000–₦15,000 for this session. That's the budget — stick to it.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">6</div><div class="metric-label">Grafana dashboards</div></div>
+  <div class="metric"><div class="metric-val">SLOs</div><div class="metric-label">defined + tracked</div></div>
+  <div class="metric"><div class="metric-val">Vault</div><div class="metric-label">zero secrets in YAML</div></div>
+  <div class="metric"><div class="metric-val">EKS</div><div class="metric-label">Terraform-provisioned</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ PHASE 7 ═══════════════════════════ -->
+<div class="section" id="ph-7">
+<div class="section-header">
+  <div class="section-num">PHASE 7 · MONTH 10 · DAYS 271–300</div>
+  <div class="section-title">Portfolio, content, and job hunting execution</div>
+  <div class="section-desc">Month 10 is not a rest month. The technical work is done. Now you build the interface between that work and an employer. Portfolio website, blog posts, demo videos, resume — then 450 applications over 30 days.</div>
+  <div class="section-badges">
+    <span class="pill">450+ applications target</span>
+    <span class="pill green">Portfolio site live day 1 of month 10</span>
+    <span class="pill blue">Nigerian + international remote targets</span>
+    <span class="pill purple">Target: $3,000–$5,000/month</span>
+  </div>
+</div>
+
+<div class="weeks">
+
+  <div class="week open">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(155,126,245,.15);color:#9b7ef5">M10 W33</span><span class="wh-title">Portfolio construction + content publishing</span></div>
+      <div class="wh-right"><span class="wh-days">Days 271–284</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Portfolio website — 3 days to live</div>
+        <div class="item"><div class="dot build"></div><div>Stack: Hugo (faster builds than Jekyll) + GitHub Pages + Cloudflare (free CDN, SSL, DNS). Custom domain is optional (₦5,000/year on Qservers) but strongly recommended — yourname.dev looks professional.</div></div>
+        <div class="item"><div class="dot build"></div><div>4 project pages (not just bullet points): full architecture diagram, decision log ("why PostgreSQL over MySQL for orders"), tech stack table with version badges, demo video embed, GitHub link, "what I'd do differently" section. The last item shows intellectual honesty and growth — employers love it.</div></div>
+        <div class="item"><div class="dot build"></div><div>Skills matrix: visual representation of proficiency levels. Honest — don't claim expert on things you've touched once.</div></div>
+        <div class="item"><div class="dot build"></div><div>AWS SAA-C03 certification badge (Credly link). Resume PDF download. Contact form (Netlify Forms or Formspree — free).</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">6 blog posts — publish on Dev.to + Hashnode + LinkedIn cross-post</div>
+        <div class="item"><div class="dot build"></div><div>Post 1: "30 days of Linux internals — what I built, what broke, and what I learned" — the proc filesystem, zombie processes, network namespaces by hand.</div></div>
+        <div class="item"><div class="dot build"></div><div>Post 2: "How I passed AWS SAA-C03 by building, not by watching — every service, hands-on" — the MiniStack-first approach.</div></div>
+        <div class="item"><div class="dot build"></div><div>Post 3: "Building production microservices with Docker Compose — every architecture decision explained"</div></div>
+        <div class="item"><div class="dot build"></div><div>Post 4: "Complete GitOps with GitHub Actions and ArgoCD — zero manual deployments, automatic rollbacks"</div></div>
+        <div class="item"><div class="dot build"></div><div>Post 5: "Terraform best practices from 3 real projects — mistakes I made, how I fixed them, and what I'd never do again"</div></div>
+        <div class="item"><div class="dot build"></div><div>Post 6: "My 10-month DevOps journey — from final-year CS student in Lagos to cloud engineer" — your story, the roadmap, the wins, the setbacks. This one drives the most personal connections and referrals.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">4 demo videos (OBS Studio, 3–5 minutes each)</div>
+        <div class="item"><div class="dot build"></div><div>Video 1: E-commerce microservices on Kubernetes — Helm install, running pods, HPA scaling under load, one failure drill recovering</div></div>
+        <div class="item"><div class="dot build"></div><div>Video 2: CI/CD pipeline — push code, watch it deploy end-to-end in real time, explain each stage</div></div>
+        <div class="item"><div class="dot build"></div><div>Video 3: Observability demo — trigger an alert deliberately, diagnose with Grafana + Loki correlation, fix the issue</div></div>
+        <div class="item"><div class="dot build"></div><div>Video 4: Terraform — run destroy, then apply: entire infrastructure comes back from zero in one command</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(155,126,245,.15);color:#9b7ef5">M10 W34</span><span class="wh-title">Resume + LinkedIn optimization + interview preparation</span></div>
+      <div class="wh-right"><span class="wh-days">Days 285–291</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Resume (1 page, ATS-optimized)</div>
+        <div class="item"><div class="dot build"></div><div>Quantify everything: "Reduced deployment time 80% through GitHub Actions CI/CD automation" · "Infrastructure serving 100k+ requests/day on EKS" · "Cut cloud costs 35% through spot instances and right-sizing" · "Zero-downtime deployments via ArgoCD GitOps with auto-rollback"</div></div>
+        <div class="item"><div class="dot build"></div><div>Projects listed as experience with job titles: "Cloud Infrastructure Engineer (e-commerce platform)" not "personal project." Use dates spanning your 10-month roadmap.</div></div>
+        <div class="item"><div class="dot build"></div><div>Skills section ATS keywords: AWS, EKS, Kubernetes, Terraform, Ansible, Docker, GitHub Actions, ArgoCD, Prometheus, Grafana, Loki, Python, Bash, PostgreSQL, Redis, Helm, HashiCorp Vault, Linux, Nginx, CI/CD, GitOps, DevSecOps, IaC.</div></div>
+        <div class="item"><div class="dot build"></div><div>Multiple versions: AWS-cloud-focused, K8s-orchestration-focused, startup-friendly (emphasize breadth), enterprise-friendly (emphasize depth and security). Tailor one for every application — never send the generic version.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">LinkedIn — optimize before applications start</div>
+        <div class="item"><div class="dot build"></div><div>Headline (LinkedIn shows this everywhere): "Cloud / DevOps Engineer | AWS Certified Solutions Architect | Kubernetes · Terraform · CI/CD | Open to Remote Roles"</div></div>
+        <div class="item"><div class="dot build"></div><div>About section: your story in 5 sentences. What you built. What problem it solves. What makes you different (the 10-month builder-first journey). What you're looking for. End with your portfolio URL.</div></div>
+        <div class="item"><div class="dot build"></div><div>Featured section: portfolio website, best demo video, AWS certification badge, best blog post.</div></div>
+        <div class="item"><div class="dot build"></div><div>Post weekly about what you're learning or building. Share your blog posts with a 3-sentence take on LinkedIn. Comment meaningfully on DevOps content. Visibility compounds.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Interview preparation — 10 system design scenarios to practice out loud</div>
+        <div class="lab"><div class="lab-day">SCENARIO 1</div><div class="lab-text">"Design a highly available web application on AWS" — draw VPC topology, 2 AZs, ALB, ASG, RDS Multi-AZ, ElastiCache. Explain every decision. You've built this. Speak from experience, not theory.</div></div>
+        <div class="lab"><div class="lab-day">SCENARIO 2</div><div class="lab-text">"Application is slow — walk me through your diagnostic process." Answer: check golden signals in Grafana (which signal is degraded?), correlate with recent deployments in ArgoCD, check Loki logs for errors, check database query times, check cache hit rate, profile the bottleneck. Always metrics first, logs second, code third.</div></div>
+        <div class="lab"><div class="lab-day">SCENARIO 3</div><div class="lab-text">"A deployment caused an outage — what do you do?" Answer: rollback first (ArgoCD revert the image tag commit — under 3 minutes). Never stay down to investigate. Then do the post-mortem. Explain your canary strategy that would have caught this.</div></div>
+        <div class="lab"><div class="lab-day">SCENARIO 4</div><div class="lab-text">"How would you reduce our AWS bill by 30%?" Answer: right-size instances (CloudWatch metrics show actual CPU < 20%? downsize), spot instances for stateless workloads (order-service, product-service), reserved instances for predictable loads (PostgreSQL RDS), S3 lifecycle policies, delete unused resources (old AMIs, unattached EBS volumes, idle NAT Gateways).</div></div>
+        <div class="lab"><div class="lab-day">SCENARIO 5</div><div class="lab-text">"Security breach detected — what are your first steps?" Answer: (1) isolate the affected workload (Network Policy deny-all on the namespace), (2) preserve evidence (export logs, don't restart yet), (3) identify blast radius (what did this pod have access to via IRSA?), (4) rotate all credentials the pod could access, (5) GuardDuty and CloudTrail investigation. NEVER delete the evidence first.</div></div>
+        <div class="item"><div class="dot build"></div><div>Practice each scenario out loud, without notes, until you can answer fluently in under 4 minutes. Record yourself. Watch the playback. Do it again. Practice on Pramp.com (free peer mock interviews).</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header" onclick="tw(this)">
+      <div class="wh-left"><span class="wh-tag" style="background:rgba(155,126,245,.15);color:#9b7ef5">M10 W35–37</span><span class="wh-title">Application blitz — 15 applications per day, 30 days</span></div>
+      <div class="wh-right"><span class="wh-days">Days 292–300</span><span class="toggle-icon">▼</span></div>
+    </div>
+    <div class="week-body">
+      <div class="block">
+        <div class="block-label">Daily routine (4 hours total)</div>
+        <div class="item"><div class="dot build"></div><div>Morning (6–8 AM): 15 applications. 5 via LinkedIn Easy Apply, 5 on AngelList/Wellfound, 5 direct on company careers pages. Customize resume per role (10 min each). Track every application in a spreadsheet: company, role, date, status, follow-up date, contact name.</div></div>
+        <div class="item"><div class="dot build"></div><div>Evening (8:30–10:30 PM): 10–15 LinkedIn connection requests to DevOps engineers at target companies (personalized note mentioning one specific thing about their work). Engage meaningfully with 5 posts. Share one of your blog posts or demo videos.</div></div>
+        <div class="item"><div class="dot build"></div><div>Freelance gigs on Upwork/Fiverr (2–3 applications/day): "DevOps setup for startup," "CI/CD pipeline configuration," "AWS architecture review." This builds testimonials and cash flow while hunting.</div></div>
+        <div class="item"><div class="dot build"></div><div>Follow up every application after 7 days of silence. One short, professional email. Not multiple. Persistence without harassment.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Target companies — Nigerian (₦500k–₦800k/month)</div>
+        <div class="item"><div class="dot build"></div><div>Paystack, Flutterwave, Kuda Bank, Moniepoint, Andela, Interswitch, Carbon (Onefi), PiggyVest, TeamApt, Cowrywise, Appzone, Jumia Technology</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Target companies — international remote ($3k–$8k/month)</div>
+        <div class="item"><div class="dot build"></div><div>GitLab (DevOps platform — they understand DevOps at depth), HashiCorp (Terraform/Vault — you know their entire product line), Elastic (you've used Elasticsearch/Loki), Vercel, Arc.dev, Toptal, Turing.com, Automattic (fully remote since founding)</div></div>
+        <div class="item"><div class="dot build"></div><div>Startups on AngelList/Wellfound: filter by Remote, DevOps/Infrastructure role, Seed–Series B, 20–200 employees. Apply to 50+. Startups move faster and care more about what you've built than where you went to school.</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">Job boards</div>
+        <div class="item"><div class="dot build"></div><div>LinkedIn (primary), AngelList/Wellfound, WeWorkRemotely (remote only), RemoteOK (remote only), Arc.dev (remote tech), Jobberman (Nigerian market), Hired.com, Stack Overflow Jobs</div></div>
+      </div>
+      <div class="block">
+        <div class="block-label">When you get an offer — negotiation</div>
+        <div class="item"><div class="dot build"></div><div>You have leverage: AWS SAA-C03 cert, 4 production-grade GitHub projects, a live portfolio, published blog posts, a demo video showing working systems, 9 months of documented builds. Do not accept the first number.</div></div>
+        <div class="item"><div class="dot build"></div><div>Nigerian companies: target ₦600k–₦800k/month. International remote: target $3,500–$5,000/month. Counter based on market rate, not desperation.</div></div>
+        <div class="item"><div class="dot build"></div><div>Benefits to negotiate beyond salary: learning budget (cert reimbursement), equipment allowance, remote work flexibility, stock options (for startups), conference attendance, vacation days.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="metric-val">450+</div><div class="metric-label">applications sent</div></div>
+  <div class="metric"><div class="metric-val">6+</div><div class="metric-label">blog posts live</div></div>
+  <div class="metric"><div class="metric-val">4</div><div class="metric-label">demo videos</div></div>
+  <div class="metric"><div class="metric-val">$3–5k</div><div class="metric-label">monthly target</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ RESOURCES ═══════════════════════════ -->
+<div class="section" id="ph-8">
+<div class="section-header">
+  <div class="section-num">REFERENCE</div>
+  <div class="section-title">Resources, tools, and budget</div>
+  <div class="section-desc">Every resource listed here is free unless marked otherwise. The total budget for 10 months is ₦240,000 — the exam fee only.</div>
+</div>
+
+<div class="resource-grid">
+  <div class="res-card">
+    <div class="res-cat">VIDEO COURSES (ALL FREE — WATCH AT 1.5–2×)</div>
+    <div class="res-item"><div class="res-dot"></div><div>Linux for Beginners — freeCodeCamp (4h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Bash Scripting Full Course — freeCodeCamp (3h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Computer Networking — freeCodeCamp (9h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Git & GitHub — freeCodeCamp (1h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS SAA — freeCodeCamp (14h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Docker Tutorial — TechWorld with Nana (3h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Kubernetes — TechWorld with Nana (4h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Terraform Course — freeCodeCamp (2h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>GitHub Actions — TechWorld with Nana (1h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Prometheus — TechWorld with Nana (1h)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>ArgoCD Tutorial — YouTube (1h)</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">PRACTICE PLATFORMS (ALL FREE)</div>
+    <div class="res-item"><div class="res-dot"></div><div>MiniStack — free AWS emulator (ministackorg/ministack)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Free Tier — aws.amazon.com/free</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>KillerCoda Labs — killercoda.com (K8s practice)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Play with Kubernetes — labs.play-with-k8s.com</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Skill Builder — explore.skillbuilder.aws</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>ExamTopics SAA-C03 — examtopics.com (1000+ free Qs)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Pramp — pramp.com (free mock interviews)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Docker Hub — hub.docker.com</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>GitHub — github.com (free private repos)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>draw.io — app.diagrams.net (architecture diagrams)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>OBS Studio — obsproject.com (demo recordings)</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">DOCUMENTATION (PRIMARY REFERENCES)</div>
+    <div class="res-item"><div class="res-dot"></div><div>man pages — <code>man 2 fork</code>, <code>man 5 proc</code>, <code>man 7 signals</code></div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Documentation — docs.aws.amazon.com</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Kubernetes Docs — kubernetes.io/docs</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Terraform Docs — terraform.io/docs</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Docker Docs — docs.docker.com</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>GitHub Actions Docs — docs.github.com/en/actions</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Prometheus Docs — prometheus.io/docs</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>ArgoCD Docs — argo-cd.readthedocs.io</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Helm Docs — helm.sh/docs</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS Well-Architected Framework — aws.amazon.com/architecture/well-architected</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">BOOKS (READ THESE — WORTH THE TIME)</div>
+    <div class="res-item"><div class="res-dot"></div><div>The Linux Command Line — William Shotts (free PDF at linuxcommand.org)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Linux System Programming — Robert Love (Ch. 1–2)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>UNIX & Linux System Administration Handbook — Evi Nemeth (Ch. 6, 13)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Terraform: Up & Running, 3rd ed — Yevgeniy Brikman (Ch. 1, 2, 4)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Kubernetes: Up & Running — Brendan Burns (Ch. 1–5)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Site Reliability Engineering — Google (free at sre.google/sre-book)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>The Phoenix Project — Gene Kim (understanding DevOps culture)</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">TOOLS TO INSTALL (LOCAL DEV)</div>
+    <div class="res-item"><div class="res-dot"></div><div>OS: Ubuntu 22.04 LTS (native or WSL2)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Git, VS Code, Vim (for server editing)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Docker Desktop + docker compose v2</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>kubectl, Kind (Kubernetes in Docker)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Terraform CLI, AWS CLI v2</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Helm, Helmfile</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Python 3.12 + pip, Node.js LTS, Go 1.22</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>jq (JSON), yq (YAML), htop, tmux, nmap, tcpdump</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>shellcheck, bats (bash testing)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Trivy, kube-bench, Cosign</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Postman, DBeaver, OBS Studio</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">PAID (WORTH IT)</div>
+    <div class="res-item"><div class="res-dot"></div><div>Tutorials Dojo SAA-C03 Practice Exams (~₦15,000) — highest quality SAA mock exams available</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>AWS SAA-C03 exam — ₦240,000 at Pearson VUE Lagos or online proctored</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Custom domain — ₦5,000/year on Qservers or Namecheap (optional but professional)</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div style="margin-top:1.5rem">
+  <div class="section-num">BUDGET BREAKDOWN</div>
+  <table class="budget-table">
+    <thead><tr><th>Item</th><th>Phase</th><th>Notes</th><th>Cost (₦)</th></tr></thead>
+    <tbody>
+      <tr><td>AWS SAA-C03 exam</td><td>Month 4</td><td>Pearson VUE Lagos or online proctored</td><td>240,000</td></tr>
+      <tr><td>Tutorials Dojo practice exams</td><td>Month 4</td><td>Optional but highly recommended</td><td>15,000</td></tr>
+      <tr><td>Real AWS cloud time (month 3 3-tier build)</td><td>Month 3</td><td>8 hrs, tear down same session</td><td>~8,000</td></tr>
+      <tr><td>Real AWS cloud time (month 5 IaC proof)</td><td>Month 5</td><td>4 hrs, Terraform apply + screenshot</td><td>~4,000</td></tr>
+      <tr><td>Real AWS EKS session</td><td>Month 9</td><td>8 hrs max, full teardown after</td><td>~12,000</td></tr>
+      <tr><td>Custom domain (optional)</td><td>Month 10</td><td>Portfolio website</td><td>5,000</td></tr>
+      <tr><td>MiniStack, Kind, KillerCoda, GitHub, freeCodeCamp</td><td>All</td><td>Free</td><td>0</td></tr>
+      <tr class="total"><td colspan="3">TOTAL MAXIMUM BUDGET</td><td>~₦284,000</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="alert alert-info" style="margin-top:1rem">
+  <span class="alert-icon">→</span>
+  <span>The AWS exam is the only mandatory expense. Everything else can be done for free or near-free if you use MiniStack for local development and tear down real AWS resources immediately after proof screenshots. The ₦240,000 exam fee is an investment that directly impacts your starting salary — an AWS-certified engineer commands 30–50% more than an uncertified one at the entry level.</span>
+</div>
+
+</div>
+
+</main>
+
+<button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</button>
+
+<script>
+const phases = [
+  {id:'ph-0', label:'Overview', short:'OVR'},
+  {id:'ph-1', label:'Phase 1: Linux + Bash + Python', short:'PH1'},
+  {id:'ph-2', label:'Phase 2: AWS + SAA-C03', short:'PH2'},
+  {id:'ph-3', label:'Phase 3: Terraform + Ansible', short:'PH3'},
+  {id:'ph-4', label:'Phase 4: Docker + K8s', short:'PH4'},
+  {id:'ph-5', label:'Phase 5: CI/CD + GitOps', short:'PH5'},
+  {id:'ph-6', label:'Phase 6: Observability + EKS', short:'PH6'},
+  {id:'ph-7', label:'Phase 7: Portfolio + Jobs', short:'PH7'},
+  {id:'ph-8', label:'Resources + Budget', short:'RES'},
+];
+
+const monthLabels = [
+  'M1','M2','M3','M4','M5','M6','M7','M8','M9','M10'
+];
+const monthPhase = [1,1,2,2,3,4,4,5,6,7];
+
+const tl = document.getElementById('timeline');
+const nav = document.getElementById('phasenav');
+
+monthLabels.forEach((m, i) => {
+  const el = document.createElement('div');
+  el.className = 'tm';
+  el.innerHTML = `<span class="tm-num">${m}</span><span class="tm-label">Phase ${monthPhase[i]}</span>`;
+  el.onclick = () => show(monthPhase[i]);
+  tl.appendChild(el);
+});
+
+phases.forEach((p, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'navbtn' + (i === 0 ? ' on' : '');
+  btn.textContent = p.short === 'OVR' ? 'Overview' : p.label.length > 28 ? p.short : p.label;
+  btn.title = p.label;
+  btn.onclick = () => show(i);
+  nav.appendChild(btn);
+});
+
+function show(n) {
+  document.querySelectorAll('.section').forEach((el, i) => el.classList.toggle('on', i === n));
+  document.querySelectorAll('.navbtn').forEach((el, i) => el.classList.toggle('on', i === n));
+  // highlight timeline months for this phase
+  const phaseIdx = n;
+  document.querySelectorAll('.tm').forEach((el, i) => {
+    el.classList.toggle('on', monthPhase[i] === phaseIdx);
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function tw(header) {
+  const week = header.closest('.week');
+  week.classList.toggle('open');
+}
+
+// Initialize timeline highlight
+document.querySelectorAll('.tm').forEach((el, i) => {
+  el.classList.toggle('on', monthPhase[i] === 0);
+});
+</script>
+</body>
+</html>

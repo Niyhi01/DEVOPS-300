@@ -1,0 +1,2861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1 — Bare-Metal Core | Niyhi's DevOps Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0e1015;--ink2:#2d3142;--ink3:#5a617d;--ink4:#8e96b0;
+  --paper:#f7f6f2;--paper2:#edecea;--paper3:#e4e2dd;
+  --cream:#faf9f5;
+  --accent:#1a56db;--accent-light:#dce8ff;
+  --green:#0d6e4a;--green-bg:#d6f0e6;
+  --amber:#7a4700;--amber-bg:#fdefd4;
+  --red:#b91c1c;--red-bg:#fee2e2;
+  --purple:#5b21b6;--purple-bg:#ede9fe;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Fraunces',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.site-header{background:var(--ink);color:var(--paper);padding:3.5rem 0 3rem}
+.hinner{max-width:900px;margin:0 auto;padding:0 2rem}
+.phase-badge{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7b8ff5;margin-bottom:1rem;display:block}
+.site-header h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:600;line-height:1.15;letter-spacing:-.02em;margin-bottom:.75rem}
+.site-header h1 em{font-style:italic;color:#aab0c8}
+.header-desc{font-size:1rem;color:#9ba3b8;max-width:560px;line-height:1.75;font-family:var(--mono);font-size:12px}
+.header-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.5rem}
+.hbadge{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.12);color:#9ba3b8}
+.hbadge.g{border-color:rgba(62,207,142,.3);color:#3ecf8e}
+.hbadge.b{border-color:rgba(91,138,245,.3);color:#7b8ff5}
+
+/* ── TOOLBAR ── */
+.toolbar{position:sticky;top:0;z-index:100;background:rgba(14,16,21,.97);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08);padding:.5rem 0}
+.tinner{max-width:900px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none}
+.tinner::-webkit-scrollbar{display:none}
+.tnav{font-family:var(--mono);font-size:10px;padding:8px 12px;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.35);cursor:pointer;background:transparent;white-space:nowrap;transition:all .15s;letter-spacing:.04em;flex-shrink:0}
+.tnav:hover{color:rgba(255,255,255,.6)}
+.tnav.on{color:#fff;border-bottom-color:#7b8ff5}
+.tsep{width:1px;height:16px;background:rgba(255,255,255,.1);margin:0 6px;flex-shrink:0}
+.print-btn{font-family:var(--mono);font-size:10px;margin-left:auto;padding:5px 12px;border:1px solid rgba(255,255,255,.15);border-radius:3px;color:rgba(255,255,255,.4);background:transparent;cursor:pointer;flex-shrink:0;transition:all .15s;letter-spacing:.04em;white-space:nowrap}
+.print-btn:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.7)}
+
+/* ── LAYOUT ── */
+.main{max-width:900px;margin:0 auto;padding:0 2rem 5rem}
+.section{display:none;padding:2.5rem 0}
+.section.on{display:block}
+
+/* ── OVERVIEW CARDS ── */
+.ov-intro{font-size:1.05rem;color:var(--ink2);line-height:1.8;margin-bottom:2rem;max-width:720px}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:2rem}
+.ov-card{background:var(--cream);border:1.5px solid var(--paper3);border-radius:8px;padding:1.1rem 1.25rem;cursor:pointer;transition:all .18s}
+.ov-card:hover{border-color:#7b8ff5;transform:translateY(-2px);box-shadow:0 4px 20px rgba(123,143,245,.1)}
+.ov-week{font-family:var(--mono);font-size:10px;color:#7b8ff5;letter-spacing:.08em;margin-bottom:.4rem}
+.ov-title{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:.25rem}
+.ov-sub{font-family:var(--mono);font-size:10px;color:var(--ink3);line-height:1.5}
+.ov-days{font-family:var(--mono);font-size:9px;color:var(--ink4);margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--paper3)}
+
+/* ── SCHEDULE GRID ── */
+.sched-box{background:var(--ink);color:var(--paper);border-radius:8px;padding:1.5rem 1.75rem;margin-bottom:2rem}
+.sched-title{font-family:var(--mono);font-size:10px;color:#7b8ff5;letter-spacing:.1em;margin-bottom:1.25rem}
+.sched-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.sched-col h4{font-family:var(--mono);font-size:11px;color:#aab0c8;letter-spacing:.06em;margin-bottom:.75rem}
+.sched-row{display:flex;gap:10px;margin-bottom:.6rem;font-size:13px}
+.sched-time{font-family:var(--mono);font-size:10px;color:#7b8ff5;width:100px;flex-shrink:0;padding-top:2px}
+.sched-task{color:#d0d4e4;line-height:1.5}
+.sched-total{font-family:var(--mono);font-size:11px;color:#5c6480;margin-top:.75rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.07)}
+.sched-total span{color:#e8eaf0}
+
+/* ── WEEK SECTIONS ── */
+.week-header{padding:1.75rem 0 1.25rem;border-bottom:2px solid var(--ink);margin-bottom:1.75rem}
+.week-eyebrow{font-family:var(--mono);font-size:10px;color:#7b8ff5;letter-spacing:.1em;margin-bottom:.4rem}
+.week-title{font-size:1.6rem;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.25}
+.week-sub{font-size:.95rem;color:var(--ink3);margin-top:.4rem;line-height:1.6;max-width:640px}
+.week-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:.9rem}
+.tag{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:3px;border:1.5px solid var(--paper3);color:var(--ink3);background:var(--paper2)}
+
+/* ── DAY CARDS ── */
+.day{background:var(--cream);border:1.5px solid var(--paper3);border-radius:8px;margin-bottom:14px;overflow:hidden}
+.day-header{padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;transition:background .12s}
+.day-header:hover{background:var(--paper2)}
+.dh-left{display:flex;align-items:center;gap:10px}
+.day-num{font-family:var(--mono);font-size:10px;color:#7b8ff5;width:40px;flex-shrink:0;letter-spacing:.06em}
+.day-title{font-size:.92rem;font-weight:600;color:var(--ink)}
+.day-topic{font-family:var(--mono);font-size:10px;color:var(--ink4);margin-top:1px}
+.dh-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.day-tag{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:2px}
+.dt-theory{background:var(--purple-bg);color:var(--purple)}
+.dt-lab{background:var(--green-bg);color:var(--green)}
+.dt-build{background:var(--accent-light);color:var(--accent)}
+.chev{font-size:10px;color:var(--ink4);transition:transform .18s}
+.day.open .chev{transform:rotate(180deg)}
+.day-body{display:none;border-top:1.5px solid var(--paper3)}
+.day.open .day-body{display:block}
+
+/* ── DAY BODY CONTENT ── */
+.db-section{padding:1.25rem 1.5rem;border-bottom:1px solid var(--paper2)}
+.db-section:last-child{border-bottom:none}
+.db-label{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.db-label::after{content:'';flex:1;height:1px;background:var(--paper3)}
+
+/* explain block */
+.explain{font-size:.92rem;color:var(--ink2);line-height:1.8;margin-bottom:.8rem}
+.explain:last-child{margin-bottom:0}
+.explain strong{color:var(--ink);font-weight:600}
+
+/* analogy */
+.analogy{background:var(--amber-bg);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:.85rem 1rem;margin:.8rem 0;font-size:.88rem;color:var(--amber);line-height:1.65}
+.analogy .albl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;display:block;margin-bottom:.2rem;font-weight:600}
+
+/* command block */
+.cmd-group{margin-bottom:1rem}
+.cmd-group:last-child{margin-bottom:0}
+.cmd-group-title{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:.5rem;font-weight:500}
+.cmd-block{background:var(--ink);border-radius:6px;overflow:hidden;margin-bottom:.5rem}
+.cmd-block:last-child{margin-bottom:0}
+.cmd-header{padding:.45rem .85rem;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between}
+.cmd-purpose{font-family:var(--mono);font-size:9px;color:#7b8ff5;letter-spacing:.04em}
+.cmd-code{padding:.65rem .85rem;font-family:var(--mono);font-size:12px;color:#e0e4f0;line-height:1.8}
+.cmd-code .comment{color:#4a5168;font-style:italic}
+.cmd-code .highlight{color:#3ecf8e}
+.cmd-code .flag{color:#f0a347}
+.cmd-code .var{color:#f57eb6}
+
+/* output block */
+.output-block{background:#0a0c10;border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:.65rem .85rem;font-family:var(--mono);font-size:11px;color:#7ca5b8;line-height:1.75;margin:.5rem 0}
+.output-block .out-comment{color:#3a4255;font-style:italic}
+
+/* steps */
+.steps{counter-reset:step;margin:.5rem 0}
+.step{display:flex;gap:12px;margin-bottom:.8rem;font-size:.92rem;color:var(--ink2);line-height:1.65}
+.step-n{counter-increment:step;content:counter(step);font-family:var(--mono);font-size:10px;color:#7b8ff5;width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(123,143,245,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
+.step::before{content:none}
+.step-n::after{content:counter(step)}
+
+/* checklist */
+.checklist{margin:.5rem 0}
+.chk{display:flex;gap:10px;font-size:.9rem;color:var(--ink2);margin-bottom:.55rem;line-height:1.55}
+.chk-box{width:16px;height:16px;border:1.5px solid var(--paper3);border-radius:3px;flex-shrink:0;margin-top:3px}
+.chk.done .chk-box{background:var(--green);border-color:var(--green)}
+
+/* alert boxes */
+.alert{border-radius:6px;padding:.85rem 1rem;margin:.8rem 0;font-size:.88rem;line-height:1.65;display:flex;gap:.75rem}
+.al-icon{font-size:14px;flex-shrink:0;margin-top:2px}
+.al-warn{background:var(--amber-bg);border:1.5px solid rgba(122,71,0,.2);color:var(--amber)}
+.al-info{background:var(--accent-light);border:1.5px solid rgba(26,86,219,.2);color:#1e40af}
+.al-success{background:var(--green-bg);border:1.5px solid rgba(13,110,74,.2);color:var(--green)}
+.al-note{background:var(--purple-bg);border:1.5px solid rgba(91,33,182,.2);color:var(--purple)}
+
+/* mistake box */
+.mistake{background:var(--red-bg);border:1.5px solid rgba(185,28,28,.2);border-radius:6px;padding:.85rem 1rem;margin:.8rem 0;font-size:.87rem;color:var(--red);line-height:1.6}
+.mistake .mlbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;display:block;margin-bottom:.2rem;font-weight:600}
+
+/* capstone */
+.capstone{background:linear-gradient(135deg,#0e1015 0%,#131929 100%);border-radius:10px;padding:1.75rem;margin:1.5rem 0;border:1.5px solid rgba(123,143,245,.25)}
+.cap-eyebrow{font-family:var(--mono);font-size:10px;color:#7b8ff5;letter-spacing:.1em;margin-bottom:.6rem}
+.cap-title{font-size:1.15rem;font-weight:600;color:#e8eaf0;margin-bottom:.6rem}
+.cap-desc{font-size:.88rem;color:#9ba3b8;line-height:1.7;margin-bottom:1rem}
+.cap-reqs{border-top:1px solid rgba(255,255,255,.07);padding-top:.9rem}
+.cap-req{display:flex;gap:8px;font-family:var(--mono);font-size:11px;color:#aab0c8;margin-bottom:.45rem;line-height:1.5}
+.cap-req::before{content:'→';color:#7b8ff5;flex-shrink:0}
+
+/* gate */
+.gate{background:var(--green-bg);border:1.5px solid rgba(13,110,74,.2);border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0}
+.gate-title{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.08em;margin-bottom:.75rem}
+.gate-item{display:flex;gap:10px;font-size:.9rem;color:var(--ink2);margin-bottom:.45rem;line-height:1.5}
+.gate-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
+/* metrics row */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:1.5rem 0}
+.metric{background:var(--paper2);border:1.5px solid var(--paper3);border-radius:7px;padding:1rem 1.1rem}
+.mv{font-family:var(--mono);font-size:1.4rem;font-weight:500;color:var(--ink);line-height:1}
+.ml{font-size:.8rem;color:var(--ink3);margin-top:.3rem;font-family:var(--mono)}
+
+/* reference table */
+.ref-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:.75rem 0}
+.ref-table th{text-align:left;font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:.08em;padding:6px 10px;border-bottom:2px solid var(--paper3)}
+.ref-table td{padding:7px 10px;border-bottom:1px solid var(--paper2);color:var(--ink2);vertical-align:top}
+.ref-table td:first-child{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.ref-table td:last-child{color:var(--ink3)}
+.ref-table code{font-family:var(--mono);font-size:11px;background:var(--paper2);padding:1px 5px;border-radius:2px;color:var(--ink2)}
+
+/* inline code */
+code{font-family:var(--mono);font-size:.82em;background:var(--paper2);border:1px solid var(--paper3);padding:1px 5px;border-radius:3px;color:var(--ink2)}
+
+/* resources */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:1rem 0}
+.res-card{background:var(--paper2);border:1.5px solid var(--paper3);border-radius:7px;padding:1rem 1.1rem}
+.res-cat{font-family:var(--mono);font-size:9px;color:var(--ink4);letter-spacing:.1em;margin-bottom:.7rem}
+.res-item{display:flex;gap:8px;font-size:.85rem;color:var(--ink2);margin-bottom:.5rem;line-height:1.45}
+.res-dot{width:4px;height:4px;border-radius:50%;background:#7b8ff5;flex-shrink:0;margin-top:7px}
+
+/* progress bar */
+.progress-bar{background:var(--paper2);border-radius:4px;height:6px;margin:.5rem 0}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#7b8ff5,#3ecf8e)}
+
+/* divider */
+.divider{border:none;border-top:1.5px solid var(--paper3);margin:2rem 0}
+
+/* back top */
+.back-top{position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:var(--paper);border:none;border-radius:4px;padding:8px 13px;font-family:var(--mono);font-size:11px;cursor:pointer;z-index:200;transition:all .15s;opacity:.7}
+.back-top:hover{opacity:1}
+
+/* PRINT */
+@media print{
+  .toolbar,.back-top,.print-btn{display:none!important}
+  .section{display:block!important;page-break-before:always}
+  .section:first-child{page-break-before:avoid}
+  .day-body{display:block!important}
+  .day{page-break-inside:avoid}
+  body{background:#fff;color:#111}
+  :root{--ink:#111;--ink2:#222;--ink3:#444;--ink4:#666;--paper:#fff;--paper2:#f5f5f5;--paper3:#e0e0e0;--cream:#fafafa;--accent:#1a56db;--green:#0d6e4a;--amber:#7a4700}
+  .cmd-block,.output-block,.capstone{background:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+@media(max-width:640px){
+  .sched-grid{grid-template-columns:1fr}
+  .ov-grid{grid-template-columns:1fr 1fr}
+  .hinner,.tinner,.main{padding-left:1rem;padding-right:1rem}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+<div class="hinner">
+  <span class="phase-badge">niyhi's devops roadmap · phase 1 of 7</span>
+  <h1>Bare-Metal Core.<br><em>Months 1 & 2.</em></h1>
+  <p class="header-desc">Linux internals · Bash scripting · Python foundations · Networking · Git mastery. 100% local, zero cloud spend. Day-by-day labs with commands, explanations, common mistakes, and checkpoints.</p>
+  <div class="header-meta">
+    <span class="hbadge">Months 1–2 · Days 1–60</span>
+    <span class="hbadge g">100% local · ₦0 cloud spend</span>
+    <span class="hbadge b">~4 weeks of Linux + ~4 weeks of Bash/Python/Git</span>
+    <span class="hbadge">Beginner-friendly · every concept explained</span>
+  </div>
+</div>
+</header>
+
+<nav class="toolbar">
+<div class="tinner">
+  <button class="tnav on" onclick="go(0)">Overview</button>
+  <div class="tsep"></div>
+  <button class="tnav" onclick="go(1)">M1-W1: Linux Internals</button>
+  <button class="tnav" onclick="go(2)">M1-W2: Permissions & Storage</button>
+  <button class="tnav" onclick="go(3)">M1-W3: Networking</button>
+  <button class="tnav" onclick="go(4)">M1-W4: Bash Scripts</button>
+  <button class="tnav" onclick="go(5)">M2-W5: Python</button>
+  <button class="tnav" onclick="go(6)">M2-W6: Git + Python</button>
+  <div class="tsep"></div>
+  <button class="tnav" onclick="go(7)">Resources</button>
+  <button class="print-btn" onclick="window.print()">⬇ Save / Print</button>
+</div>
+</nav>
+
+<main class="main">
+
+<!-- ═══════════════════════════ OVERVIEW ═══════════════════════════ -->
+<div class="section on" id="s0">
+<div class="week-header">
+  <div class="week-eyebrow">PHASE 1 OVERVIEW</div>
+  <div class="week-title">What this phase builds, and why</div>
+  <div class="week-sub">Everything in DevOps runs on Linux. If you can't navigate, diagnose, script, and secure a Linux server without googling every command, you will struggle in every job. Phase 1 gives you that foundation — completely locally, for free.</div>
+</div>
+
+<p class="ov-intro">
+Phase 1 covers 8 weeks across 2 months. Each week has a clear theme. Each day has a theory portion in the morning and a hands-on lab in the evening. You don't memorize commands — you use them repeatedly until they become muscle memory. By the end of Month 2, you will have a public GitHub portfolio with real projects that employers can see.
+</p>
+
+<div class="sched-box">
+  <div class="sched-title">// YOUR DAILY SCHEDULE — NON-NEGOTIABLE</div>
+  <div class="sched-grid">
+    <div>
+      <h4>MONDAY – FRIDAY</h4>
+      <div class="sched-row"><span class="sched-time">6:00–6:45 AM</span><span class="sched-task">Theory — read docs, watch videos at 2× speed, take notes in your own words</span></div>
+      <div class="sched-row"><span class="sched-time">6:45–7:30 AM</span><span class="sched-task">Immediate practice — mini build on the same concept, before you forget</span></div>
+      <div class="sched-row"><span class="sched-time">8:30–11:00 PM</span><span class="sched-task">Evening project — integration work, build the day's deliverable, push to GitHub</span></div>
+      <div class="sched-total">Daily total: <span>~3.5 hours</span></div>
+    </div>
+    <div>
+      <h4>SATURDAY – SUNDAY</h4>
+      <div class="sched-row"><span class="sched-time">7:00–9:00 AM</span><span class="sched-task">Week review — read all your week-XX.md reflection files, identify weak spots</span></div>
+      <div class="sched-row"><span class="sched-time">2:00–8:00 PM</span><span class="sched-task">Deep project work — build the week's capstone project with breaks</span></div>
+      <div class="sched-total">Weekend: <span>8 hrs/day · 16 hrs</span> &nbsp;|&nbsp; Weekly total: <span>~33–36 hours</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="ov-grid">
+  <div class="ov-card" onclick="go(1)">
+    <div class="ov-week">MONTH 1 · WEEK 1</div>
+    <div class="ov-title">Linux Internals</div>
+    <div class="ov-sub">How the OS works under the hood — processes, files, signals, syscalls</div>
+    <div class="ov-days">Days 1–7 · Capstone: raw kernel health audit script</div>
+  </div>
+  <div class="ov-card" onclick="go(2)">
+    <div class="ov-week">MONTH 1 · WEEK 2</div>
+    <div class="ov-title">Permissions & Storage</div>
+    <div class="ov-sub">File permissions, ACLs, LVM storage, user management</div>
+    <div class="ov-days">Days 8–14 · Capstone: live disk expansion simulation</div>
+  </div>
+  <div class="ov-card" onclick="go(3)">
+    <div class="ov-week">MONTH 1 · WEEK 3</div>
+    <div class="ov-title">Networking</div>
+    <div class="ov-sub">TCP/IP, subnetting, DNS, firewalls, network namespaces</div>
+    <div class="ov-days">Days 15–21 · Capstone: hardened Nginx reverse proxy</div>
+  </div>
+  <div class="ov-card" onclick="go(4)">
+    <div class="ov-week">MONTH 1 · WEEK 4</div>
+    <div class="ov-title">Bash Scripting</div>
+    <div class="ov-sub">7 production-grade automation scripts with tests</div>
+    <div class="ov-days">Days 22–30 · Capstone: published bash automation suite</div>
+  </div>
+  <div class="ov-card" onclick="go(5)">
+    <div class="ov-week">MONTH 2 · WEEK 5</div>
+    <div class="ov-title">Python for DevOps</div>
+    <div class="ov-sub">Python basics, boto3, CLI tools, testing with pytest</div>
+    <div class="ov-days">Days 31–44 · Capstone: YAML config generator</div>
+  </div>
+  <div class="ov-card" onclick="go(6)">
+    <div class="ov-week">MONTH 2 · WEEK 6</div>
+    <div class="ov-title">Git Mastery + Polish</div>
+    <div class="ov-sub">Git internals, workflows, pre-commit hooks, GitHub profile</div>
+    <div class="ov-days">Days 45–60 · Capstone: professional GitHub portfolio</div>
+  </div>
+</div>
+
+<div class="alert al-warn">
+  <span class="al-icon">▲</span>
+  <span><strong>If you're a complete beginner:</strong> Don't panic at the terminology. Every concept in this roadmap is explained from scratch with simple analogies before showing you any commands. Read the explanation first, then try the command, then break something, then fix it. That loop is how you learn.</span>
+</div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">₦0</div><div class="ml">cloud spend</div></div>
+  <div class="metric"><div class="mv">60</div><div class="ml">days of builds</div></div>
+  <div class="metric"><div class="mv">7</div><div class="ml">bash scripts shipped</div></div>
+  <div class="metric"><div class="mv">3</div><div class="ml">Python tools built</div></div>
+  <div class="metric"><div class="mv">2</div><div class="ml">repos on GitHub</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ WEEK 1 ═══════════════════════════ -->
+<div class="section" id="s1">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 1 · WEEK 1 · DAYS 1–7</div>
+  <div class="week-title">Linux Internals</div>
+  <div class="week-sub">Before you touch Docker, Kubernetes, or AWS, you need to understand what is actually running underneath. Linux powers 96% of web servers. This week you learn how it works — not just the surface commands, but what's happening inside the OS when you run them.</div>
+  <div class="week-tags">
+    <span class="tag">Processes</span><span class="tag">File system</span><span class="tag">/proc filesystem</span>
+    <span class="tag">Signals</span><span class="tag">System calls</span><span class="tag">Zombie processes</span>
+  </div>
+</div>
+
+<!-- WHY THIS MATTERS -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">WHY</span><div><div class="day-title">Why Linux internals matter for DevOps</div><div class="day-topic">Read this before Day 1 — it sets the mental model</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Context</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The problem most beginners have</div>
+  <p class="explain">Most people learn DevOps tools (Docker, Kubernetes, Jenkins) before understanding what runs underneath them. Then when something breaks in production — and it always does — they don't know where to start looking.</p>
+  <p class="explain">Every container is just a Linux process. Every pod in Kubernetes is a set of Linux processes. When a pod crashes with "OOMKilled" — that's the Linux kernel killing a process because it used too much memory. When a container can't reach the internet — that's a networking namespace issue at the kernel level.</p>
+  <p class="explain"><strong>This week teaches you what's happening underneath so you can diagnose anything.</strong></p>
+</div>
+<div class="db-section">
+  <div class="db-label">What you need installed before Day 1</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Install Ubuntu 22.04 LTS — your main operating system</span></div>
+    <div class="cmd-code"><span class="comment"># Option A (recommended): Install Ubuntu natively or dual-boot</span>
+<span class="comment"># Download from: ubuntu.com/download/desktop</span>
+
+<span class="comment"># Option B: Windows users — use WSL2 (Windows Subsystem for Linux)</span>
+<span class="comment"># Open PowerShell as Administrator:</span>
+<span class="highlight">wsl --install -d Ubuntu-22.04</span>
+<span class="comment"># Then restart. Ubuntu will be in your Start menu.</span>
+
+<span class="comment"># Option C: Use a VirtualBox VM (free)</span>
+<span class="comment"># Download VirtualBox: virtualbox.org</span>
+<span class="comment"># Create a VM with 2GB RAM, 20GB disk, install Ubuntu 22.04</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Update your system and install essential tools</span></div>
+    <div class="cmd-code"><span class="highlight">sudo apt update && sudo apt upgrade -y</span>
+<span class="highlight">sudo apt install -y curl wget git vim htop net-tools nmap tcpdump strace lvm2 bats</span></div>
+  </div>
+  <div class="alert al-info">
+    <span class="al-icon">→</span>
+    <span>Every command in this roadmap assumes you are on Ubuntu 22.04. If you see <code>apt</code>, that's Ubuntu/Debian's package manager. The commands will look slightly different on other distros but the concepts are identical.</span>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 1 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 1</span><div><div class="day-title">The File System — Everything is a File</div><div class="day-topic">Inodes, hard links, symlinks, /proc filesystem</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The big idea — understand this first</div>
+  <p class="explain">Linux treats everything as a file. Your keyboard? A file at <code>/dev/input/event0</code>. Your CPU temperature? A file at <code>/sys/class/thermal/thermal_zone0/temp</code>. Running process memory? Files in <code>/proc/[PID]/</code>. This is called the "everything is a file" philosophy, and it's what makes Linux so powerful for automation.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    Think of an <strong>inode</strong> like a house address. A file's contents are the house. A hard link is another signpost pointing to the same house. A symlink is a forwarding address — it points to the signpost, not the house. If you demolish the house (delete the file), a hard link still gets you there (data intact). But a symlink leads to an empty lot (broken link).
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Key concepts for today</div>
+  <p class="explain"><strong>Inode:</strong> Every file has an inode — a data structure the kernel uses to track the file's metadata (owner, permissions, timestamps, size) and which disk blocks contain the actual data. The filename is just a pointer to the inode.</p>
+  <p class="explain"><strong>Hard link:</strong> Two directory entries pointing to the same inode. Both "filenames" refer to the exact same data. Deleting one doesn't delete the data until all links are removed.</p>
+  <p class="explain"><strong>Symlink (soft link):</strong> A file that contains the path to another file. If the target is deleted, the symlink breaks. This is what <code>/usr/bin/python3</code> usually is — a symlink to the actual Python binary.</p>
+</div>
+<div class="db-section">
+  <div class="db-label">Morning theory commands (6:00–6:45 AM)</div>
+  <div class="cmd-group">
+    <div class="cmd-group-title">Understanding file structure</div>
+    <div class="cmd-block">
+      <div class="cmd-header"><span class="cmd-purpose">List directory contents with inode numbers</span></div>
+      <div class="cmd-code"><span class="highlight">ls -lai /etc</span>
+<span class="comment"># -l = long format, -a = show hidden, -i = show inode numbers</span>
+<span class="comment"># The first column is the inode number</span>
+<span class="comment"># The second column is the hard link count</span></div>
+    </div>
+    <div class="cmd-block">
+      <div class="cmd-header"><span class="cmd-purpose">See detailed file metadata including inode</span></div>
+      <div class="cmd-code"><span class="highlight">stat /etc/hostname</span></div>
+    </div>
+    <div class="output-block">  File: /etc/hostname
+  Size: 8               Blocks: 8          IO Block: 4096   regular file
+Device: 8,1     Inode: <span style="color:#3ecf8e">131073</span>      Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+<span class="out-comment"># Inode 131073 — this is the file's unique ID on the filesystem
+# Links: 1 — only one directory entry points to this inode</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Evening lab (8:30–11:00 PM) — hands-on inode experiment</div>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div>Create a test directory and a file: <code>mkdir ~/inode_lab && cd ~/inode_lab && echo "I am the original" > original.txt</code></div></div>
+    <div class="step"><div class="step-n"></div><div>Create a hard link: <code>ln original.txt hardlink.txt</code></div></div>
+    <div class="step"><div class="step-n"></div><div>Create a symlink: <code>ln -s original.txt symlink.txt</code></div></div>
+    <div class="step"><div class="step-n"></div><div>Run <code>ls -lai</code> and compare — notice hard link and original share the <strong>same inode number</strong>. Symlink has a different inode.</div></div>
+    <div class="step"><div class="step-n"></div><div>Delete the original: <code>rm original.txt</code></div></div>
+    <div class="step"><div class="step-n"></div><div>Try reading both links: <code>cat hardlink.txt</code> (works!), <code>cat symlink.txt</code> (broken!)</div></div>
+    <div class="step"><div class="step-n"></div><div>Write in your <code>day-01.md</code> reflection file: <em>Why does the hard link still work after deleting the original?</em></div></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Full experiment — run this sequence</span></div>
+    <div class="cmd-code"><span class="comment"># Create directory and file</span>
+<span class="highlight">mkdir ~/inode_lab && cd ~/inode_lab</span>
+<span class="highlight">echo "I am the original" > original.txt</span>
+
+<span class="comment"># Create both link types</span>
+<span class="highlight">ln original.txt hardlink.txt</span>
+<span class="highlight">ln -s original.txt symlink.txt</span>
+
+<span class="comment"># Compare inodes — the magic is in this output</span>
+<span class="highlight">ls -lai</span>
+
+<span class="comment"># Check the link count on the inode (should say 2 for original)</span>
+<span class="highlight">stat original.txt</span>
+
+<span class="comment"># Delete the original</span>
+<span class="highlight">rm original.txt</span>
+
+<span class="comment"># Test what survives</span>
+<span class="highlight">cat hardlink.txt</span>   <span class="comment"># Works: data still exists on disk, inode count went to 1</span>
+<span class="highlight">cat symlink.txt</span>    <span class="comment"># Fails: No such file or directory</span>
+
+<span class="comment"># Look at the symlink — it shows where it points</span>
+<span class="highlight">ls -la symlink.txt</span></div>
+  </div>
+  <div class="mistake">
+    <span class="mlbl">COMMON BEGINNER MISTAKE</span>
+    Confusing <code>ln</code> (hard link) with <code>ln -s</code> (symlink). Hard links can only link files on the same filesystem. Symlinks can point anywhere, including across filesystems. In DevOps you'll mostly encounter symlinks (e.g., <code>/usr/bin/python3 → python3.10</code>).
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable — commit this to GitHub tonight</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Create repo <code>devops-journey</code> on GitHub. Clone it locally: <code>git clone https://github.com/yourname/devops-journey.git</code></div></div>
+    <div class="chk"><div class="chk-box"></div><div>Create folder: <code>phase-1/week-1/</code></div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write your <code>day-01.md</code> reflection answering: What is an inode? Why does a hard link survive deletion of the original? Give a real-world example where this matters.</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit with message: <code>docs: day 01 - linux inode and link experiment</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 2 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 2</span><div><div class="day-title">The /proc Filesystem — Spying on the Kernel</div><div class="day-topic">Live kernel data without disk I/O, process inspection</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is /proc?</div>
+  <p class="explain"><code>/proc</code> is a <strong>virtual filesystem</strong>. It doesn't exist on your hard drive — the Linux kernel generates its contents in memory, on demand. When you read <code>/proc/meminfo</code>, the kernel computes the current memory stats and hands them to you as if it were a text file. This is why tools like <code>top</code>, <code>free</code>, and <code>ps</code> are fast — they're just reading from <code>/proc</code>.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    <code>/proc</code> is like a live dashboard in a car. The speedometer doesn't physically store speed on paper — it reads from a sensor and displays it in real time. Same idea: <code>/proc</code> files are live readings from the kernel, not stored data.
+  </div>
+  <p class="explain">For every running process, Linux creates a directory at <code>/proc/[PID]</code> containing everything about that process — its command line, environment variables, open file descriptors, memory maps, and more. This is how monitoring tools work. This is how Docker reads container stats. <strong>Understanding /proc means you can monitor anything without installing special tools.</strong></p>
+</div>
+<div class="db-section">
+  <div class="db-label">Key /proc files every DevOps engineer knows</div>
+  <table class="ref-table">
+    <thead><tr><th>File</th><th>What it contains</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td>/proc/meminfo</td><td>Total RAM, available RAM, buffers, cache</td><td>Memory monitoring scripts</td></tr>
+      <tr><td>/proc/cpuinfo</td><td>CPU model, cores, speed, features</td><td>Capacity planning</td></tr>
+      <tr><td>/proc/loadavg</td><td>1, 5, 15 minute load averages</td><td>Load monitoring</td></tr>
+      <tr><td>/proc/net/dev</td><td>Network interface TX/RX byte counts</td><td>Bandwidth monitoring</td></tr>
+      <tr><td>/proc/[PID]/cmdline</td><td>The command that started the process</td><td>Process identification</td></tr>
+      <tr><td>/proc/[PID]/environ</td><td>Environment variables of the process</td><td>Config debugging</td></tr>
+      <tr><td>/proc/[PID]/fd/</td><td>All open file descriptors of the process</td><td>Leak detection</td></tr>
+      <tr><td>/proc/[PID]/status</td><td>Process state, memory usage, UID/GID</td><td>Resource monitoring</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Morning commands — explore /proc directly</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Read memory info the way monitoring tools do it — no 'free' command</span></div>
+    <div class="cmd-code"><span class="highlight">cat /proc/meminfo</span>
+<span class="comment"># MemTotal: total physical RAM</span>
+<span class="comment"># MemFree: completely unused RAM</span>
+<span class="comment"># MemAvailable: RAM actually available for new processes</span>
+<span class="comment"># (Free + reclaimable caches) — this is the useful number</span>
+<span class="comment"># Buffers: for disk metadata</span>
+<span class="comment"># Cached: file content cache</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Read load average — no 'uptime' or 'top' command</span></div>
+    <div class="cmd-code"><span class="highlight">cat /proc/loadavg</span></div>
+    <div class="output-block">0.52 0.48 0.43 2/347 18423
+<span class="out-comment"># 0.52 = 1-minute load average
+# 0.48 = 5-minute load average
+# 0.43 = 15-minute load average
+# 2/347 = 2 processes running out of 347 total
+# 18423 = PID of most recently created process</span></div>
+  </div>
+  <div class="alert al-info">
+    <span class="al-icon">→</span>
+    <span><strong>What is load average?</strong> It's the average number of processes either using the CPU or waiting to use it. On a single-core machine, load of 1.0 = 100% busy. On a 4-core machine, load of 4.0 = 100% busy. A load above your core count means processes are queueing.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Evening lab — inspect a live process through /proc</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Start a background process, then inspect everything about it through /proc</span></div>
+    <div class="cmd-code"><span class="comment"># Start a simple background process</span>
+<span class="highlight">sleep 1000 &</span>
+<span class="highlight">PID=$!</span>   <span class="comment"># $! = PID of last background process</span>
+<span class="highlight">echo "Our sleep process has PID: $PID"</span>
+
+<span class="comment"># Navigate to its /proc directory</span>
+<span class="highlight">ls /proc/$PID/</span>
+
+<span class="comment"># What command started it?</span>
+<span class="highlight">cat /proc/$PID/cmdline | tr '\0' ' '</span>
+<span class="comment"># \0 separates arguments — tr replaces null bytes with spaces</span>
+
+<span class="comment"># What environment variables does it have?</span>
+<span class="highlight">cat /proc/$PID/environ | tr '\0' '\n' | head -20</span>
+
+<span class="comment"># What files does it have open?</span>
+<span class="highlight">ls -la /proc/$PID/fd/</span>
+<span class="comment"># fd/0 = stdin, fd/1 = stdout, fd/2 = stderr</span>
+
+<span class="comment"># Memory and state info</span>
+<span class="highlight">cat /proc/$PID/status</span>
+
+<span class="comment"># Network connections (if any)</span>
+<span class="highlight">cat /proc/$PID/net/tcp</span>
+
+<span class="comment"># Clean up</span>
+<span class="highlight">kill $PID</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Read network interface stats — no 'ifconfig' or 'ip' needed</span></div>
+    <div class="cmd-code"><span class="highlight">cat /proc/net/dev</span>
+<span class="comment"># Each row: interface name, receive bytes, packets, errors, drops...</span>
+<span class="comment"># Then transmit bytes, packets, errors, drops...</span>
+<span class="comment"># This is how tools like 'nethogs' and 'iftop' get their numbers</span></div>
+  </div>
+  <div class="alert al-success">
+    <span class="al-icon">✓</span>
+    <span><strong>Why this matters in real jobs:</strong> When a container is eating memory and you can't install tools inside it, you read <code>/proc/[PID]/status</code> from the host. When you want to monitor network traffic without extra software, you script <code>/proc/net/dev</code>. This knowledge gets you out of situations where junior engineers get stuck.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Write a bash one-liner that reads <code>/proc/meminfo</code> and prints "Memory used: X%" using <code>awk</code>. Hint: use MemTotal and MemAvailable.</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write your <code>day-02.md</code> reflection: What is /proc? Why does reading /proc not cause disk I/O? Give one example of how this helps in production.</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>docs: day 02 - proc filesystem exploration</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 3 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 3</span><div><div class="day-title">Process States and Zombie Processes</div><div class="day-topic">Process lifecycle, state machine, creating and cleaning up zombies</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The process state machine</div>
+  <p class="explain">Every process in Linux is always in one of these states:</p>
+  <table class="ref-table">
+    <thead><tr><th>State</th><th>Symbol in ps</th><th>What it means</th><th>DevOps relevance</th></tr></thead>
+    <tbody>
+      <tr><td>Running</td><td>R</td><td>Actively using CPU or ready to use it</td><td>Normal operation</td></tr>
+      <tr><td>Sleeping (interruptible)</td><td>S</td><td>Waiting for an event (I/O, timer, signal)</td><td>Most processes are here most of the time</td></tr>
+      <tr><td>Sleeping (uninterruptible)</td><td>D</td><td>Waiting for disk/hardware I/O — cannot be killed</td><td>High D-state count = disk problems</td></tr>
+      <tr><td>Stopped</td><td>T</td><td>Paused by SIGSTOP or Ctrl+Z</td><td>Background debugging</td></tr>
+      <tr><td>Zombie</td><td>Z</td><td>Process finished but parent hasn't called wait()</td><td>Resource leak indicator — watch for these</td></tr>
+    </tbody>
+  </table>
+  <div class="analogy">
+    <span class="albl">ANALOGY — ZOMBIE PROCESS</span>
+    A zombie process is like an employee who has already quit but HR hasn't processed their exit paperwork yet. They're gone but still taking up a slot in the system. The process has died, but its entry in the process table is still there waiting for the parent to acknowledge it. If the parent never calls <code>wait()</code>, the zombie lingers. It doesn't use CPU or memory — but it does consume a PID slot, and if you get enough of them, you run out of PIDs.
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Morning theory commands</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">See all processes and their states</span></div>
+    <div class="cmd-code"><span class="highlight">ps aux</span>
+<span class="comment"># STAT column shows process state</span>
+<span class="comment"># S = sleeping, R = running, Z = zombie, D = uninterruptible sleep</span>
+<span class="comment"># + means foreground process group</span>
+<span class="comment"># s means session leader</span>
+
+<span class="comment"># Look specifically for zombies</span>
+<span class="highlight">ps aux | grep Z</span>
+
+<span class="comment"># See process tree (parent-child relationships)</span>
+<span class="highlight">pstree -p</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Evening lab — create and observe a zombie process</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create zombie.py — a script that deliberately creates a zombie</span></div>
+    <div class="cmd-code"><span class="highlight">vim ~/zombie.py</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Contents of zombie.py</span></div>
+    <div class="cmd-code"><span class="highlight">import os</span>
+<span class="highlight">import time</span>
+
+<span class="comment"># os.fork() creates a child process</span>
+<span class="comment"># Returns 0 in the child, child's PID in the parent</span>
+<span class="highlight">child_pid = os.fork()</span>
+
+<span class="highlight">if child_pid == 0:</span>
+    <span class="comment"># We are the CHILD — exit immediately</span>
+    <span class="highlight">print(f"Child (PID {os.getpid()}) exiting now...")</span>
+    <span class="highlight">os._exit(0)</span>
+<span class="highlight">else:</span>
+    <span class="comment"># We are the PARENT — sleep without calling wait()</span>
+    <span class="comment"># This is the bug! Parent should call os.wait() to reap child</span>
+    <span class="highlight">print(f"Parent (PID {os.getpid()}) sleeping...")</span>
+    <span class="highlight">print(f"Child's PID is {child_pid} — it should become a zombie")</span>
+    <span class="highlight">print("Open another terminal and run: ps aux | grep Z")</span>
+    <span class="highlight">time.sleep(60)</span>   <span class="comment"># Parent sleeps, NOT calling os.wait()</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Run the script and observe the zombie</span></div>
+    <div class="cmd-code"><span class="comment"># Terminal 1: run the script</span>
+<span class="highlight">python3 ~/zombie.py</span>
+
+<span class="comment"># Terminal 2: find the zombie (while Terminal 1 is running)</span>
+<span class="highlight">ps aux | grep Z | grep -v grep</span>
+<span class="comment"># You should see the child process with state 'Z'</span>
+
+<span class="comment"># Get the parent PID</span>
+<span class="highlight">ps aux | grep zombie.py | grep -v grep</span>
+
+<span class="comment"># Kill the parent — init (PID 1) adopts the zombie and reaps it</span>
+<span class="highlight">kill [PARENT_PID]</span>
+
+<span class="comment"># Verify zombie is gone</span>
+<span class="highlight">ps aux | grep Z | grep -v grep</span></div>
+  </div>
+  <div class="alert al-note">
+    <span class="al-icon">→</span>
+    <span><strong>Real-world connection:</strong> In Kubernetes, if a container has a bug where it forks child processes but never calls <code>wait()</code>, you'll accumulate zombies. This is why Kubernetes uses <code>tini</code> as a minimal init process inside containers — tini's entire job is to reap zombie processes so your app doesn't have to.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Save <code>zombie.py</code> to <code>phase-1/week-1/zombie.py</code></div></div>
+    <div class="chk"><div class="chk-box"></div><div>Fix the bug: modify <code>zombie.py</code> to call <code>os.wait()</code> in the parent so the zombie is immediately reaped. Save as <code>zombie_fixed.py</code></div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write <code>day-03.md</code>: What causes a zombie process? Why doesn't killing the zombie directly work? What does the D (uninterruptible) state mean and why can't you kill a D-state process?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: day 03 - zombie process creation and cleanup lab</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 4 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 4</span><div><div class="day-title">Linux Signals — Talking to Processes</div><div class="day-topic">SIGTERM, SIGKILL, SIGHUP, signal trapping in bash</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What are signals?</div>
+  <p class="explain">Signals are the kernel's way of sending notifications to processes. When you press Ctrl+C, the kernel sends SIGINT to the process. When you run <code>kill 1234</code>, the kernel sends SIGTERM. The process can choose to handle (catch) most signals, or ignore them — except SIGKILL, which the kernel handles directly without asking the process.</p>
+  <table class="ref-table">
+    <thead><tr><th>Signal</th><th>Number</th><th>Default action</th><th>Catchable?</th><th>DevOps use</th></tr></thead>
+    <tbody>
+      <tr><td>SIGHUP</td><td>1</td><td>Terminate</td><td>Yes</td><td>Reload config without restart (nginx -s reload)</td></tr>
+      <tr><td>SIGINT</td><td>2</td><td>Terminate</td><td>Yes</td><td>Ctrl+C — interrupt a running command</td></tr>
+      <tr><td>SIGKILL</td><td>9</td><td>Terminate (immediately)</td><td><strong>NO</strong></td><td>Last resort — bypasses all handlers</td></tr>
+      <tr><td>SIGTERM</td><td>15</td><td>Terminate (gracefully)</td><td>Yes</td><td>Standard way to stop a process — allows cleanup</td></tr>
+      <tr><td>SIGSTOP</td><td>19</td><td>Pause process</td><td><strong>NO</strong></td><td>Pause a process (Ctrl+Z sends SIGTSTP, which is catchable)</td></tr>
+    </tbody>
+  </table>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    SIGTERM is a polite tap on the shoulder: "Please finish up and stop." The process can say "just a moment" and clean up first. SIGKILL is pulling the power cord — immediate, no negotiation, no cleanup. In Kubernetes, when you delete a pod, it sends SIGTERM first and waits (the grace period), then sends SIGKILL if the process hasn't exited.
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Morning commands</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Sending signals to processes</span></div>
+    <div class="cmd-code"><span class="comment"># List all signals</span>
+<span class="highlight">kill -l</span>
+
+<span class="comment"># Default kill sends SIGTERM (15)</span>
+<span class="highlight">kill 1234</span>
+
+<span class="comment"># Force kill with SIGKILL</span>
+<span class="highlight">kill -9 1234</span>
+<span class="highlight">kill -KILL 1234</span>   <span class="comment"># Same thing, more readable</span>
+
+<span class="comment"># Send SIGHUP (tells many daemons to reload config)</span>
+<span class="highlight">kill -HUP 1234</span>
+
+<span class="comment"># Kill all processes with a name</span>
+<span class="highlight">killall nginx</span>
+<span class="highlight">pkill -f "python3 myapp"</span>   <span class="comment"># Matches against full command string</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Evening lab — trap signals in a bash script</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create signal_demo.sh — a script that handles graceful shutdown</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env bash</span>
+<span class="highlight">set -euo pipefail</span>   <span class="comment"># We'll learn this fully in Week 4 — always put it at the top</span>
+
+<span class="comment"># Create a temp file we need to clean up</span>
+<span class="var">TEMP_FILE</span>=<span class="highlight">/tmp/my_process_$$.lock</span>   <span class="comment"># $$ = current PID, makes filename unique</span>
+<span class="highlight">touch "$TEMP_FILE"</span>
+<span class="highlight">echo "Created lock file: $TEMP_FILE"</span>
+
+<span class="comment"># cleanup() runs when the script exits or receives a signal</span>
+<span class="highlight">cleanup() {</span>
+    <span class="highlight">echo ""</span>
+    <span class="highlight">echo "Signal received — cleaning up..."</span>
+    <span class="highlight">rm -f "$TEMP_FILE"</span>
+    <span class="highlight">echo "Lock file removed. Goodbye."</span>
+    <span class="highlight">exit 0</span>
+<span class="highlight">}</span>
+
+<span class="comment"># Register the cleanup function for these signals</span>
+<span class="comment"># EXIT fires when script ends for ANY reason</span>
+<span class="highlight">trap cleanup EXIT SIGTERM SIGINT</span>
+
+<span class="comment"># Simulate a long-running process</span>
+<span class="highlight">echo "Process running (PID $$). Send SIGTERM to test graceful shutdown:"</span>
+<span class="highlight">echo "  kill -15 $$"</span>
+<span class="highlight">echo "Or press Ctrl+C to test SIGINT"</span>
+
+<span class="highlight">while true; do</span>
+    <span class="highlight">echo "$(date '+%H:%M:%S') — working..."</span>
+    <span class="highlight">sleep 2</span>
+<span class="highlight">done</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Test the script</span></div>
+    <div class="cmd-code"><span class="highlight">chmod +x signal_demo.sh</span>
+<span class="highlight">./signal_demo.sh &</span>    <span class="comment"># Run in background</span>
+<span class="var">PID</span>=<span class="highlight">$!</span>
+
+<span class="highlight">sleep 5</span>
+<span class="highlight">kill -15 $PID</span>    <span class="comment"># SIGTERM — cleanup should run</span>
+
+<span class="comment"># Now test SIGKILL — cleanup will NOT run</span>
+<span class="highlight">./signal_demo.sh &</span>
+<span class="var">PID</span>=<span class="highlight">$!</span>
+<span class="highlight">sleep 5</span>
+<span class="highlight">kill -9 $PID</span>     <span class="comment"># SIGKILL — cleanup skipped!</span>
+<span class="comment"># Check if the temp file is still there (it will be)</span>
+<span class="highlight">ls /tmp/my_process_*.lock</span></div>
+  </div>
+  <div class="alert al-note">
+    <span class="al-icon">→</span>
+    <span><strong>This is why Kubernetes graceful shutdown matters:</strong> When you delete a Kubernetes pod, it sends SIGTERM and waits (terminationGracePeriodSeconds, default 30 seconds). Your app's SIGTERM handler closes database connections, finishes in-flight requests, and exits cleanly. If it doesn't exit, SIGKILL is sent and connections break. This is why writing a signal handler in your app is not optional.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Save <code>signal_demo.sh</code> to <code>phase-1/week-1/</code></div></div>
+    <div class="chk"><div class="chk-box"></div><div>Modify the script to also trap SIGHUP and print "Reloading configuration..." when received (but not exit)</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write <code>day-04.md</code>: What is the difference between SIGTERM and SIGKILL? Why does Kubernetes use SIGTERM first? Why can't you trap SIGKILL?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: day 04 - signal handling and graceful shutdown</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 5 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 5</span><div><div class="day-title">System Calls — How Programs Talk to the Kernel</div><div class="day-topic">strace, syscalls, what really happens when you run ls</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is a system call?</div>
+  <p class="explain">Your programs run in "user space." The kernel runs in "kernel space." These are separate security domains. When your Python script needs to write to a file, it calls <code>write()</code>. Python can't write directly to disk — that's a privileged operation. So Python makes a <strong>system call</strong>: it asks the kernel to do the write on its behalf.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    Imagine a restaurant. Customers (user programs) sit at tables and order food. They can't walk into the kitchen and cook themselves — that's the kernel's domain. A system call is like giving your order to a waiter: you specify what you want, the waiter (kernel) goes to the kitchen, and comes back with the result.
+  </div>
+  <p class="explain">The tool <code>strace</code> intercepts all system calls a process makes and prints them. This is incredibly useful for debugging: if a program is failing silently, <code>strace</code> shows you exactly what system calls it's making and which ones are failing.</p>
+</div>
+<div class="db-section">
+  <div class="db-label">Common system calls every DevOps engineer recognizes</div>
+  <table class="ref-table">
+    <thead><tr><th>Syscall</th><th>What it does</th><th>When you see it failing</th></tr></thead>
+    <tbody>
+      <tr><td>open / openat</td><td>Open a file</td><td>ENOENT (file not found), EACCES (permission denied)</td></tr>
+      <tr><td>read / write</td><td>Read/write file contents</td><td>EBADF (bad file descriptor), ENOSPC (disk full)</td></tr>
+      <tr><td>fork</td><td>Create a child process</td><td>EAGAIN (too many processes)</td></tr>
+      <tr><td>execve</td><td>Replace current process image with new program</td><td>ENOEXEC (not executable), ENOENT (binary not found)</td></tr>
+      <tr><td>connect</td><td>Connect a socket to an address</td><td>ECONNREFUSED (nothing listening), ETIMEDOUT (no route)</td></tr>
+      <tr><td>mmap</td><td>Map file/memory into process address space</td><td>ENOMEM (out of memory)</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — use strace to understand what really happens</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Trace the system calls of a simple 'ls' command</span></div>
+    <div class="cmd-code"><span class="comment"># Trace and save to a file</span>
+<span class="highlight">strace -o strace_ls.log ls /etc</span>
+
+<span class="comment"># Count how many times each syscall was made</span>
+<span class="highlight">strace -c ls /etc</span>
+
+<span class="comment"># Only show file-opening syscalls</span>
+<span class="highlight">strace -e trace=openat ls /etc 2>&1 | head -30</span>
+
+<span class="comment"># Count openat calls</span>
+<span class="highlight">strace ls /etc 2>&1 | grep -c openat</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Trace a failing command to diagnose why it fails</span></div>
+    <div class="cmd-code"><span class="comment"># Create a script that tries to open a file with wrong permissions</span>
+<span class="highlight">echo "secret" | sudo tee /tmp/secret.txt</span>
+<span class="highlight">sudo chmod 000 /tmp/secret.txt</span>   <span class="comment"># No permissions for anyone</span>
+
+<span class="comment"># Normal: you get a cryptic error</span>
+<span class="highlight">cat /tmp/secret.txt</span>
+
+<span class="comment"># With strace: you see exactly which syscall failed and why</span>
+<span class="highlight">strace cat /tmp/secret.txt 2>&1 | grep EACCES</span>
+
+<span class="comment"># Clean up</span>
+<span class="highlight">sudo chmod 644 /tmp/secret.txt</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Run <code>strace -c python3 -c "print('hello')"</code> and write in <code>day-05.md</code>: which syscall is called the most? Why does printing "hello" require so many syscalls?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Trace a network connection: <code>strace -e trace=network curl -s https://google.com -o /dev/null</code> — what do you see?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>docs: day 05 - strace syscall analysis</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 6-7 CAPSTONE -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D6–7</span><div><div class="day-title">Week 1 Capstone — Raw Kernel Health Monitor</div><div class="day-topic">Build a system monitor that reads only from /proc — no top, no free, no df</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">Capstone Build</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The challenge</div>
+  <p class="explain">Build a Bash script called <code>kernel-stats.sh</code> that gathers system health information by reading directly from the <code>/proc</code> filesystem only. No <code>top</code>, no <code>free</code>, no <code>df</code>, no <code>vmstat</code> — just raw <code>/proc</code> reads and <code>awk</code> to compute the numbers. Output clean JSON to <code>/var/log/sys_audit.json</code>.</p>
+</div>
+<div class="db-section">
+  <div class="db-label">Complete solution — build this yourself first, then check here</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">kernel-stats.sh — read everything from /proc, output JSON</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env bash</span>
+<span class="highlight">set -euo pipefail</span>
+
+<span class="var">OUTPUT_FILE</span>=<span class="highlight">"/var/log/sys_audit.json"</span>
+<span class="var">TIMESTAMP</span>=<span class="highlight">$(date -u +"%Y-%m-%dT%H:%M:%SZ")</span>
+
+<span class="comment"># ── 1. MEMORY ──────────────────────────────────────────────────────</span>
+<span class="comment"># Read from /proc/meminfo, extract values in kB, convert to MB</span>
+<span class="var">MEM_TOTAL_KB</span>=<span class="highlight">$(awk '/^MemTotal:/ {print $2}' /proc/meminfo)</span>
+<span class="var">MEM_AVAIL_KB</span>=<span class="highlight">$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)</span>
+<span class="var">MEM_USED_KB</span>=<span class="highlight">$(( MEM_TOTAL_KB - MEM_AVAIL_KB ))</span>
+
+<span class="comment"># Calculate percentage used (bash only does integer math)</span>
+<span class="var">MEM_PCT</span>=<span class="highlight">$(awk -v used="$MEM_USED_KB" -v total="$MEM_TOTAL_KB" \
+    'BEGIN { printf "%.1f", (used/total)*100 }')</span>
+
+<span class="comment"># ── 2. CPU LOAD ────────────────────────────────────────────────────</span>
+<span class="comment"># /proc/loadavg: "1min 5min 15min running/total lastpid"</span>
+<span class="var">LOAD_1</span>=<span class="highlight">$(awk '{print $1}' /proc/loadavg)</span>
+<span class="var">LOAD_5</span>=<span class="highlight">$(awk '{print $2}' /proc/loadavg)</span>
+<span class="var">LOAD_15</span>=<span class="highlight">$(awk '{print $3}' /proc/loadavg)</span>
+<span class="var">CPU_CORES</span>=<span class="highlight">$(grep -c '^processor' /proc/cpuinfo)</span>
+
+<span class="comment"># ── 3. NETWORK ─────────────────────────────────────────────────────</span>
+<span class="comment"># /proc/net/dev: skip header lines, get eth0 or first real interface</span>
+<span class="var">NET_IFACE</span>=<span class="highlight">$(awk 'NR>2 && $1!="lo:" {sub(/:$/,"",$1); print $1; exit}' /proc/net/dev)</span>
+<span class="var">NET_RX_BYTES</span>=<span class="highlight">$(awk -v iface="$NET_IFACE:" '$1==iface {print $2}' /proc/net/dev)</span>
+<span class="var">NET_TX_BYTES</span>=<span class="highlight">$(awk -v iface="$NET_IFACE:" '$1==iface {print $10}' /proc/net/dev)</span>
+
+<span class="comment"># ── 4. UPTIME ──────────────────────────────────────────────────────</span>
+<span class="comment"># /proc/uptime: "uptime_seconds idle_seconds"</span>
+<span class="var">UPTIME_SEC</span>=<span class="highlight">$(awk '{print int($1)}' /proc/uptime)</span>
+<span class="var">UPTIME_DAYS</span>=<span class="highlight">$(( UPTIME_SEC / 86400 ))</span>
+<span class="var">UPTIME_HRS</span>=<span class="highlight">$(( (UPTIME_SEC % 86400) / 3600 ))</span>
+
+<span class="comment"># ── 5. OUTPUT JSON ─────────────────────────────────────────────────</span>
+<span class="var">JSON</span>=<span class="highlight">$(cat <<EOF</span>
+<span class="highlight">{</span>
+<span class="highlight">  "timestamp": "$TIMESTAMP",</span>
+<span class="highlight">  "memory": {</span>
+<span class="highlight">    "total_kb": $MEM_TOTAL_KB,</span>
+<span class="highlight">    "used_kb": $MEM_USED_KB,</span>
+<span class="highlight">    "available_kb": $MEM_AVAIL_KB,</span>
+<span class="highlight">    "used_percent": $MEM_PCT</span>
+<span class="highlight">  },</span>
+<span class="highlight">  "cpu": {</span>
+<span class="highlight">    "cores": $CPU_CORES,</span>
+<span class="highlight">    "load_1min": $LOAD_1,</span>
+<span class="highlight">    "load_5min": $LOAD_5,</span>
+<span class="highlight">    "load_15min": $LOAD_15</span>
+<span class="highlight">  },</span>
+<span class="highlight">  "network": {</span>
+<span class="highlight">    "interface": "$NET_IFACE",</span>
+<span class="highlight">    "rx_bytes": $NET_RX_BYTES,</span>
+<span class="highlight">    "tx_bytes": $NET_TX_BYTES</span>
+<span class="highlight">  },</span>
+<span class="highlight">  "uptime": {</span>
+<span class="highlight">    "seconds": $UPTIME_SEC,</span>
+<span class="highlight">    "days": $UPTIME_DAYS,</span>
+<span class="highlight">    "hours": $UPTIME_HRS</span>
+<span class="highlight">  }</span>
+<span class="highlight">}</span>
+<span class="highlight">EOF</span>
+<span class="highlight">)</span>
+
+<span class="comment"># Write to log file (sudo needed for /var/log)</span>
+<span class="highlight">echo "$JSON" | sudo tee "$OUTPUT_FILE" > /dev/null</span>
+<span class="highlight">echo "Stats written to $OUTPUT_FILE"</span>
+<span class="highlight">echo "$JSON" | python3 -m json.tool</span>   <span class="comment"># Pretty-print for verification</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Run and verify</span></div>
+    <div class="cmd-code"><span class="highlight">chmod +x kernel-stats.sh</span>
+<span class="highlight">./kernel-stats.sh</span>
+
+<span class="comment"># Verify it's valid JSON</span>
+<span class="highlight">cat /var/log/sys_audit.json | python3 -m json.tool</span>
+
+<span class="comment"># Check it runs from cron — add this to crontab to run every 5 minutes:</span>
+<span class="highlight">crontab -e</span>
+<span class="comment"># Add this line:</span>
+<span class="comment"># */5 * * * * /path/to/kernel-stats.sh >> /var/log/monitor.log 2>&1</span></div>
+  </div>
+</div>
+<div class="capstone">
+  <div class="cap-eyebrow">WEEK 1 CAPSTONE REQUIREMENTS</div>
+  <div class="cap-title">kernel-stats.sh — published and documented</div>
+  <div class="cap-desc">Your script must read only from /proc — no top, free, df, or vmstat. It must output valid JSON. It must be executable as a cron job. It must be on GitHub with a README explaining what it does, what /proc files it reads, and how to use it.</div>
+  <div class="cap-reqs">
+    <div class="cap-req">Script reads memory from /proc/meminfo and calculates used percentage</div>
+    <div class="cap-req">Script reads load from /proc/loadavg</div>
+    <div class="cap-req">Script reads network stats from /proc/net/dev for a real interface</div>
+    <div class="cap-req">Script reads uptime from /proc/uptime and converts to days/hours</div>
+    <div class="cap-req">Output is valid JSON (verified with <code>python3 -m json.tool</code>)</div>
+    <div class="cap-req">Committed to GitHub with a professional README</div>
+    <div class="cap-req">You can explain every awk command in the script to someone else</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 2 ═══════════════════════════ -->
+<div class="section" id="s2">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 1 · WEEK 2 · DAYS 8–14</div>
+  <div class="week-title">Permissions, Storage & User Management</div>
+  <div class="week-sub">Security and storage are the two things that cause the most production incidents for junior engineers who skip this week. You will learn file permissions from the binary level, ACLs, LVM storage management, and how to simulate real disk emergencies safely on your laptop.</div>
+  <div class="week-tags">
+    <span class="tag">chmod / chown</span><span class="tag">SUID / SGID / Sticky</span>
+    <span class="tag">ACLs</span><span class="tag">LVM</span><span class="tag">User management</span><span class="tag">PAM</span>
+  </div>
+</div>
+
+<!-- DAY 8 -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 8</span><div><div class="day-title">File Permissions — The Binary Bitmask</div><div class="day-topic">chmod, chown, octal notation, special permission bits</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">How permissions actually work</div>
+  <p class="explain">Every file has three permission sets: <strong>User</strong> (owner), <strong>Group</strong>, and <strong>Other</strong> (everyone else). Each set has three bits: read (r=4), write (w=2), execute (x=1). These are added together to get an octal digit.</p>
+  <table class="ref-table">
+    <thead><tr><th>Octal</th><th>Binary</th><th>Meaning</th><th>Example use</th></tr></thead>
+    <tbody>
+      <tr><td>7</td><td>111</td><td>rwx — read, write, execute</td><td>Owner of a script directory</td></tr>
+      <tr><td>6</td><td>110</td><td>rw- — read and write only</td><td>Config files the owner edits</td></tr>
+      <tr><td>5</td><td>101</td><td>r-x — read and execute, no write</td><td>Public executable directories</td></tr>
+      <tr><td>4</td><td>100</td><td>r-- — read only</td><td>Shared config files, logs</td></tr>
+      <tr><td>0</td><td>000</td><td>--- — no permissions</td><td>Private secrets</td></tr>
+    </tbody>
+  </table>
+  <p class="explain">So <code>chmod 755 script.sh</code> means: owner gets rwx (7), group gets r-x (5), others get r-x (5). This is the most common permission for executable files in DevOps.</p>
+  <p class="explain">The <strong>special bits</strong> go in front of the three-digit octal: SUID (4xxx), SGID (2xxx), Sticky (1xxx).</p>
+  <table class="ref-table">
+    <thead><tr><th>Special bit</th><th>On files</th><th>On directories</th><th>Real example</th></tr></thead>
+    <tbody>
+      <tr><td>SUID (4000)</td><td>Execute as the file owner, not as yourself</td><td>(rarely used)</td><td><code>/usr/bin/passwd</code> — runs as root even when you run it</td></tr>
+      <tr><td>SGID (2000)</td><td>Execute as the file's group</td><td>New files inherit the directory's group</td><td>Shared team directories where files need to be group-writable</td></tr>
+      <tr><td>Sticky (1000)</td><td>(obsolete on files)</td><td>Only the file owner can delete their own files</td><td><code>/tmp</code> — everyone can write but can't delete each other's files</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Commands and lab</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Permission commands with explanations</span></div>
+    <div class="cmd-code"><span class="comment"># Set permissions using octal</span>
+<span class="highlight">chmod 755 myscript.sh</span>    <span class="comment"># rwxr-xr-x</span>
+<span class="highlight">chmod 644 config.txt</span>     <span class="comment"># rw-r--r--</span>
+<span class="highlight">chmod 600 private_key</span>    <span class="comment"># rw------- (only owner can read SSH keys)</span>
+<span class="highlight">chmod 4755 program</span>       <span class="comment"># SUID: runs as file owner</span>
+<span class="highlight">chmod 2770 shared_dir/</span>  <span class="comment"># SGID on directory: files inherit group</span>
+<span class="highlight">chmod 1777 /tmp</span>          <span class="comment"># Sticky: everyone writes, only owner deletes</span>
+
+<span class="comment"># Symbolic mode (alternative to octal)</span>
+<span class="highlight">chmod u+x script.sh</span>      <span class="comment"># Add execute for user only</span>
+<span class="highlight">chmod go-w file.txt</span>      <span class="comment"># Remove write from group and others</span>
+<span class="highlight">chmod a+r file.txt</span>       <span class="comment"># Add read for all (user, group, others)</span>
+
+<span class="comment"># Change owner and group</span>
+<span class="highlight">sudo chown alice file.txt</span>           <span class="comment"># Change owner</span>
+<span class="highlight">sudo chown alice:devteam file.txt</span>   <span class="comment"># Change owner and group</span>
+<span class="highlight">sudo chown -R alice:devteam dir/</span>   <span class="comment"># Recursive: change entire directory tree</span>
+
+<span class="comment"># View permissions (with the special bit in ls output)</span>
+<span class="highlight">ls -la /usr/bin/passwd</span>    <span class="comment"># Should show 's' in user execute position = SUID</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Hands-on lab: build a shared team directory with SGID</span></div>
+    <div class="cmd-code"><span class="comment"># Create users and group</span>
+<span class="highlight">sudo useradd -m dev_alice</span>
+<span class="highlight">sudo useradd -m dev_bob</span>
+<span class="highlight">sudo groupadd devteam</span>
+<span class="highlight">sudo usermod -aG devteam dev_alice</span>
+<span class="highlight">sudo usermod -aG devteam dev_bob</span>
+
+<span class="comment"># Create shared directory with SGID</span>
+<span class="highlight">sudo mkdir /opt/shared_code</span>
+<span class="highlight">sudo chown root:devteam /opt/shared_code</span>
+<span class="highlight">sudo chmod 2770 /opt/shared_code</span>
+
+<span class="comment"># Test: switch to alice, create a file</span>
+<span class="highlight">sudo -u dev_alice bash -c 'echo "Alice was here" > /opt/shared_code/alice.txt'</span>
+
+<span class="comment"># Check: the file should be owned by devteam group, not alice's primary group</span>
+<span class="highlight">ls -la /opt/shared_code/</span>
+
+<span class="comment"># Test: bob can read alice's file</span>
+<span class="highlight">sudo -u dev_bob cat /opt/shared_code/alice.txt</span>
+
+<span class="comment"># Test: bob can also write to alice's file? (depends on group write permission)</span>
+<span class="highlight">sudo -u dev_bob bash -c 'echo "Bob was here too" >> /opt/shared_code/alice.txt'</span></div>
+  </div>
+  <div class="mistake">
+    <span class="mlbl">COMMON BEGINNER MISTAKE</span>
+    Using <code>chmod 777</code> to "fix" permission errors. This gives everyone full read/write/execute access to everything — a major security hole. In a real company, this could expose secret keys, configuration files, or databases. Always use the minimum permissions needed. For web servers, 755 for directories and 644 for files is the correct baseline.
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Complete the shared team directory lab — verify SGID works by checking group ownership of newly created files</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Find 3 files on your system with SUID set: <code>find / -perm -4000 -type f 2>/dev/null</code>. Write in <code>day-08.md</code> why each one needs SUID.</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>docs: day 08 - permissions deep dive, SGID team directory lab</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 9 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 9</span><div><div class="day-title">ACLs — Fine-Grained Access Control</div><div class="day-topic">setfacl, getfacl, per-user permissions without changing groups</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Why ACLs exist</div>
+  <p class="explain">Standard Unix permissions only support three categories: owner, group, others. But what if you need: the file owner can read/write, the devteam group can read, and one specific user (an auditor) can read-only — without adding them to devteam? Standard permissions can't do this. ACLs can.</p>
+  <p class="explain">ACLs (Access Control Lists) let you set permissions per-user and per-group, beyond the standard three-category model. They're used heavily in enterprise environments and are supported by most modern Linux filesystems (ext4, xfs, btrfs).</p>
+</div>
+<div class="db-section">
+  <div class="db-label">Commands and lab</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">setfacl and getfacl — setting and reading ACLs</span></div>
+    <div class="cmd-code"><span class="comment"># First, verify ACL support is enabled on your filesystem</span>
+<span class="highlight">mount | grep acl</span>
+<span class="comment"># If not enabled: sudo mount -o remount,acl /</span>
+
+<span class="comment"># Create a test file</span>
+<span class="highlight">echo "sensitive data" > /opt/shared_code/sensitive.txt</span>
+<span class="highlight">sudo chown dev_alice /opt/shared_code/sensitive.txt</span>
+<span class="highlight">sudo chmod 660 /opt/shared_code/sensitive.txt</span>  <span class="comment"># owner+group rw, others nothing</span>
+
+<span class="comment"># Create an audit user who is NOT in devteam</span>
+<span class="highlight">sudo useradd -m auditor_carol</span>
+
+<span class="comment"># Without ACL: carol cannot read the file</span>
+<span class="highlight">sudo -u auditor_carol cat /opt/shared_code/sensitive.txt</span>  <span class="comment"># Permission denied</span>
+
+<span class="comment"># Grant carol read-only access via ACL</span>
+<span class="highlight">sudo setfacl -m u:auditor_carol:r-- /opt/shared_code/sensitive.txt</span>
+<span class="comment"># -m = modify, u = user, auditor_carol = username, r-- = read only</span>
+
+<span class="comment"># Verify carol can now read</span>
+<span class="highlight">sudo -u auditor_carol cat /opt/shared_code/sensitive.txt</span>  <span class="comment"># Works!</span>
+
+<span class="comment"># View the full ACL for the file</span>
+<span class="highlight">getfacl /opt/shared_code/sensitive.txt</span>
+
+<span class="comment"># ls -la will show a '+' indicating ACLs are set</span>
+<span class="highlight">ls -la /opt/shared_code/sensitive.txt</span>
+
+<span class="comment"># Revoke carol's access</span>
+<span class="highlight">sudo setfacl -x u:auditor_carol /opt/shared_code/sensitive.txt</span>
+
+<span class="comment"># Verify it's revoked</span>
+<span class="highlight">getfacl /opt/shared_code/sensitive.txt</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Set default ACLs on directories — new files inherit the ACL</span></div>
+    <div class="cmd-code"><span class="comment"># Any file created in /opt/shared_code will automatically give auditor_carol read access</span>
+<span class="highlight">sudo setfacl -dm u:auditor_carol:r-- /opt/shared_code</span>
+<span class="comment"># -d = default (applies to future files), -m = modify</span>
+
+<span class="comment"># Test: create a new file and check its ACL</span>
+<span class="highlight">sudo -u dev_alice bash -c 'echo "new secret" > /opt/shared_code/new.txt'</span>
+<span class="highlight">getfacl /opt/shared_code/new.txt</span>
+<span class="comment"># auditor_carol:r-- should appear automatically</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Complete the ACL lab — verify the auditor can read but not write or delete</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write <code>day-09.md</code>: When would you use ACLs over standard permissions? Name one real production scenario.</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: day 09 - ACL fine-grained access control lab</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 10-13: LVM -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D10–13</span><div><div class="day-title">LVM — Logical Volume Manager</div><div class="day-topic">Physical Volumes, Volume Groups, Logical Volumes — live expansion without downtime</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">What is LVM and why does it matter?</div>
+  <p class="explain">Without LVM, if your disk fills up, you have a problem: you'd need to shut down, add a new disk, copy data, and restart. With LVM, you can add a new disk and <strong>expand a filesystem while it's mounted and being used</strong> — without any downtime. This is how production Linux servers handle storage growth.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    Think of LVM like lego bricks. Physical disks are the individual bricks (Physical Volumes). You combine bricks into a pool (Volume Group). Then you carve pieces of the pool into usable storage (Logical Volumes). Adding a new brick to the pool and then extending a Logical Volume is equivalent to adding a new disk and growing the filesystem — all while the system keeps running.
+  </div>
+  <table class="ref-table">
+    <thead><tr><th>LVM Layer</th><th>What it is</th><th>Command to create</th></tr></thead>
+    <tbody>
+      <tr><td>Physical Volume (PV)</td><td>A raw disk or partition that LVM manages</td><td>pvcreate /dev/sdb</td></tr>
+      <tr><td>Volume Group (VG)</td><td>A pool of storage from one or more PVs</td><td>vgcreate vg_prod /dev/sdb</td></tr>
+      <tr><td>Logical Volume (LV)</td><td>A slice of the VG, presented as a usable device</td><td>lvcreate -L 10G -n lv_data vg_prod</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — build a full LVM stack using virtual disk images (no real disks needed)</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Day 10: Create virtual disk images and set up LVM</span></div>
+    <div class="cmd-code"><span class="comment"># Create three 100MB virtual disk images (no real hardware needed)</span>
+<span class="highlight">mkdir ~/lvm_lab && cd ~/lvm_lab</span>
+<span class="highlight">dd if=/dev/zero of=disk1.img bs=1M count=100</span>
+<span class="highlight">dd if=/dev/zero of=disk2.img bs=1M count=100</span>
+<span class="highlight">dd if=/dev/zero of=disk3.img bs=1M count=100</span>
+
+<span class="comment"># Attach them as loop devices (simulates real disks)</span>
+<span class="highlight">sudo losetup /dev/loop10 disk1.img</span>
+<span class="highlight">sudo losetup /dev/loop11 disk2.img</span>
+<span class="highlight">sudo losetup /dev/loop12 disk3.img</span>
+
+<span class="comment"># Verify loop devices appear as block devices</span>
+<span class="highlight">lsblk | grep loop1</span>
+
+<span class="comment"># Day 11: Create Physical Volumes from loop10 and loop11</span>
+<span class="highlight">sudo pvcreate /dev/loop10 /dev/loop11</span>
+
+<span class="comment"># Verify PVs are created</span>
+<span class="highlight">sudo pvs</span>
+<span class="highlight">sudo pvdisplay</span>
+
+<span class="comment"># Create a Volume Group from both PVs</span>
+<span class="highlight">sudo vgcreate vg_production /dev/loop10 /dev/loop11</span>
+
+<span class="comment"># Verify VG (should show ~190MB free, after LVM metadata)</span>
+<span class="highlight">sudo vgs</span>
+<span class="highlight">sudo vgdisplay vg_production</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Day 12: Create Logical Volume, format, and mount it</span></div>
+    <div class="cmd-code"><span class="comment"># Create a 150MB Logical Volume named lv_appdata</span>
+<span class="highlight">sudo lvcreate -L 150M -n lv_appdata vg_production</span>
+
+<span class="comment"># See where the LV device is</span>
+<span class="highlight">sudo lvs</span>
+<span class="comment"># Device will be at /dev/vg_production/lv_appdata or /dev/mapper/vg_production-lv_appdata</span>
+
+<span class="comment"># Format with ext4 filesystem</span>
+<span class="highlight">sudo mkfs.ext4 /dev/vg_production/lv_appdata</span>
+
+<span class="comment"># Create mount point and mount</span>
+<span class="highlight">sudo mkdir /mnt/appdata</span>
+<span class="highlight">sudo mount /dev/vg_production/lv_appdata /mnt/appdata</span>
+
+<span class="comment"># Verify it's mounted and check available space</span>
+<span class="highlight">df -h /mnt/appdata</span>
+
+<span class="comment"># Write some files to simulate real data</span>
+<span class="highlight">sudo bash -c 'for i in {1..20}; do dd if=/dev/urandom of=/mnt/appdata/file$i.dat bs=1M count=5 2>/dev/null; done'</span>
+<span class="highlight">df -h /mnt/appdata</span>   <span class="comment"># Should be getting full now</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Day 13 (Capstone): Live expansion — add disk3, expand LV, resize filesystem — NO UNMOUNT</span></div>
+    <div class="cmd-code"><span class="comment"># EMERGENCY SIMULATION: /mnt/appdata is nearly full</span>
+<span class="comment"># An application is writing to it continuously</span>
+
+<span class="comment"># Step 1: Start a background "application" writing to the mount point</span>
+<span class="highlight">sudo bash -c 'while true; do echo "$(date): app is running" >> /mnt/appdata/app.log; sleep 1; done' &</span>
+<span class="var">APP_PID</span>=<span class="highlight">$!</span>
+<span class="highlight">echo "Simulated app PID: $APP_PID"</span>
+
+<span class="comment"># Step 2: Add loop12 (our "new disk") to the Volume Group</span>
+<span class="highlight">sudo pvcreate /dev/loop12</span>
+<span class="highlight">sudo vgextend vg_production /dev/loop12</span>
+<span class="highlight">sudo vgs</span>   <span class="comment"># Should show more free space now</span>
+
+<span class="comment"># Step 3: Extend the Logical Volume by 90MB</span>
+<span class="highlight">sudo lvextend -L +90M /dev/vg_production/lv_appdata</span>
+<span class="highlight">sudo lvs</span>
+
+<span class="comment"># Step 4: Resize the filesystem LIVE (no unmount needed with ext4)</span>
+<span class="highlight">sudo resize2fs /dev/vg_production/lv_appdata</span>
+
+<span class="comment"># Step 5: Verify the filesystem grew WITHOUT unmounting</span>
+<span class="highlight">df -h /mnt/appdata</span>   <span class="comment"># Should show more space</span>
+
+<span class="comment"># Step 6: Verify the app never stopped</span>
+<span class="highlight">tail /mnt/appdata/app.log</span>   <span class="comment"># Should show continuous timestamps</span>
+
+<span class="comment"># Stop the simulation</span>
+<span class="highlight">kill $APP_PID</span>
+
+<span class="comment"># Cleanup</span>
+<span class="highlight">sudo umount /mnt/appdata</span>
+<span class="highlight">sudo lvremove -y /dev/vg_production/lv_appdata</span>
+<span class="highlight">sudo vgremove vg_production</span>
+<span class="highlight">sudo pvremove /dev/loop10 /dev/loop11 /dev/loop12</span>
+<span class="highlight">sudo losetup -d /dev/loop10 /dev/loop11 /dev/loop12</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Complete the live expansion lab — prove the app log shows continuous entries during the expansion (no downtime)</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write a cleanup script that removes all the loop devices and LVM components in the right order</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write <code>day-10-13.md</code>: What is the difference between a PV, VG, and LV? Why does ext4 support live resize? What would you do differently in production?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>feat: days 10-13 - LVM live expansion simulation</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 14: CAPSTONE -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 14</span><div><div class="day-title">Week 2 Review + User Management Deep Dive</div><div class="day-topic">/etc/passwd, /etc/shadow, sudo, useradd, usermod, PAM basics</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">Review + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">User management essentials</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Understanding /etc/passwd and /etc/shadow</span></div>
+    <div class="cmd-code"><span class="comment"># /etc/passwd: user account information (readable by everyone)</span>
+<span class="comment"># Format: username:password:UID:GID:comment:home:shell</span>
+<span class="highlight">cat /etc/passwd | head -5</span>
+<span class="comment"># 'x' in password field means password is in /etc/shadow</span>
+
+<span class="comment"># /etc/shadow: hashed passwords (only root can read)</span>
+<span class="comment"># Format: username:hashed_password:last_change:min:max:warn:inactive:expire</span>
+<span class="highlight">sudo cat /etc/shadow | head -5</span>
+
+<span class="comment"># Create a user with home directory, specific shell, and comment</span>
+<span class="highlight">sudo useradd -m -s /bin/bash -c "DevOps Engineer" devops_niyhi</span>
+<span class="highlight">sudo passwd devops_niyhi</span>
+
+<span class="comment"># Force password change on first login</span>
+<span class="highlight">sudo chage -d 0 devops_niyhi</span>
+
+<span class="comment"># Add user to sudo group (on Ubuntu)</span>
+<span class="highlight">sudo usermod -aG sudo devops_niyhi</span>
+
+<span class="comment"># View all groups a user belongs to</span>
+<span class="highlight">id devops_niyhi</span>
+<span class="highlight">groups devops_niyhi</span>
+
+<span class="comment"># Lock and unlock user accounts</span>
+<span class="highlight">sudo usermod -L devops_niyhi</span>   <span class="comment"># Lock (prepends ! to password hash)</span>
+<span class="highlight">sudo usermod -U devops_niyhi</span>   <span class="comment"># Unlock</span>
+
+<span class="comment"># Delete a user and their home directory</span>
+<span class="highlight">sudo userdel -r devops_niyhi</span>   <span class="comment"># -r removes home directory too</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Configure sudo access properly — never just add to sudo group in production</span></div>
+    <div class="cmd-code"><span class="comment"># Edit sudoers ALWAYS using visudo (validates syntax before saving)</span>
+<span class="highlight">sudo visudo</span>
+
+<span class="comment"># Allow a specific user to run only specific commands as root:</span>
+<span class="comment"># devops_niyhi ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart nginx</span>
+
+<span class="comment"># This is better than giving full sudo access — principle of least privilege</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Week 2 gate — verify your understanding</div>
+  <div class="gate">
+    <div class="gate-title">WEEK 2 EXIT CHECK — you should be able to do all of these without looking them up</div>
+    <div class="gate-item">Explain what 4755, 2770, and 1777 mean in binary — without a calculator</div>
+    <div class="gate-item">Set up a shared directory where new files automatically inherit the group (SGID)</div>
+    <div class="gate-item">Grant one user read-only access to a file using setfacl without changing the file's group</div>
+    <div class="gate-item">Create a 150MB logical volume from loop device virtual disks, format it, mount it, and expand it live by 50MB without unmounting</div>
+    <div class="gate-item">Create a user, set a password, force change on first login, add to a group, and lock the account</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 3 ═══════════════════════════ -->
+<div class="section" id="s3">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 1 · WEEK 3 · DAYS 15–21</div>
+  <div class="week-title">Networking Fundamentals</div>
+  <div class="week-sub">Every container, every Kubernetes pod, every cloud instance runs over a network. Understanding TCP/IP, DNS, firewalls, and network namespaces is not optional — it's what lets you diagnose connectivity issues that junior engineers can't fix. You will build Docker's network model by hand this week.</div>
+  <div class="week-tags">
+    <span class="tag">TCP/IP</span><span class="tag">Subnetting/CIDR</span><span class="tag">DNS</span>
+    <span class="tag">iptables/UFW</span><span class="tag">Network namespaces</span><span class="tag">tcpdump</span><span class="tag">Nginx proxy</span>
+  </div>
+</div>
+
+<!-- DAY 15 -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 15</span><div><div class="day-title">TCP/IP — How Data Actually Travels the Network</div><div class="day-topic">OSI model, TCP handshake, packets, tcpdump</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The OSI model — you need to know layers 3, 4, and 7</div>
+  <table class="ref-table">
+    <thead><tr><th>Layer</th><th>Name</th><th>What it does</th><th>Protocols / examples</th></tr></thead>
+    <tbody>
+      <tr><td>7</td><td>Application</td><td>The actual app data — HTTP request, DNS query</td><td>HTTP, HTTPS, DNS, SMTP</td></tr>
+      <tr><td>4</td><td>Transport</td><td>End-to-end delivery, ports, reliability</td><td>TCP (reliable), UDP (fast, unreliable)</td></tr>
+      <tr><td>3</td><td>Network</td><td>Routing between networks using IP addresses</td><td>IP, ICMP (ping)</td></tr>
+      <tr><td>2</td><td>Data Link</td><td>MAC addresses, local network delivery</td><td>Ethernet, WiFi</td></tr>
+      <tr><td>1</td><td>Physical</td><td>Actual cables, WiFi signals, fiber</td><td>Ethernet cables, fiber optic</td></tr>
+    </tbody>
+  </table>
+  <p class="explain"><strong>The TCP 3-way handshake:</strong> Before any data is exchanged, TCP establishes a connection in three steps:</p>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div><strong>SYN</strong> — Client → Server: "I want to connect. My sequence number is X." (SYNchronize)</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>SYN-ACK</strong> — Server → Client: "OK, I acknowledge your sequence number X. My sequence number is Y." (SYNchronize-ACKnowledge)</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>ACK</strong> — Client → Server: "I acknowledge your sequence number Y. Connection established." (ACKnowledge)</div></div>
+  </div>
+  <p class="explain">This is why a TCP connection takes at least 1.5 round trips before data flows. For HTTPS, add TLS handshake on top of that. This is why reducing latency matters.</p>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — capture the TCP handshake with tcpdump</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Install Nginx and capture a TCP handshake to it</span></div>
+    <div class="cmd-code"><span class="comment"># Install and start Nginx</span>
+<span class="highlight">sudo apt install -y nginx</span>
+<span class="highlight">sudo systemctl start nginx</span>
+
+<span class="comment"># Terminal 1: Start capturing packets on port 80</span>
+<span class="highlight">sudo tcpdump -i lo -n port 80 -S</span>
+<span class="comment"># -i lo = listen on loopback interface</span>
+<span class="comment"># -n = don't resolve hostnames (show IPs)</span>
+<span class="comment"># -S = show absolute sequence numbers</span>
+
+<span class="comment"># Terminal 2: Make an HTTP request (triggers the handshake)</span>
+<span class="highlight">curl -v http://localhost/</span>
+
+<span class="comment"># In tcpdump output, look for:</span>
+<span class="comment"># Flags [S]   = SYN</span>
+<span class="comment"># Flags [S.]  = SYN-ACK (the . means ACK bit set)</span>
+<span class="comment"># Flags [.]   = ACK only</span>
+<span class="comment"># Flags [P.]  = PSH-ACK (data being pushed)</span>
+<span class="comment"># Flags [F.]  = FIN-ACK (connection closing)</span></div>
+  </div>
+  <div class="alert al-info">
+    <span class="al-icon">→</span>
+    <span><strong>TIME_WAIT explained:</strong> After a TCP connection closes, the socket stays in TIME_WAIT state for 2× the Maximum Segment Lifetime (usually ~60 seconds). This prevents old packets from a dead connection from confusing a new connection on the same port pair. On high-traffic servers, thousands of TIME_WAIT connections can exhaust available ports — this is a real production problem you'll encounter.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Capture a full TCP connection (SYN → SYN-ACK → ACK → data → FIN → FIN-ACK) to your local Nginx and save the tcpdump output</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Write <code>day-15.md</code>: Draw the 3-way handshake sequence with arrows. What is TIME_WAIT and why does it exist?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>docs: day 15 - TCP handshake capture and analysis</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 16-17: SUBNETTING -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D16–17</span><div><div class="day-title">Subnetting — The Math Every DevOps Engineer Must Know</div><div class="day-topic">CIDR notation, binary math, subnet calculation — required for AWS VPC design</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Theory + Drill</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Why subnetting matters in DevOps</div>
+  <p class="explain">When you design a VPC (Virtual Private Cloud) in AWS, you choose CIDR blocks like <code>10.0.0.0/16</code> for the VPC and <code>10.0.1.0/24</code> for each subnet. If you don't understand what <code>/16</code> and <code>/24</code> mean, you'll make mistakes that cause your infrastructure to run out of IP addresses or create security holes.</p>
+  <div class="analogy">
+    <span class="albl">ANALOGY</span>
+    An IP address is like a phone number. The CIDR prefix (e.g., /24) is like an area code — it says "these bits identify the network, the rest identify the specific device." A /24 means the first 24 bits are the network address. With 32 total bits, 8 bits are left for hosts = 256 addresses (254 usable, as network and broadcast are reserved).
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">CIDR quick reference</div>
+  <table class="ref-table">
+    <thead><tr><th>CIDR</th><th>Subnet mask</th><th>Total IPs</th><th>Usable hosts</th><th>AWS use case</th></tr></thead>
+    <tbody>
+      <tr><td>/16</td><td>255.255.0.0</td><td>65,536</td><td>65,534</td><td>VPC CIDR block</td></tr>
+      <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td><td>Standard subnet</td></tr>
+      <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td><td>Half-subnet split</td></tr>
+      <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td><td>Small subnet</td></tr>
+      <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td><td>Tiny subnet (bastion host)</td></tr>
+      <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2</td><td>Point-to-point links</td></tr>
+      <tr><td>/32</td><td>255.255.255.255</td><td>1</td><td>1</td><td>Single host (security group rules)</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">How to calculate a subnet — step by step</div>
+  <p class="explain">Given: <code>192.168.10.0/26</code> — find the 4 subnets, their ranges, and broadcast addresses.</p>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div><strong>/26 means 26 bits for network, 6 bits for hosts.</strong> 2^6 = 64 addresses per subnet. 2^(32-26) = 64 total IPs. Usable = 62.</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Block size = 256 - 192 = 64.</strong> (192 comes from the last octet of mask: 255.255.255.192). Subnets increment by 64.</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Subnet 1:</strong> 192.168.10.0 → 192.168.10.63. Network: .0, Broadcast: .63, Usable: .1–.62</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Subnet 2:</strong> 192.168.10.64 → 192.168.10.127. Network: .64, Broadcast: .127, Usable: .65–.126</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Subnet 3:</strong> 192.168.10.128 → 192.168.10.191. Network: .128, Broadcast: .191, Usable: .129–.190</div></div>
+    <div class="step"><div class="step-n"></div><div><strong>Subnet 4:</strong> 192.168.10.192 → 192.168.10.255. Network: .192, Broadcast: .255, Usable: .193–.254</div></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 16-17 drill — 30 problems, no calculator</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Practice problems — solve these before looking at ipcalc</span></div>
+    <div class="cmd-code"><span class="comment"># After solving manually, verify with ipcalc</span>
+<span class="highlight">sudo apt install -y ipcalc</span>
+
+<span class="comment"># Sample problems to solve by hand:</span>
+<span class="comment"># 1. 10.0.0.0/22 — how many usable hosts? What is the broadcast address?</span>
+<span class="comment"># 2. 172.16.5.0/25 — list both subnets and their ranges</span>
+<span class="comment"># 3. You need 50 hosts — what is the smallest CIDR block?</span>
+<span class="comment"># 4. 192.168.1.100/28 — which subnet is this host in? What is the network address?</span>
+
+<span class="comment"># Verify your answers</span>
+<span class="highlight">ipcalc 10.0.0.0/22</span>
+<span class="highlight">ipcalc 172.16.5.0/25</span>
+<span class="highlight">ipcalc 192.168.1.100/28</span></div>
+  </div>
+  <div class="alert al-warn">
+    <span class="al-icon">▲</span>
+    <span>Target speed: solve a /24 subnetting problem in under 2 minutes without a calculator. AWS VPC design interviews regularly ask you to calculate subnet sizes on the spot. If you need ipcalc in an interview, you'll lose points. Practice until it's automatic.</span>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 18: DNS -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 18</span><div><div class="day-title">DNS — How Names Become IP Addresses</div><div class="day-topic">Resolution chain, dig, /etc/hosts, TTL, split-horizon DNS</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">How DNS resolution works</div>
+  <div class="steps">
+    <div class="step"><div class="step-n"></div><div>Your computer checks <code>/etc/hosts</code> first (local override)</div></div>
+    <div class="step"><div class="step-n"></div><div>Checks local DNS cache (nscd or systemd-resolved)</div></div>
+    <div class="step"><div class="step-n"></div><div>Asks the <strong>recursive resolver</strong> (usually your ISP or 8.8.8.8)</div></div>
+    <div class="step"><div class="step-n"></div><div>Resolver asks a <strong>root nameserver</strong> ("who handles .com?")</div></div>
+    <div class="step"><div class="step-n"></div><div>Resolver asks the <strong>.com TLD nameserver</strong> ("who handles google.com?")</div></div>
+    <div class="step"><div class="step-n"></div><div>Resolver asks <strong>Google's authoritative nameserver</strong> ("what is the IP for www.google.com?")</div></div>
+    <div class="step"><div class="step-n"></div><div>Result is returned and cached for the duration of the TTL</div></div>
+  </div>
+  <p class="explain"><strong>TTL (Time To Live)</strong> is critical for deployments. If your DNS record has a TTL of 3600 (1 hour), and you update the IP address, clients will continue using the old IP for up to 1 hour. Before deployments, lower your TTL to 60 seconds so you can roll back quickly if needed.</p>
+</div>
+<div class="db-section">
+  <div class="db-label">Lab — trace the full DNS resolution chain</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Use dig to trace every step of DNS resolution</span></div>
+    <div class="cmd-code"><span class="comment"># Full recursive trace — shows every step</span>
+<span class="highlight">dig +trace cloudflare.com</span>
+
+<span class="comment"># Common DNS record types</span>
+<span class="highlight">dig A cloudflare.com</span>         <span class="comment"># IPv4 address (most common)</span>
+<span class="highlight">dig AAAA cloudflare.com</span>      <span class="comment"># IPv6 address</span>
+<span class="highlight">dig MX gmail.com</span>             <span class="comment"># Mail servers</span>
+<span class="highlight">dig CNAME www.github.com</span>     <span class="comment"># Alias (points to another name)</span>
+<span class="highlight">dig TXT github.com</span>           <span class="comment"># Text records (SPF, DKIM, domain verification)</span>
+<span class="highlight">dig NS cloudflare.com</span>        <span class="comment"># Nameservers for the domain</span>
+<span class="highlight">dig SOA cloudflare.com</span>       <span class="comment"># Start of Authority (zone info)</span>
+
+<span class="comment"># Check TTL of a record (look for the number after the record type)</span>
+<span class="highlight">dig +nocmd +noall +answer cloudflare.com</span>
+
+<span class="comment"># Query a specific DNS server (bypass your local resolver)</span>
+<span class="highlight">dig @8.8.8.8 cloudflare.com</span>    <span class="comment"># Google's DNS</span>
+<span class="highlight">dig @1.1.1.1 cloudflare.com</span>    <span class="comment"># Cloudflare's DNS</span>
+
+<span class="comment"># Reverse DNS lookup (IP → hostname)</span>
+<span class="highlight">dig -x 1.1.1.1</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Override DNS with /etc/hosts — how containers set service names</span></div>
+    <div class="cmd-code"><span class="comment"># View current /etc/hosts</span>
+<span class="highlight">cat /etc/hosts</span>
+
+<span class="comment"># Add a fake entry (simulates how /etc/hosts works in Docker containers)</span>
+<span class="highlight">echo "127.0.0.1  myapp.local" | sudo tee -a /etc/hosts</span>
+
+<span class="comment"># Test: this name now resolves to 127.0.0.1</span>
+<span class="highlight">ping -c 1 myapp.local</span>
+<span class="highlight">curl http://myapp.local/  </span>  <span class="comment"># Should hit your local Nginx</span>
+
+<span class="comment"># This is exactly how Docker's internal DNS works:</span>
+<span class="comment"># When containers talk to each other by service name (e.g., 'db'),</span>
+<span class="comment"># Docker modifies /etc/hosts inside the container to point 'db' to the right container IP</span>
+
+<span class="comment"># Clean up</span>
+<span class="highlight">sudo sed -i '/myapp.local/d' /etc/hosts</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Daily deliverable</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div>Run <code>dig +trace</code> on a domain and write in <code>day-18.md</code> each hop — name the server that responded at each step</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Explain in writing: what would happen if you deployed a new IP for your website but the TTL was set to 86400 (24 hours)?</div></div>
+    <div class="chk"><div class="chk-box"></div><div>Commit: <code>docs: day 18 - DNS resolution trace and /etc/hosts lab</code></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAY 19: IPTABLES -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 19</span><div><div class="day-title">Firewalls with iptables and UFW</div><div class="day-topic">INPUT/OUTPUT/FORWARD chains, stateful filtering, UFW for simpler management</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-lab">Lab heavy</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">How iptables works</div>
+  <p class="explain">iptables is the Linux kernel's packet filtering system. Every packet entering or leaving your machine travels through a series of tables and chains. Rules in the chain are evaluated in order — the first matching rule wins. iptables is what UFW, Docker's networking, and Kubernetes network policies are built on top of.</p>
+  <table class="ref-table">
+    <thead><tr><th>Chain</th><th>When it runs</th><th>Typical use</th></tr></thead>
+    <tbody>
+      <tr><td>INPUT</td><td>Packets destined for this machine</td><td>Block unauthorized incoming connections</td></tr>
+      <tr><td>OUTPUT</td><td>Packets leaving this machine</td><td>Block unauthorized outbound connections</td></tr>
+      <tr><td>FORWARD</td><td>Packets being routed through this machine</td><td>Router or NAT — also used by Docker</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">UFW lab — recommended for beginners, wraps iptables</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Set up a production-style firewall with UFW</span></div>
+    <div class="cmd-code"><span class="comment"># Install UFW if needed</span>
+<span class="highlight">sudo apt install -y ufw</span>
+
+<span class="comment"># Set default policies — deny all incoming, allow all outgoing</span>
+<span class="highlight">sudo ufw default deny incoming</span>
+<span class="highlight">sudo ufw default allow outgoing</span>
+
+<span class="comment"># Allow SSH (CRITICAL: do this BEFORE enabling UFW or you'll lock yourself out!)</span>
+<span class="highlight">sudo ufw allow 22/tcp</span>
+
+<span class="comment"># Allow HTTP and HTTPS (your web server)</span>
+<span class="highlight">sudo ufw allow 80/tcp</span>
+<span class="highlight">sudo ufw allow 443/tcp</span>
+
+<span class="comment"># Allow a custom application port</span>
+<span class="highlight">sudo ufw allow 8080/tcp comment 'Node.js app'</span>
+
+<span class="comment"># Allow from a specific IP only (e.g., your monitoring server)</span>
+<span class="highlight">sudo ufw allow from 10.0.0.5 to any port 9090 comment 'Prometheus'</span>
+
+<span class="comment"># Enable the firewall</span>
+<span class="highlight">sudo ufw enable</span>
+
+<span class="comment"># View current rules with numbers</span>
+<span class="highlight">sudo ufw status numbered</span>
+
+<span class="comment"># Delete a rule by number</span>
+<span class="highlight">sudo ufw delete 3</span>
+
+<span class="comment"># Test: nmap should show only your allowed ports</span>
+<span class="highlight">nmap -sT localhost</span>
+
+<span class="comment"># Disable UFW when done with lab (to avoid breaking your system)</span>
+<span class="highlight">sudo ufw disable</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">See the actual iptables rules UFW created underneath</span></div>
+    <div class="cmd-code"><span class="comment"># UFW translates your rules into iptables rules</span>
+<span class="highlight">sudo iptables -L INPUT -n --line-numbers</span>
+<span class="comment"># You'll see the actual kernel-level rules UFW generated</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- DAYS 20-21: NETWORK NAMESPACES + CAPSTONE -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D20–21</span><div><div class="day-title">Week 3 Capstone — Network Namespaces + Hardened Nginx Proxy</div><div class="day-topic">Build Docker networking by hand, then build a production-hardened reverse proxy</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">Capstone Build</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Part 1 — Build Docker's network model by hand (Day 20)</div>
+  <p class="explain">Before using Docker, understand what it does. Docker creates network namespaces (isolated network stacks), connects them with virtual ethernet pairs (veth), and sets up routing. Let's do this manually.</p>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create 2 isolated network namespaces and connect them</span></div>
+    <div class="cmd-code"><span class="comment"># Create two network namespaces (like two isolated containers)</span>
+<span class="highlight">sudo ip netns add container_a</span>
+<span class="highlight">sudo ip netns add container_b</span>
+
+<span class="comment"># Verify they exist</span>
+<span class="highlight">ip netns list</span>
+
+<span class="comment"># Create a virtual ethernet pair (two ends of a virtual cable)</span>
+<span class="highlight">sudo ip link add veth_a type veth peer name veth_b</span>
+
+<span class="comment"># Assign one end to each namespace</span>
+<span class="highlight">sudo ip link set veth_a netns container_a</span>
+<span class="highlight">sudo ip link set veth_b netns container_b</span>
+
+<span class="comment"># Assign IP addresses inside each namespace</span>
+<span class="highlight">sudo ip netns exec container_a ip addr add 10.0.0.1/30 dev veth_a</span>
+<span class="highlight">sudo ip netns exec container_b ip addr add 10.0.0.2/30 dev veth_b</span>
+
+<span class="comment"># Bring up the interfaces</span>
+<span class="highlight">sudo ip netns exec container_a ip link set veth_a up</span>
+<span class="highlight">sudo ip netns exec container_b ip link set veth_b up</span>
+
+<span class="comment"># Bring up the loopback in each namespace</span>
+<span class="highlight">sudo ip netns exec container_a ip link set lo up</span>
+<span class="highlight">sudo ip netns exec container_b ip link set lo up</span>
+
+<span class="comment"># Test connectivity</span>
+<span class="highlight">sudo ip netns exec container_a ping -c 3 10.0.0.2</span>
+<span class="comment"># container_a can reach container_b</span>
+
+<span class="comment"># Clean up</span>
+<span class="highlight">sudo ip netns del container_a</span>
+<span class="highlight">sudo ip netns del container_b</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Part 2 — Hardened Nginx reverse proxy (Day 21 capstone)</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Create a backend Python server and a hardened Nginx proxy in front of it</span></div>
+    <div class="cmd-code"><span class="comment"># Step 1: Create a simple Python HTTP backend on port 5000</span>
+<span class="highlight">python3 -m http.server 5000 &</span>
+<span class="var">BACKEND_PID</span>=<span class="highlight">$!</span>
+
+<span class="comment"># Step 2: Create SSL certificate (self-signed for testing)</span>
+<span class="highlight">sudo mkdir -p /etc/nginx/ssl</span>
+<span class="highlight">sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \</span>
+<span class="highlight">    -keyout /etc/nginx/ssl/nginx.key \</span>
+<span class="highlight">    -out /etc/nginx/ssl/nginx.crt \</span>
+<span class="highlight">    -subj "/CN=localhost"</span>
+
+<span class="comment"># Step 3: Create hardened Nginx config</span>
+<span class="highlight">sudo tee /etc/nginx/sites-available/hardened-proxy << 'EOF'</span>
+<span class="highlight">limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;</span>
+
+<span class="highlight">server {</span>
+<span class="highlight">    listen 80;</span>
+<span class="highlight">    server_name localhost;</span>
+<span class="highlight">    return 301 https://$host$request_uri;  # Force HTTPS</span>
+<span class="highlight">}</span>
+
+<span class="highlight">server {</span>
+<span class="highlight">    listen 443 ssl;</span>
+<span class="highlight">    server_name localhost;</span>
+
+<span class="highlight">    ssl_certificate /etc/nginx/ssl/nginx.crt;</span>
+<span class="highlight">    ssl_certificate_key /etc/nginx/ssl/nginx.key;</span>
+<span class="highlight">    ssl_protocols TLSv1.2 TLSv1.3;            # Disable old TLS</span>
+<span class="highlight">    ssl_ciphers HIGH:!aNULL:!MD5;             # Strong ciphers only</span>
+
+<span class="highlight">    # Rate limiting</span>
+<span class="highlight">    limit_req zone=api_limit burst=20 nodelay;</span>
+
+<span class="highlight">    # Security headers</span>
+<span class="highlight">    add_header X-Frame-Options DENY;</span>
+<span class="highlight">    add_header X-Content-Type-Options nosniff;</span>
+<span class="highlight">    add_header X-XSS-Protection "1; mode=block";</span>
+
+<span class="highlight">    # Hide Nginx version</span>
+<span class="highlight">    server_tokens off;</span>
+
+<span class="highlight">    location / {</span>
+<span class="highlight">        proxy_pass http://127.0.0.1:5000;</span>
+<span class="highlight">        proxy_set_header Host $host;</span>
+<span class="highlight">        proxy_set_header X-Real-IP $remote_addr;</span>
+<span class="highlight">    }</span>
+<span class="highlight">}</span>
+<span class="highlight">EOF</span>
+
+<span class="comment"># Enable the config and test</span>
+<span class="highlight">sudo ln -sf /etc/nginx/sites-available/hardened-proxy /etc/nginx/sites-enabled/</span>
+<span class="highlight">sudo nginx -t</span>   <span class="comment"># Test config syntax</span>
+<span class="highlight">sudo systemctl reload nginx</span>
+
+<span class="comment"># Test with curl (ignore SSL warning for self-signed cert)</span>
+<span class="highlight">curl -k https://localhost/</span>   <span class="comment"># Should proxy to Python server</span>
+
+<span class="comment"># Scan to verify only port 443 is exposed (port 80 redirects to 443)</span>
+<span class="highlight">nmap -sT -p 1-1000 localhost</span>
+
+<span class="comment"># Clean up</span>
+<span class="highlight">kill $BACKEND_PID</span></div>
+  </div>
+</div>
+<div class="capstone">
+  <div class="cap-eyebrow">WEEK 3 CAPSTONE REQUIREMENTS</div>
+  <div class="cap-title">Network namespace lab + hardened Nginx proxy — committed to GitHub</div>
+  <div class="cap-desc">Both scripts committed with READMEs. The Nginx config must pass <code>nginx -t</code>. The proxy must force HTTPS redirect, have rate limiting active, and security headers set. nmap must show only port 443 open.</div>
+  <div class="cap-reqs">
+    <div class="cap-req">Network namespace script creates 2 namespaces connected via veth pair, pings succeed between them</div>
+    <div class="cap-req">Nginx config redirects HTTP → HTTPS, proxies to backend, has rate limiting</div>
+    <div class="cap-req">Security headers verified with <code>curl -k -I https://localhost</code></div>
+    <div class="cap-req">nmap shows only port 443 open (port 80 redirects, not open)</div>
+    <div class="cap-req">Committed with a README explaining each Nginx directive</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 4 ═══════════════════════════ -->
+<div class="section" id="s4">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 1 · WEEK 4 · DAYS 22–30</div>
+  <div class="week-title">Bash Scripting — 7 Production Scripts</div>
+  <div class="week-sub">This week you build 7 scripts that a real company would actually use. Each one teaches a different aspect of professional bash scripting: error handling, idempotency, signal trapping, text processing, and systemd integration. By Saturday you package them all into a public GitHub repo.</div>
+  <div class="week-tags">
+    <span class="tag">set -euo pipefail</span><span class="tag">Exit codes</span><span class="tag">Idempotency</span>
+    <span class="tag">awk/sed/grep</span><span class="tag">Cron/systemd</span><span class="tag">BATS tests</span>
+  </div>
+</div>
+
+<!-- BASH ESSENTIALS -->
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 22</span><div><div class="day-title">Bash Script Fundamentals — Writing it Right from Day 1</div><div class="day-topic">set -euo pipefail, variables, arrays, functions, exit codes, strict mode</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Foundation</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The anatomy of every professional bash script</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Production bash script template — use this for EVERY script you write</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env bash</span>
+<span class="comment"># ────────────────────────────────────────────────────────────────────</span>
+<span class="comment"># Script: script-name.sh</span>
+<span class="comment"># Purpose: What this script does in one sentence</span>
+<span class="comment"># Usage:   ./script-name.sh [arg1] [arg2]</span>
+<span class="comment"># Author:  Your name</span>
+<span class="comment"># Date:    YYYY-MM-DD</span>
+<span class="comment"># ────────────────────────────────────────────────────────────────────</span>
+
+<span class="comment"># STRICT MODE — always include this</span>
+<span class="highlight">set -euo pipefail</span>
+<span class="comment"># -e: exit immediately if any command fails (returns non-zero exit code)</span>
+<span class="comment"># -u: treat unset variables as errors (prevents bugs from typos like $USRNAME)</span>
+<span class="comment"># -o pipefail: if any command in a pipe fails, the pipe returns failure</span>
+<span class="comment"># Without this: "false | true" returns 0 (success) — silently hides the failure</span>
+
+<span class="comment"># ── CONSTANTS (readonly — can't be changed later) ────────────────────</span>
+<span class="highlight">readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"</span>
+<span class="highlight">readonly SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"</span>
+<span class="highlight">readonly LOG_FILE="/var/log/${SCRIPT_NAME%.sh}.log"</span>
+
+<span class="comment"># ── LOGGING FUNCTION ─────────────────────────────────────────────────</span>
+<span class="highlight">log() {</span>
+    <span class="comment"># Writes timestamped message to both screen and log file</span>
+    <span class="highlight">local level="$1"</span>
+    <span class="highlight">shift</span>
+    <span class="highlight">local message="$*"</span>
+    <span class="highlight">local timestamp</span>
+    <span class="highlight">timestamp="$(date '+%Y-%m-%d %H:%M:%S')"</span>
+    <span class="highlight">echo "[$timestamp] [$level] $message" | tee -a "$LOG_FILE"</span>
+<span class="highlight">}</span>
+
+<span class="comment"># Convenience wrappers</span>
+<span class="highlight">info()  { log "INFO"  "$@"; }</span>
+<span class="highlight">warn()  { log "WARN"  "$@"; }</span>
+<span class="highlight">error() { log "ERROR" "$@" >&2; }</span>
+
+<span class="comment"># ── CLEANUP FUNCTION ─────────────────────────────────────────────────</span>
+<span class="highlight">cleanup() {</span>
+    <span class="highlight">local exit_code=$?</span>
+    <span class="comment"># Add cleanup actions here (remove temp files, release locks, etc.)</span>
+    <span class="highlight">if [[ $exit_code -ne 0 ]]; then</span>
+        <span class="highlight">error "Script failed with exit code: $exit_code"</span>
+    <span class="highlight">fi</span>
+<span class="highlight">}</span>
+<span class="highlight">trap cleanup EXIT</span>   <span class="comment"># Runs on ANY exit — success, failure, or signal</span>
+
+<span class="comment"># ── ARGUMENT PARSING ─────────────────────────────────────────────────</span>
+<span class="highlight">usage() {</span>
+    <span class="highlight">echo "Usage: $SCRIPT_NAME [options]"</span>
+    <span class="highlight">echo "Options:"</span>
+    <span class="highlight">echo "  -h    Show this help"</span>
+    <span class="highlight">echo "  -v    Verbose output"</span>
+    <span class="highlight">exit 1</span>
+<span class="highlight">}</span>
+
+<span class="var">VERBOSE</span>=<span class="highlight">false</span>
+<span class="highlight">while getopts "hv" opt; do</span>
+    <span class="highlight">case "$opt" in</span>
+        <span class="highlight">h) usage ;;</span>
+        <span class="highlight">v) VERBOSE=true ;;</span>
+        <span class="highlight">*) usage ;;</span>
+    <span class="highlight">esac</span>
+<span class="highlight">done</span>
+
+<span class="comment"># ── MAIN LOGIC ──────────────────────────────────────────────────────</span>
+<span class="highlight">main() {</span>
+    <span class="highlight">info "Script started"</span>
+    <span class="highlight"># Your code here</span>
+    <span class="highlight">info "Script completed successfully"</span>
+<span class="highlight">}</span>
+
+<span class="highlight">main "$@"</span></div>
+  </div>
+  <div class="alert al-warn">
+    <span class="al-icon">▲</span>
+    <span><strong>The most important line in any bash script:</strong> <code>set -euo pipefail</code>. Without it: if a command fails silently, your script continues as if nothing happened. With it: any failure immediately stops the script. In production, a silent failure that continues is far more dangerous than a loud failure that stops.</span>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Text processing — grep, awk, sed (the DevOps toolkit)</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">grep — search for patterns</span></div>
+    <div class="cmd-code"><span class="highlight">grep "ERROR" /var/log/nginx/error.log</span>       <span class="comment"># Lines containing ERROR</span>
+<span class="highlight">grep -i "error" /var/log/syslog</span>               <span class="comment"># Case-insensitive</span>
+<span class="highlight">grep -v "DEBUG" /var/log/app.log</span>              <span class="comment"># Lines NOT containing DEBUG</span>
+<span class="highlight">grep -c "ERROR" /var/log/app.log</span>              <span class="comment"># Count matching lines</span>
+<span class="highlight">grep -E "^[0-9]{4}-" /var/log/app.log</span>        <span class="comment"># Extended regex</span>
+<span class="highlight">grep -A 3 "FATAL" /var/log/app.log</span>           <span class="comment"># 3 lines AFTER each match</span>
+<span class="highlight">grep -B 2 "FATAL" /var/log/app.log</span>           <span class="comment"># 2 lines BEFORE each match</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">awk — field extraction and processing</span></div>
+    <div class="cmd-code"><span class="highlight">awk '{print $1}' /var/log/nginx/access.log</span>          <span class="comment"># Print 1st field (IP address)</span>
+<span class="highlight">awk '{print $7}' /var/log/nginx/access.log</span>          <span class="comment"># Print 7th field (URL path)</span>
+<span class="highlight">awk '/ERROR/ {print $0}' app.log</span>                    <span class="comment"># Print lines matching pattern</span>
+<span class="highlight">awk 'NR>10 && NR<20' file.txt</span>                        <span class="comment"># Print lines 11-19</span>
+<span class="highlight">awk -F: '{print $1}' /etc/passwd</span>                    <span class="comment"># Custom delimiter (colon)</span>
+<span class="highlight">awk '{sum += $5} END {print sum}' data.txt</span>           <span class="comment"># Sum column 5</span>
+
+<span class="comment"># Real example: top 10 IPs from nginx access log</span>
+<span class="highlight">awk '{print $1}' /var/log/nginx/access.log | sort | uniq -c | sort -rn | head -10</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">sed — stream editor (find and replace, in-place editing)</span></div>
+    <div class="cmd-code"><span class="highlight">sed 's/old_text/new_text/' file.txt</span>           <span class="comment"># Replace first occurrence per line</span>
+<span class="highlight">sed 's/old_text/new_text/g' file.txt</span>          <span class="comment"># Replace ALL occurrences</span>
+<span class="highlight">sed -i 's/old/new/g' file.txt</span>                 <span class="comment"># Edit file IN-PLACE (modifies the file)</span>
+<span class="highlight">sed -i.bak 's/old/new/g' file.txt</span>             <span class="comment"># In-place with backup (.bak)</span>
+<span class="highlight">sed -n '5,10p' file.txt</span>                       <span class="comment"># Print only lines 5-10</span>
+<span class="highlight">sed '/^#/d' config.txt</span>                        <span class="comment"># Delete comment lines</span>
+<span class="highlight">sed '/^$/d' file.txt</span>                          <span class="comment"># Delete blank lines</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SCRIPTS 1-7 -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D23–28</span><div><div class="day-title">The 7 Production Scripts — Build One Per Day</div><div class="day-topic">system-monitor, backup, user-creator, log-analyzer, watchdog, disk-sentinel, hardener</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">6 builds</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Script 1 (Day 23) — system-monitor.sh</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">system-monitor.sh — reads /proc, alerts on thresholds, outputs JSON</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env bash</span>
+<span class="highlight">set -euo pipefail</span>
+
+<span class="comment"># Configuration (editable without changing script logic)</span>
+<span class="var">CPU_THRESHOLD</span>=<span class="highlight">80</span>
+<span class="var">MEM_THRESHOLD</span>=<span class="highlight">85</span>
+<span class="var">DISK_THRESHOLD</span>=<span class="highlight">80</span>
+<span class="var">LOG_FILE</span>=<span class="highlight">"/var/log/system_monitor.json"</span>
+<span class="var">ALERT_LOG</span>=<span class="highlight">"/var/log/system_alerts.log"</span>
+
+<span class="comment"># Get CPU usage (% of CPU used over 1 second sample)</span>
+<span class="highlight">get_cpu_usage() {</span>
+    <span class="comment"># Read two snapshots of /proc/stat 1 second apart, calculate difference</span>
+    <span class="highlight">local cpu1 cpu2</span>
+    <span class="highlight">cpu1=$(grep '^cpu ' /proc/stat | awk '{print $2+$3+$4+$5+$6+$7+$8, $5}')</span>
+    <span class="highlight">sleep 1</span>
+    <span class="highlight">cpu2=$(grep '^cpu ' /proc/stat | awk '{print $2+$3+$4+$5+$6+$7+$8, $5}')</span>
+    <span class="highlight">awk -v c1="$cpu1" -v c2="$cpu2" 'BEGIN {</span>
+        <span class="highlight">split(c1, a); split(c2, b)</span>
+        <span class="highlight">total = b[1] - a[1]; idle = b[2] - a[2]</span>
+        <span class="highlight">printf "%.1f", (1 - idle/total) * 100</span>
+    <span class="highlight">}'</span>
+<span class="highlight">}</span>
+
+<span class="comment"># Get memory usage percentage</span>
+<span class="highlight">get_mem_usage() {</span>
+    <span class="highlight">awk '/^MemTotal:/ {total=$2} /^MemAvailable:/ {avail=$2} END {printf "%.1f", (1-avail/total)*100}' /proc/meminfo</span>
+<span class="highlight">}</span>
+
+<span class="comment"># Check all disk mounts</span>
+<span class="highlight">check_disks() {</span>
+    <span class="highlight">df -h --output=target,pcent | tail -n +2 | while read -r mount pct; do</span>
+        <span class="highlight">local pct_num="${pct/\%/}"</span>
+        <span class="highlight">if (( pct_num >= DISK_THRESHOLD )); then</span>
+            <span class="highlight">echo "DISK_ALERT: $mount at ${pct} (threshold: ${DISK_THRESHOLD}%)"</span>
+            <span class="highlight">echo "$(date): DISK $mount at $pct" >> "$ALERT_LOG"</span>
+        <span class="highlight">fi</span>
+    <span class="highlight">done</span>
+<span class="highlight">}</span>
+
+<span class="highlight">main() {</span>
+    <span class="highlight">local cpu mem timestamp</span>
+    <span class="highlight">cpu=$(get_cpu_usage)</span>
+    <span class="highlight">mem=$(get_mem_usage)</span>
+    <span class="highlight">timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")</span>
+
+    <span class="comment"># Check thresholds and log alerts</span>
+    <span class="highlight">if awk -v v="$cpu" -v t="$CPU_THRESHOLD" 'BEGIN{exit !(v>=t)}'; then</span>
+        <span class="highlight">echo "$(date): CPU ALERT: ${cpu}% (threshold: ${CPU_THRESHOLD}%)" >> "$ALERT_LOG"</span>
+    <span class="highlight">fi</span>
+
+    <span class="highlight">check_disks</span>
+
+    <span class="comment"># Write JSON output</span>
+    <span class="highlight">cat > "$LOG_FILE" <<EOF</span>
+<span class="highlight">{</span>
+<span class="highlight">  "timestamp": "$timestamp",</span>
+<span class="highlight">  "cpu_percent": $cpu,</span>
+<span class="highlight">  "memory_percent": $mem,</span>
+<span class="highlight">  "thresholds": {"cpu": $CPU_THRESHOLD, "memory": $MEM_THRESHOLD, "disk": $DISK_THRESHOLD}</span>
+<span class="highlight">}</span>
+<span class="highlight">EOF</span>
+<span class="highlight">    echo "Metrics written to $LOG_FILE"</span>
+<span class="highlight">}</span>
+<span class="highlight">main</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Scripts 2–7 — core requirements (build the full implementation yourself)</div>
+  <table class="ref-table">
+    <thead><tr><th>Day</th><th>Script</th><th>Key requirements</th><th>New concepts</th></tr></thead>
+    <tbody>
+      <tr><td>24</td><td>backup.sh</td><td>tar.gz with timestamps, rotate last 7 copies, handle SIGTERM (clean up partial archive), idempotent</td><td>trap, date formatting, find -mtime</td></tr>
+      <tr><td>25</td><td>bulk-user-creator.sh</td><td>Read CSV (username,group,pubkey), create users idempotently (no error if user exists), install SSH key, force password change</td><td>while IFS=, read, getent, chage</td></tr>
+      <tr><td>26</td><td>log-analyzer.sh</td><td>Parse Nginx access log, top 10 IPs, top 10 URLs, all 5xx errors, requests per minute. Accept log path as argument.</td><td>awk pipelines, sort | uniq -c | sort -rn</td></tr>
+      <tr><td>27</td><td>service-watchdog.sh</td><td>Read service list from config file, check systemctl is-active, restart failed, alert if restarts > 3 in 10 mins, log all actions</td><td>systemctl, date math, arrays</td></tr>
+      <tr><td>28</td><td>disk-sentinel.sh</td><td>Monitor all mounts, warn at 80%, critical at 90%, run as systemd service (write the .service file too)</td><td>df --output, systemd unit files</td></tr>
+      <tr><td>29–30</td><td>security-hardener.sh</td><td>Idempotent: disable root SSH, key-only auth, UFW rules, disable unnecessary services, sysctl hardening. Running twice = no changes.</td><td>grep -q (check before change), sysctl -w, sshd_config</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="db-section">
+  <div class="db-label">Idempotency pattern — use this for every write operation in your scripts</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Check before you change — the idempotency pattern</span></div>
+    <div class="cmd-code"><span class="comment"># BAD: runs useradd even if user already exists (will error on second run)</span>
+<span class="highlight">useradd devops_niyhi</span>
+
+<span class="comment"># GOOD: check first, only create if user doesn't exist</span>
+<span class="highlight">if ! id "devops_niyhi" &>/dev/null; then</span>
+    <span class="highlight">useradd -m -s /bin/bash devops_niyhi</span>
+    <span class="highlight">info "User devops_niyhi created"</span>
+<span class="highlight">else</span>
+    <span class="highlight">info "User devops_niyhi already exists — skipping"</span>
+<span class="highlight">fi</span>
+
+<span class="comment"># BAD: appends to sshd_config every run</span>
+<span class="highlight">echo "PasswordAuthentication no" >> /etc/ssh/sshd_config</span>
+
+<span class="comment"># GOOD: check if setting already exists before changing</span>
+<span class="highlight">if ! grep -q "^PasswordAuthentication no" /etc/ssh/sshd_config; then</span>
+    <span class="highlight">sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config</span>
+    <span class="highlight">info "Disabled password authentication"</span>
+<span class="highlight">else</span>
+    <span class="highlight">info "Password authentication already disabled — skipping"</span>
+<span class="highlight">fi</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- BATS TESTING + CAPSTONE -->
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">DAY 30</span><div><div class="day-title">Month 1 Capstone — Bash Automation Suite Published</div><div class="day-topic">BATS tests, GitHub repo structure, professional README, week-4.md</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">Capstone Build</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Writing BATS tests for your bash scripts</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">BATS (Bash Automated Testing System) — test your scripts like a professional</span></div>
+    <div class="cmd-code"><span class="comment"># Install BATS</span>
+<span class="highlight">sudo apt install -y bats</span>
+
+<span class="comment"># Example test file: tests/test_system_monitor.bats</span>
+<span class="highlight">#!/usr/bin/env bats</span>
+
+<span class="comment"># This runs before every test</span>
+<span class="highlight">setup() {</span>
+    <span class="highlight">export SCRIPT="$BATS_TEST_DIRNAME/../scripts/system-monitor.sh"</span>
+    <span class="highlight">export TEST_LOG="/tmp/test_monitor.json"</span>
+<span class="highlight">}</span>
+
+<span class="comment"># Each @test is one test case</span>
+<span class="highlight">@test "script exits 0 on success" {</span>
+    <span class="highlight">run bash "$SCRIPT"</span>
+    <span class="highlight">[ "$status" -eq 0 ]</span>   <span class="comment"># run captures exit code in $status</span>
+<span class="highlight">}</span>
+
+<span class="highlight">@test "output is valid JSON" {</span>
+    <span class="highlight">bash "$SCRIPT"</span>
+    <span class="highlight">run python3 -m json.tool /var/log/system_monitor.json</span>
+    <span class="highlight">[ "$status" -eq 0 ]</span>
+<span class="highlight">}</span>
+
+<span class="highlight">@test "JSON contains required fields" {</span>
+    <span class="highlight">bash "$SCRIPT"</span>
+    <span class="highlight">run python3 -c "import json,sys; d=json.load(open('/var/log/system_monitor.json')); assert 'cpu_percent' in d; assert 'memory_percent' in d"</span>
+    <span class="highlight">[ "$status" -eq 0 ]</span>
+<span class="highlight">}</span>
+
+<span class="highlight">@test "script is idempotent - running twice gives same structure" {</span>
+    <span class="highlight">bash "$SCRIPT"</span>
+    <span class="highlight">bash "$SCRIPT"</span>
+    <span class="highlight">run python3 -m json.tool /var/log/system_monitor.json</span>
+    <span class="highlight">[ "$status" -eq 0 ]</span>
+<span class="highlight">}</span>
+
+<span class="comment"># Run tests: bats tests/test_system_monitor.bats</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">GitHub repository structure for your bash suite</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Professional repository structure</span></div>
+    <div class="cmd-code"><span class="comment">bash-automation-suite/</span>
+<span class="highlight">├── README.md</span>              <span class="comment"># Professional README (see below)</span>
+<span class="highlight">├── scripts/</span>
+<span class="highlight">│   ├── system-monitor.sh</span>
+<span class="highlight">│   ├── backup.sh</span>
+<span class="highlight">│   ├── bulk-user-creator.sh</span>
+<span class="highlight">│   ├── log-analyzer.sh</span>
+<span class="highlight">│   ├── service-watchdog.sh</span>
+<span class="highlight">│   ├── disk-sentinel.sh</span>
+<span class="highlight">│   └── security-hardener.sh</span>
+<span class="highlight">├── tests/</span>
+<span class="highlight">│   ├── test_system_monitor.bats</span>
+<span class="highlight">│   ├── test_backup.bats</span>
+<span class="highlight">│   └── test_security_hardener.bats</span>
+<span class="highlight">├── config/</span>
+<span class="highlight">│   ├── monitor.conf</span>      <span class="comment"># Thresholds and settings</span>
+<span class="highlight">│   └── services.conf</span>     <span class="comment"># List of services to watch</span>
+<span class="highlight">├── docs/</span>
+<span class="highlight">│   └── usage.md</span>
+<span class="highlight">└── .pre-commit-config.yaml</span>  <span class="comment"># Shellcheck runs before every commit</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Set up shellcheck pre-commit hook — code is rejected if it fails shellcheck</span></div>
+    <div class="cmd-code"><span class="comment"># Install pre-commit framework</span>
+<span class="highlight">sudo apt install -y python3-pip</span>
+<span class="highlight">pip3 install pre-commit</span>
+
+<span class="comment"># Create .pre-commit-config.yaml in your repo root</span>
+<span class="highlight">cat > .pre-commit-config.yaml << 'EOF'</span>
+<span class="highlight">repos:</span>
+<span class="highlight">  - repo: https://github.com/koalaman/shellcheck-precommit</span>
+<span class="highlight">    rev: v0.9.0</span>
+<span class="highlight">    hooks:</span>
+<span class="highlight">      - id: shellcheck</span>
+<span class="highlight">        args: [--severity=warning]</span>
+<span class="highlight">EOF</span>
+
+<span class="comment"># Install the hook into your git repo</span>
+<span class="highlight">pre-commit install</span>
+
+<span class="comment"># Now every git commit will run shellcheck first</span>
+<span class="comment"># If shellcheck finds issues, the commit is blocked</span></div>
+  </div>
+</div>
+<div class="capstone">
+  <div class="cap-eyebrow">MONTH 1 CAPSTONE — PUBLISHED BASH AUTOMATION SUITE</div>
+  <div class="cap-title">Public GitHub repository — your first portfolio piece</div>
+  <div class="cap-desc">All 7 scripts in a well-structured repository with BATS tests, pre-commit shellcheck, and a professional README. This is what you link in every job application under "experience" for Month 1.</div>
+  <div class="cap-reqs">
+    <div class="cap-req">All 7 scripts are present, executable, and pass shellcheck with 0 warnings</div>
+    <div class="cap-req">BATS tests exist for at least 4 of the 7 scripts</div>
+    <div class="cap-req">Pre-commit hook runs shellcheck automatically before every commit</div>
+    <div class="cap-req">README explains: what it is, what each script does, how to install and run it, and how to run the tests</div>
+    <div class="cap-req">All scripts are idempotent — verified by running each twice</div>
+    <div class="cap-req">Commit history shows daily progress with semantic commit messages</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 5: PYTHON ═══════════════════════════ -->
+<div class="section" id="s5">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 2 · WEEK 5 · DAYS 31–44</div>
+  <div class="week-title">Python for DevOps</div>
+  <div class="week-sub">Bash is for system glue and quick scripts. Python is for everything complex: AWS automation, config generation, monitoring integrations, testing. You will learn Python specifically for DevOps use cases — not general-purpose programming, but the exact tools and patterns you'll use every day on the job.</div>
+  <div class="week-tags">
+    <span class="tag">Python 3.12</span><span class="tag">argparse/click</span><span class="tag">boto3 (AWS SDK)</span>
+    <span class="tag">pytest</span><span class="tag">PyYAML</span><span class="tag">subprocess</span><span class="tag">rich</span>
+  </div>
+</div>
+
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D31–34</span><div><div class="day-title">Python Foundations — What You Actually Need for DevOps</div><div class="day-topic">Functions, error handling, file I/O, JSON/YAML, argparse, subprocess</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Theory + Lab</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Install Python tools</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Set up Python environment</span></div>
+    <div class="cmd-code"><span class="highlight">sudo apt install -y python3 python3-pip python3-venv</span>
+
+<span class="comment"># Install DevOps-specific libraries</span>
+<span class="highlight">pip3 install boto3 pyyaml requests click rich pytest --break-system-packages</span>
+
+<span class="comment"># Verify</span>
+<span class="highlight">python3 --version</span>
+<span class="highlight">python3 -c "import boto3, yaml, requests, click, rich, pytest; print('All installed')"</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 31 — Core Python patterns for DevOps scripts</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Python DevOps script template — the equivalent of your bash template</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env python3</span>
+<span class="highlight">"""</span>
+<span class="highlight">script_name.py — What this script does in one sentence</span>
+<span class="highlight">Usage: python3 script_name.py [options]</span>
+<span class="highlight">"""</span>
+
+<span class="highlight">import argparse</span>
+<span class="highlight">import json</span>
+<span class="highlight">import logging</span>
+<span class="highlight">import sys</span>
+<span class="highlight">from pathlib import Path</span>
+
+<span class="comment"># Configure logging — always do this at the top</span>
+<span class="highlight">logging.basicConfig(</span>
+<span class="highlight">    level=logging.INFO,</span>
+<span class="highlight">    format="%(asctime)s [%(levelname)s] %(message)s",</span>
+<span class="highlight">    datefmt="%Y-%m-%d %H:%M:%S"</span>
+<span class="highlight">)</span>
+<span class="highlight">log = logging.getLogger(__name__)</span>
+
+<span class="highlight">def parse_args():</span>
+<span class="highlight">    parser = argparse.ArgumentParser(description="What this script does")</span>
+<span class="highlight">    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output")</span>
+<span class="highlight">    parser.add_argument("--config", type=Path, default="config.yaml", help="Config file path")</span>
+<span class="highlight">    return parser.parse_args()</span>
+
+<span class="highlight">def main():</span>
+<span class="highlight">    args = parse_args()</span>
+<span class="highlight">    if args.verbose:</span>
+<span class="highlight">        logging.getLogger().setLevel(logging.DEBUG)</span>
+
+<span class="highlight">    try:</span>
+<span class="highlight">        log.info("Script started")</span>
+<span class="highlight">        # Your logic here</span>
+<span class="highlight">        log.info("Script completed successfully")</span>
+<span class="highlight">    except FileNotFoundError as e:</span>
+<span class="highlight">        log.error("File not found: %s", e)</span>
+<span class="highlight">        sys.exit(1)       # Non-zero exit = failure (same as bash)</span>
+<span class="highlight">    except KeyboardInterrupt:</span>
+<span class="highlight">        log.info("Interrupted by user")</span>
+<span class="highlight">        sys.exit(130)     # Standard exit code for Ctrl+C</span>
+
+<span class="highlight">if __name__ == "__main__":</span>
+<span class="highlight">    main()</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 32 — subprocess: running shell commands from Python</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Running system commands safely from Python</span></div>
+    <div class="cmd-code"><span class="highlight">import subprocess</span>
+
+<span class="comment"># Run a command and get output — the modern way</span>
+<span class="highlight">result = subprocess.run(</span>
+<span class="highlight">    ["df", "-h", "/"],</span>         <span class="comment"># Always use a list, not a string — prevents shell injection</span>
+<span class="highlight">    capture_output=True,</span>       <span class="comment"># Capture stdout and stderr</span>
+<span class="highlight">    text=True,</span>                 <span class="comment"># Return strings, not bytes</span>
+<span class="highlight">    check=True,</span>                <span class="comment"># Raise exception if command fails (exit code != 0)</span>
+<span class="highlight">)</span>
+<span class="highlight">print(result.stdout)</span>
+
+<span class="comment"># Check if a service is running</span>
+<span class="highlight">def is_service_running(service_name: str) -> bool:</span>
+<span class="highlight">    result = subprocess.run(</span>
+<span class="highlight">        ["systemctl", "is-active", service_name],</span>
+<span class="highlight">        capture_output=True, text=True</span>
+<span class="highlight">    )</span>
+<span class="highlight">    return result.returncode == 0</span>
+
+<span class="highlight">print(f"nginx running: {is_service_running('nginx')}")</span>
+
+<span class="comment"># NEVER do this — shell=True with user input is a security risk:</span>
+<span class="comment"># subprocess.run(f"df -h {user_input}", shell=True)  # DO NOT DO THIS</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 33 — YAML and JSON: parsing Kubernetes manifests and configs</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Working with YAML (Kubernetes manifests are YAML) and JSON</span></div>
+    <div class="cmd-code"><span class="highlight">import yaml</span>
+<span class="highlight">import json</span>
+<span class="highlight">from pathlib import Path</span>
+
+<span class="comment"># Read a YAML file (like a Kubernetes Deployment manifest)</span>
+<span class="highlight">def read_yaml(filepath: Path) -> dict:</span>
+<span class="highlight">    with open(filepath) as f:</span>
+<span class="highlight">        return yaml.safe_load(f)      <span class="comment"># safe_load: never use yaml.load() — security risk</span></span>
+
+<span class="comment"># Write YAML</span>
+<span class="highlight">def write_yaml(data: dict, filepath: Path) -> None:</span>
+<span class="highlight">    with open(filepath, 'w') as f:</span>
+<span class="highlight">        yaml.dump(data, f, default_flow_style=False, indent=2)</span>
+
+<span class="comment"># Real example: read a k8s deployment and extract the image name</span>
+<span class="highlight">deployment_yaml = """</span>
+<span class="highlight">apiVersion: apps/v1</span>
+<span class="highlight">kind: Deployment</span>
+<span class="highlight">metadata:</span>
+<span class="highlight">  name: myapp</span>
+<span class="highlight">spec:</span>
+<span class="highlight">  replicas: 3</span>
+<span class="highlight">  template:</span>
+<span class="highlight">    spec:</span>
+<span class="highlight">      containers:</span>
+<span class="highlight">      - name: myapp</span>
+<span class="highlight">        image: myrepo/myapp:v1.2.3</span>
+<span class="highlight">"""</span>
+
+<span class="highlight">manifest = yaml.safe_load(deployment_yaml)</span>
+<span class="highlight">image = manifest['spec']['template']['spec']['containers'][0]['image']</span>
+<span class="highlight">print(f"Current image: {image}")</span>
+
+<span class="comment"># Update the image version (this is what CI/CD pipelines do)</span>
+<span class="highlight">manifest['spec']['template']['spec']['containers'][0]['image'] = 'myrepo/myapp:v1.2.4'</span>
+<span class="highlight">print(yaml.dump(manifest, default_flow_style=False))</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Day 34 — boto3: AWS SDK for Python (using MiniStack locally)</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">boto3 against MiniStack — same code works against real AWS</span></div>
+    <div class="cmd-code"><span class="highlight">import boto3</span>
+
+<span class="comment"># Configure client to use MiniStack instead of real AWS</span>
+<span class="comment"># Remove endpoint_url to use real AWS</span>
+<span class="highlight">def get_s3_client():</span>
+<span class="highlight">    return boto3.client(</span>
+<span class="highlight">        's3',</span>
+<span class="highlight">        endpoint_url='http://localhost:4566',    <span class="comment"># Remove for real AWS</span></span>
+<span class="highlight">        region_name='us-east-1',</span>
+<span class="highlight">        aws_access_key_id='test',               <span class="comment"># Any value for MiniStack</span></span>
+<span class="highlight">        aws_secret_access_key='test',</span>
+<span class="highlight">    )</span>
+
+<span class="comment"># Create a bucket</span>
+<span class="highlight">s3 = get_s3_client()</span>
+<span class="highlight">s3.create_bucket(Bucket='my-devops-bucket')</span>
+
+<span class="comment"># Upload a file</span>
+<span class="highlight">s3.upload_file('local_file.txt', 'my-devops-bucket', 'remote_file.txt')</span>
+
+<span class="comment"># List objects in bucket</span>
+<span class="highlight">response = s3.list_objects_v2(Bucket='my-devops-bucket')</span>
+<span class="highlight">for obj in response.get('Contents', []):</span>
+<span class="highlight">    print(f"  {obj['Key']} — {obj['Size']} bytes")</span>
+
+<span class="comment"># List all buckets</span>
+<span class="highlight">response = s3.list_buckets()</span>
+<span class="highlight">for bucket in response['Buckets']:</span>
+<span class="highlight">    print(f"Bucket: {bucket['Name']}")</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Month 2, Week 5 main builds</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Build 1: Python wrapper for system-monitor.sh — rich table output</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env python3</span>
+<span class="highlight">"""monitor_display.py — reads system-monitor.sh JSON output and displays it nicely"""</span>
+
+<span class="highlight">import json</span>
+<span class="highlight">import sys</span>
+<span class="highlight">from pathlib import Path</span>
+<span class="highlight">import subprocess</span>
+<span class="highlight">from rich.console import Console</span>
+<span class="highlight">from rich.table import Table</span>
+<span class="highlight">from rich.panel import Panel</span>
+<span class="highlight">from rich import box</span>
+
+<span class="highlight">console = Console()</span>
+
+<span class="highlight">def run_monitor() -> dict:</span>
+<span class="highlight">    """Run the bash monitor script and return parsed JSON"""</span>
+<span class="highlight">    script_path = Path(__file__).parent / "scripts" / "system-monitor.sh"</span>
+<span class="highlight">    subprocess.run([str(script_path)], check=True, capture_output=True)</span>
+<span class="highlight">    log_path = Path("/var/log/system_monitor.json")</span>
+<span class="highlight">    return json.loads(log_path.read_text())</span>
+
+<span class="highlight">def display_metrics(data: dict) -> None:</span>
+<span class="highlight">    table = Table(title="System Health", box=box.ROUNDED)</span>
+<span class="highlight">    table.add_column("Metric", style="cyan", no_wrap=True)</span>
+<span class="highlight">    table.add_column("Value", justify="right")</span>
+<span class="highlight">    table.add_column("Status", justify="center")</span>
+
+<span class="highlight">    cpu = float(data['cpu_percent'])</span>
+<span class="highlight">    mem = float(data['memory_percent'])</span>
+
+<span class="highlight">    table.add_row("CPU Usage", f"{cpu:.1f}%", "[green]OK[/green]" if cpu < 80 else "[red]HIGH[/red]")</span>
+<span class="highlight">    table.add_row("Memory Usage", f"{mem:.1f}%", "[green]OK[/green]" if mem < 85 else "[red]HIGH[/red]")</span>
+<span class="highlight">    table.add_row("Timestamp", data['timestamp'], "")</span>
+
+<span class="highlight">    console.print(Panel(table, border_style="blue"))</span>
+
+<span class="highlight">if __name__ == "__main__":</span>
+<span class="highlight">    data = run_monitor()</span>
+<span class="highlight">    display_metrics(data)</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">pytest — writing tests for your Python tools</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">tests/test_monitor_display.py — test your Python tools from day 1</span></div>
+    <div class="cmd-code"><span class="highlight">import pytest</span>
+<span class="highlight">import json</span>
+<span class="highlight">from pathlib import Path</span>
+<span class="highlight">from unittest.mock import patch, mock_open</span>
+
+<span class="comment"># Test the display logic without running the actual bash script</span>
+<span class="highlight">def test_display_metrics_ok():</span>
+<span class="highlight">    """Green status when values are below thresholds"""</span>
+<span class="highlight">    from monitor_display import display_metrics</span>
+<span class="highlight">    data = {"cpu_percent": "45.0", "memory_percent": "60.0", "timestamp": "2026-01-01T00:00:00Z"}</span>
+<span class="highlight">    display_metrics(data)  # Should not raise an exception</span>
+
+<span class="highlight">def test_display_metrics_high():</span>
+<span class="highlight">    """High status when CPU is above threshold"""</span>
+<span class="highlight">    from monitor_display import display_metrics</span>
+<span class="highlight">    data = {"cpu_percent": "95.0", "memory_percent": "88.0", "timestamp": "2026-01-01T00:00:00Z"}</span>
+<span class="highlight">    display_metrics(data)  # Should show HIGH status, not raise exception</span>
+
+<span class="comment"># Run tests: pytest tests/ -v</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D35–44</span><div><div class="day-title">Python Build 2 — YAML-Driven Infrastructure Config Generator</div><div class="day-topic">Template automation, the main Month 2 Week 5 deliverable</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">Main build</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">The project — infra-config-gen</div>
+  <p class="explain">You have a YAML config file describing servers, their roles, allowed ports, and users. Your tool reads this config and generates: a UFW rules bash script, an Nginx virtual host config, and a user setup script — for each server. Changing the YAML regenerates all configs automatically.</p>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">servers.yaml — the single source of truth</span></div>
+    <div class="cmd-code"><span class="highlight">servers:</span>
+<span class="highlight">  - name: web-01</span>
+<span class="highlight">    ip: 10.0.1.10</span>
+<span class="highlight">    role: webserver</span>
+<span class="highlight">    domain: myapp.example.com</span>
+<span class="highlight">    allowed_ports: [22, 80, 443]</span>
+<span class="highlight">    users:</span>
+<span class="highlight">      - {name: alice, groups: [sudo, www-data]}</span>
+<span class="highlight">      - {name: deploy_bot, groups: [www-data]}</span>
+<span class="highlight">    backend_port: 5000</span>
+
+<span class="highlight">  - name: db-01</span>
+<span class="highlight">    ip: 10.0.2.10</span>
+<span class="highlight">    role: database</span>
+<span class="highlight">    allowed_ports: [22, 5432]</span>
+<span class="highlight">    allowed_from: [10.0.1.0/24]   # Only web subnet can reach DB</span>
+<span class="highlight">    users:</span>
+<span class="highlight">      - {name: alice, groups: [sudo]}</span></div>
+  </div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">infra-config-gen.py — reads YAML, generates all config files</span></div>
+    <div class="cmd-code"><span class="highlight">#!/usr/bin/env python3</span>
+<span class="highlight">"""infra-config-gen.py — generates server config files from a YAML spec"""</span>
+
+<span class="highlight">import yaml</span>
+<span class="highlight">import argparse</span>
+<span class="highlight">import logging</span>
+<span class="highlight">from pathlib import Path</span>
+
+<span class="highlight">logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")</span>
+<span class="highlight">log = logging.getLogger(__name__)</span>
+
+<span class="highlight">def generate_ufw_script(server: dict) -> str:</span>
+<span class="highlight">    lines = ["#!/usr/bin/env bash", "set -euo pipefail", ""]</span>
+<span class="highlight">    lines.append(f"# UFW rules for {server['name']} ({server['ip']})")</span>
+<span class="highlight">    lines.append("ufw --force reset")</span>
+<span class="highlight">    lines.append("ufw default deny incoming")</span>
+<span class="highlight">    lines.append("ufw default allow outgoing")</span>
+<span class="highlight">    lines.append("")</span>
+
+<span class="highlight">    for port in server.get('allowed_ports', []):</span>
+<span class="highlight">        if 'allowed_from' in server:</span>
+<span class="highlight">            for src in server['allowed_from']:</span>
+<span class="highlight">                lines.append(f"ufw allow from {src} to any port {port}/tcp")</span>
+<span class="highlight">        else:</span>
+<span class="highlight">            lines.append(f"ufw allow {port}/tcp")</span>
+
+<span class="highlight">    lines.append("\nufw --force enable")</span>
+<span class="highlight">    lines.append("echo 'UFW configured successfully'")</span>
+<span class="highlight">    return "\n".join(lines)</span>
+
+<span class="highlight">def generate_nginx_config(server: dict) -> str:</span>
+<span class="highlight">    if server.get('role') != 'webserver':</span>
+<span class="highlight">        return None</span>
+<span class="highlight">    return f"""server {{</span>
+<span class="highlight">    listen 80;</span>
+<span class="highlight">    server_name {server['domain']};</span>
+<span class="highlight">    return 301 https://$host$request_uri;</span>
+<span class="highlight">}}</span>
+
+<span class="highlight">server {{</span>
+<span class="highlight">    listen 443 ssl;</span>
+<span class="highlight">    server_name {server['domain']};</span>
+<span class="highlight">    # ssl_certificate / ssl_certificate_key configured separately</span>
+
+<span class="highlight">    location / {{</span>
+<span class="highlight">        proxy_pass http://127.0.0.1:{server.get('backend_port', 8080)};</span>
+<span class="highlight">        proxy_set_header Host $host;</span>
+<span class="highlight">        proxy_set_header X-Real-IP $remote_addr;</span>
+<span class="highlight">    }}</span>
+<span class="highlight">}}"""</span>
+
+<span class="highlight">def generate_user_script(server: dict) -> str:</span>
+<span class="highlight">    lines = ["#!/usr/bin/env bash", "set -euo pipefail", ""]</span>
+<span class="highlight">    lines.append(f"# User setup for {server['name']}")</span>
+
+<span class="highlight">    for user in server.get('users', []):</span>
+<span class="highlight">        lines.append(f"\n# Create user: {user['name']}")</span>
+<span class="highlight">        lines.append(f"id {user['name']} &>/dev/null || useradd -m -s /bin/bash {user['name']}")</span>
+<span class="highlight">        for group in user.get('groups', []):</span>
+<span class="highlight">            lines.append(f"usermod -aG {group} {user['name']}")</span>
+
+<span class="highlight">    lines.append("\necho 'Users configured'")</span>
+<span class="highlight">    return "\n".join(lines)</span>
+
+<span class="highlight">def main():</span>
+<span class="highlight">    parser = argparse.ArgumentParser(description="Generate server configs from YAML")</span>
+<span class="highlight">    parser.add_argument("--config", type=Path, default="servers.yaml")</span>
+<span class="highlight">    parser.add_argument("--output-dir", type=Path, default="generated")</span>
+<span class="highlight">    args = parser.parse_args()</span>
+
+<span class="highlight">    config = yaml.safe_load(args.config.read_text())</span>
+
+<span class="highlight">    for server in config['servers']:</span>
+<span class="highlight">        server_dir = args.output_dir / server['name']</span>
+<span class="highlight">        server_dir.mkdir(parents=True, exist_ok=True)</span>
+
+<span class="highlight">        # Generate UFW script</span>
+<span class="highlight">        (server_dir / 'setup-firewall.sh').write_text(generate_ufw_script(server))</span>
+<span class="highlight">        (server_dir / 'setup-firewall.sh').chmod(0o755)</span>
+<span class="highlight">        log.info("Generated firewall script for %s", server['name'])</span>
+
+<span class="highlight">        # Generate Nginx config (webservers only)</span>
+<span class="highlight">        nginx = generate_nginx_config(server)</span>
+<span class="highlight">        if nginx:</span>
+<span class="highlight">            (server_dir / 'nginx.conf').write_text(nginx)</span>
+<span class="highlight">            log.info("Generated nginx config for %s", server['name'])</span>
+
+<span class="highlight">        # Generate user setup script</span>
+<span class="highlight">        (server_dir / 'setup-users.sh').write_text(generate_user_script(server))</span>
+<span class="highlight">        (server_dir / 'setup-users.sh').chmod(0o755)</span>
+<span class="highlight">        log.info("Generated user setup for %s", server['name'])</span>
+
+<span class="highlight">    log.info("Done! Generated configs in %s/", args.output_dir)</span>
+
+<span class="highlight">if __name__ == "__main__":</span>
+<span class="highlight">    main()</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ WEEK 6: GIT ═══════════════════════════ -->
+<div class="section" id="s6">
+<div class="week-header">
+  <div class="week-eyebrow">MONTH 2 · WEEK 6 · DAYS 45–60</div>
+  <div class="week-title">Git Mastery + Professional GitHub Profile</div>
+  <div class="week-sub">Git is the system that connects everything you build to every job you apply for. This week you learn Git's internals, set up the professional workflows that teams use, and package all your Month 1-2 work into a public portfolio. By Day 60, your GitHub profile is the first thing you'll link in every job application.</div>
+  <div class="week-tags">
+    <span class="tag">Git internals</span><span class="tag">Rebase vs merge</span><span class="tag">Trunk-based dev</span>
+    <span class="tag">pre-commit hooks</span><span class="tag">Semantic commits</span><span class="tag">GitHub profile</span>
+  </div>
+</div>
+
+<div class="day open">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D45–50</span><div><div class="day-title">Git Internals — How Git Actually Stores Data</div><div class="day-topic">Objects, blobs, trees, commits — what git cat-file reveals</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-theory">Deep theory</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Git's object model — the foundation of everything</div>
+  <p class="explain">Git doesn't store diffs. It stores <strong>snapshots</strong> of the entire project as a tree of objects. Understanding this is what separates engineers who can solve any git problem from engineers who panic when git rebase goes wrong.</p>
+  <table class="ref-table">
+    <thead><tr><th>Object type</th><th>What it stores</th><th>How to inspect it</th></tr></thead>
+    <tbody>
+      <tr><td>blob</td><td>The contents of one file (no filename, just content)</td><td>git cat-file -p [blob hash]</td></tr>
+      <tr><td>tree</td><td>A directory: list of filenames → blob/tree hashes</td><td>git cat-file -p [tree hash]</td></tr>
+      <tr><td>commit</td><td>A tree hash + parent commit hash + author + message</td><td>git cat-file -p HEAD</td></tr>
+      <tr><td>tag</td><td>A named pointer to a commit with metadata</td><td>git cat-file -p v1.0.0</td></tr>
+    </tbody>
+  </table>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">Inspect git's internal objects — see exactly what git stores</span></div>
+    <div class="cmd-code"><span class="comment"># Look at the current commit</span>
+<span class="highlight">git cat-file -p HEAD</span>
+<span class="comment"># Output: tree [hash], parent [hash], author, committer, message</span>
+
+<span class="comment"># Look at the tree that commit points to</span>
+<span class="highlight">git cat-file -p HEAD^{tree}</span>
+<span class="comment"># Output: list of files and directories with their blob/tree hashes</span>
+
+<span class="comment"># Look at a specific file's content (blob)</span>
+<span class="highlight">git cat-file -p HEAD:README.md</span>
+
+<span class="comment"># See all objects in the repository</span>
+<span class="highlight">find .git/objects -type f</span>
+
+<span class="comment"># Determine the type of any object</span>
+<span class="highlight">git cat-file -t [any hash]</span>
+<span class="comment"># Returns: blob, tree, commit, or tag</span>
+
+<span class="comment"># See the full commit log as a graph</span>
+<span class="highlight">git log --oneline --graph --all</span></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Rebase vs merge — and when to use each</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">The difference in practice</span></div>
+    <div class="cmd-code"><span class="comment"># MERGE: preserves exact history (a merge commit is created)</span>
+<span class="comment"># Use when: merging a feature branch into main (preserves the branch history)</span>
+<span class="highlight">git checkout main</span>
+<span class="highlight">git merge feature/my-feature</span>
+<span class="comment"># Creates: main → ← feature commits (non-linear history)</span>
+
+<span class="comment"># REBASE: rewrites history (moves commits on top of main)</span>
+<span class="comment"># Use when: updating your local feature branch with latest main changes</span>
+<span class="comment"># NEVER on shared branches (it rewrites commit hashes)</span>
+<span class="highlight">git checkout feature/my-feature</span>
+<span class="highlight">git rebase main</span>
+<span class="comment"># Creates: main → feature commits (linear history, cleaner)</span>
+
+<span class="comment"># INTERACTIVE REBASE: clean up commits before pushing</span>
+<span class="comment"># Squash 3 messy "WIP" commits into one clean commit</span>
+<span class="highlight">git rebase -i HEAD~3</span>
+<span class="comment"># Opens editor: change 'pick' to 'squash' for commits to combine</span></div>
+  </div>
+  <div class="mistake">
+    <span class="mlbl">COMMON BEGINNER MISTAKE</span>
+    Running <code>git rebase main</code> on a branch that's already been pushed to GitHub and shared with teammates. Rebase rewrites commit hashes. When you force-push (required after rebase), it destroys your teammates' local branches. Rule: only rebase your local branch before it's been pushed, or if you're the only one working on it.
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Semantic commits — required from today forward</div>
+  <table class="ref-table">
+    <thead><tr><th>Prefix</th><th>Use for</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>feat:</td><td>A new feature or script</td><td>feat: add disk-sentinel.sh with systemd service</td></tr>
+      <tr><td>fix:</td><td>Bug fix in existing code</td><td>fix: handle missing /proc/meminfo fields gracefully</td></tr>
+      <tr><td>docs:</td><td>Documentation only</td><td>docs: add installation instructions to README</td></tr>
+      <tr><td>refactor:</td><td>Code change that doesn't add features or fix bugs</td><td>refactor: extract cpu_usage into separate function</td></tr>
+      <tr><td>test:</td><td>Adding or updating tests</td><td>test: add BATS tests for backup.sh rotation logic</td></tr>
+      <tr><td>chore:</td><td>Maintenance tasks (updating dependencies, etc.)</td><td>chore: update pre-commit hook to shellcheck v0.9</td></tr>
+      <tr><td>ci:</td><td>CI/CD config changes</td><td>ci: add GitHub Actions workflow for BATS tests</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+<div class="day">
+<div class="day-header" onclick="td(this)">
+  <div class="dh-left"><span class="day-num">D51–60</span><div><div class="day-title">Phase 1 Capstone — Professional GitHub Portfolio</div><div class="day-topic">Profile README, pinned repos, clean commit history, the employer view</div></div></div>
+  <div class="dh-right"><span class="day-tag dt-build">Capstone</span><span class="chev">▼</span></div>
+</div>
+<div class="day-body">
+<div class="db-section">
+  <div class="db-label">Your GitHub profile must have all of this before Phase 2</div>
+  <div class="checklist">
+    <div class="chk"><div class="chk-box"></div><div><strong>Profile README</strong> (github.com/yourusername — create repo named after your username): Your story in 4 sentences, current skills, what you're building, contact info</div></div>
+    <div class="chk"><div class="chk-box"></div><div><strong>Pinned repos:</strong> bash-automation-suite, python-devops-tools (at minimum)</div></div>
+    <div class="chk"><div class="chk-box"></div><div><strong>Each pinned repo README has:</strong> badges (stars, license), problem statement, architecture diagram (ASCII or draw.io), installation steps, usage examples, test instructions</div></div>
+    <div class="chk"><div class="chk-box"></div><div><strong>Commit history:</strong> semantic commits going back 60 days with daily green squares</div></div>
+    <div class="chk"><div class="chk-box"></div><div><strong>Pre-commit hooks configured</strong> in every repo (shellcheck for bash, flake8 for Python)</div></div>
+    <div class="chk"><div class="chk-box"></div><div><strong>All scripts have</strong> <code>set -euo pipefail</code>, proper exit codes, and BATS tests</div></div>
+  </div>
+</div>
+<div class="db-section">
+  <div class="db-label">Pre-commit hook for Python projects (flake8 + black)</div>
+  <div class="cmd-block">
+    <div class="cmd-header"><span class="cmd-purpose">.pre-commit-config.yaml for Python projects</span></div>
+    <div class="cmd-code"><span class="highlight">repos:</span>
+<span class="highlight">  - repo: https://github.com/pycqa/flake8</span>
+<span class="highlight">    rev: 7.0.0</span>
+<span class="highlight">    hooks:</span>
+<span class="highlight">      - id: flake8</span>
+<span class="highlight">        args: [--max-line-length=100]</span>
+
+<span class="highlight">  - repo: https://github.com/psf/black</span>
+<span class="highlight">    rev: 24.1.0</span>
+<span class="highlight">    hooks:</span>
+<span class="highlight">      - id: black</span>
+
+<span class="highlight">  - repo: https://github.com/pre-commit/pre-commit-hooks</span>
+<span class="highlight">    rev: v4.5.0</span>
+<span class="highlight">    hooks:</span>
+<span class="highlight">      - id: trailing-whitespace</span>
+<span class="highlight">      - id: end-of-file-fixer</span>
+<span class="highlight">      - id: check-yaml</span>
+<span class="highlight">      - id: check-json</span></div>
+  </div>
+</div>
+<div class="gate">
+  <div class="gate-title">PHASE 1 COMPLETE — YOU ARE READY FOR PHASE 2 WHEN:</div>
+  <div class="gate-item">You can navigate /proc and explain what any file represents without looking it up</div>
+  <div class="gate-item">You can solve any /24, /25, /26, /28 subnetting problem in under 3 minutes without a calculator</div>
+  <div class="gate-item">You can write an idempotent bash script from scratch with set -euo pipefail, trap, logging, and argument parsing</div>
+  <div class="gate-item">All 7 bash scripts are on GitHub, pass shellcheck, and have BATS tests</div>
+  <div class="gate-item">You have written 2 Python tools using argparse and boto3 (against MiniStack)</div>
+  <div class="gate-item">Your GitHub profile has a profile README, 2 pinned repos with professional READMEs, and 60 days of daily commits</div>
+  <div class="gate-item">You can explain the difference between SIGTERM and SIGKILL, hard links and symlinks, rebase and merge — without notes</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════ RESOURCES ═══════════════════════════ -->
+<div class="section" id="s7">
+<div class="week-header">
+  <div class="week-eyebrow">PHASE 1 REFERENCE</div>
+  <div class="week-title">Resources and Tools</div>
+  <div class="week-sub">Every resource listed here is free. Install the tools before Day 1.</div>
+</div>
+
+<div class="res-grid">
+  <div class="res-card">
+    <div class="res-cat">FREE VIDEO COURSES (WATCH AT 2×)</div>
+    <div class="res-item"><div class="res-dot"></div><div>Linux for Beginners — freeCodeCamp (4h) — youtube.com/watch?v=sWbUDq4S6Y8</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Linux Command Line Basics — freeCodeCamp (5h) — youtube.com/watch?v=ZtqBQ68cfJc</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Bash Scripting Full Course — freeCodeCamp (3h) — youtube.com/watch?v=tK9Oc6AEnR4</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Networking Fundamentals — NetworkChuck — youtube.com/playlist?list=PLIhvC56v63IJVXv0GJcl9vO5Z6znCVb1P</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Subnetting Mastery — Practical Networking — youtube.com/watch?v=s_Ntt6eTn94</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Git & GitHub — freeCodeCamp (1h) — youtube.com/watch?v=RGOj5yH7evk</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Python for Beginners — freeCodeCamp (4h) — youtube.com/watch?v=rfscVS0vtbw</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">FREE BOOKS</div>
+    <div class="res-item"><div class="res-dot"></div><div>The Linux Command Line — William Shotts — free PDF at linuxcommand.org (read chapters 1–10 this phase)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>The Linux Programming Interface — Michael Kerrisk — dense but authoritative. Read the /proc chapter (ch. 12)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Pro Git — Scott Chacon — free at git-scm.com/book (read chapters 1–3, 7.6, and 10)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Automate the Boring Stuff with Python — free at automatetheboringstuff.com (chapters 1–11)</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">DOCUMENTATION</div>
+    <div class="res-item"><div class="res-dot"></div><div>Linux man pages — man 2 fork, man 5 proc, man 7 signal, man 8 iptables</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Bash manual — gnu.org/software/bash/manual/bash.html</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Advanced Bash Scripting Guide — tldp.org/LDP/abs/html/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Ryan's Bash Tutorial — ryanstutorials.net/bash-scripting-tutorial/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Python docs — docs.python.org/3/library/subprocess.html</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>boto3 docs — boto3.amazonaws.com/v1/documentation/api/latest/</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Git internals — git-scm.com/book/en/v2/Git-Internals-Git-Objects</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">PRACTICE PLATFORMS (ALL FREE)</div>
+    <div class="res-item"><div class="res-dot"></div><div>OverTheWire Bandit — overthewire.org/wargames/bandit — Linux command line challenges</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>cmdchallenge.com — bash one-liner challenges</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>KillerCoda Linux labs — killercoda.com/learn?topic=linux</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>SubnettingPractice.com — free subnetting drills with timer</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>LearningGitBranching — learngitbranching.js.org — visual Git exercises</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>ShellCheck online — shellcheck.net — paste your scripts and see issues instantly</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">TOOLS TO INSTALL (DO THIS ON DAY 1)</div>
+    <div class="res-item"><div class="res-dot"></div><div>Ubuntu 22.04 LTS (native, WSL2, or VirtualBox)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Git 2.x — apt install git</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>VS Code with Remote SSH extension — code.visualstudio.com</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Python 3.12 — apt install python3 python3-pip</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>bats — apt install bats (bash testing)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>shellcheck — apt install shellcheck (bash linter)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>pre-commit — pip3 install pre-commit</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>ipcalc — apt install ipcalc (verify your subnetting answers)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>nmap — apt install nmap (network scanning)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>vim — apt install vim (server text editor — learn the basics)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>lvm2 — apt install lvm2 (LVM storage)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Docker — for MiniStack in Phase 2</div></div>
+  </div>
+  <div class="res-card">
+    <div class="res-cat">WEEKLY REFLECTION TEMPLATE (use this every Sunday)</div>
+    <div class="res-item"><div class="res-dot"></div><div>What did I build this week? (list every script, tool, lab)</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>What broke and how did I fix it?</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>What concept confused me most? How did I resolve it?</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>What would I do differently if I started the week over?</div></div>
+    <div class="res-item"><div class="res-dot"></div><div>Commit the week-XX.md to GitHub before starting Week XX+1</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="alert al-success">
+  <span class="al-icon">✓</span>
+  <span><strong>Phase 1 is about foundation, not speed.</strong> Take the full 60 days. Rushing past Linux internals to get to Docker faster is the most common mistake. Engineers who know what's happening underneath — why a pod crashes, what a network namespace is, how signals work — are the ones who get senior titles within 2 years. The ones who skipped this phase spend those same 2 years googling the same errors over and over.</span>
+</div>
+
+</div>
+
+</main>
+
+<button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ top</button>
+
+<script>
+const SECTIONS = ['s0','s1','s2','s3','s4','s5','s6','s7'];
+
+function go(n) {
+  SECTIONS.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('on', i === n);
+  });
+  document.querySelectorAll('.tnav').forEach((el, i) => {
+    el.classList.toggle('on', i === n);
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function td(header) {
+  const day = header.closest('.day');
+  day.classList.toggle('open');
+}
+</script>
+</body>
+</html>
